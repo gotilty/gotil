@@ -21,25 +21,25 @@ func isAssignedBool[K bool](s K) bool {
 func isAssignedUint[K uint | uint8 | uint16 | uint32 | uint64](s K) bool {
 	return s != 0
 }
-func isAssignedArr[K uint | uint8 | uint16 | uint32 | uint64](s K) bool {
-	return s != 0
+func isAssignedArr[K []string | []int | []int8 | []int16 | []int32 | []int64 | []float32 | []float64](s K) bool {
+	return len(s) == 0
 }
 
 // IsAssigned
 func IsAssigned(a interface{}) bool {
 	val := reflect.ValueOf(a)
-	switch a.(type) {
-	case int, int8, int16, int32, int64:
+	switch val.Kind() {
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
 		return isAssignedint(val.Int())
-	case float32, float64:
+	case reflect.Float32, reflect.Float64:
 		return isAssignedFloat(val.Float())
-	case string:
+	case reflect.String:
 		return isAssignedStr(fmt.Sprintf("%s", a))
-	case uint, uint8, uint16, uint32, uint64:
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
 		return isAssignedUint(val.Uint())
-	case bool:
+	case reflect.Bool:
 		return true
-	case []string:
+	case reflect.Array:
 		return true
 	default:
 		return true
