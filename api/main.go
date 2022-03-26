@@ -7,15 +7,10 @@ import (
 )
 
 func main() {
-	var a int = 10
-	var b string = ""
-	fmt.Println("hello")
+	// a := gotil.IsAssigned("")
 
-	if gotil.IsAssigned(a) {
-
-	}
-	if gotil.IsAssigned(b) {
-
-	}
-
+	var tt string = ""
+	b := gotil.IsAssigned(tt)
+	// fmt.Println(a)
+	fmt.Println(b)
 }
