@@ -1,18 +1,22 @@
 package gotil
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 type Any interface {
 	interface{}
 }
 
 // IsAssigned
-func IsAssigned[K Any](a interface{}) bool {
-	switch a.(type) {
-	case int:
+func IsAssigned[K Any](a K) bool {
+	typeString := reflect.TypeOf(a).String()
+	switch typeString {
+	case "int":
 		// …
 		fmt.Println("int")
-	case string:
+	case "string":
 		fmt.Println("string")
 		// …
 	}
