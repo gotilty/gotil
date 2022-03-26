@@ -9,7 +9,7 @@ import (
 func main() {
 	// a := gotil.IsAssigned("")
 
-	var tt string = ""
+	var tt = [4]string{"geek", "gfg", "Geeks1231", "GeeksforGeeks"}
 	b := gotil.IsAssigned(tt)
 	// fmt.Println(a)
 	fmt.Println(b)
