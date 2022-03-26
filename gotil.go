@@ -13,7 +13,7 @@ func isAssignedint[K int | int32 | int64](s K) bool {
 	return s != 0
 }
 func isAssignedFloat[K float32 | float64](s K) bool {
-	return s == 0.0
+	return s != 0.0
 }
 func isAssignedBool[K bool](s K) bool {
 	return s == true
@@ -21,12 +21,12 @@ func isAssignedBool[K bool](s K) bool {
 func isAssignedUint[K uint | uint8 | uint16 | uint32 | uint64](s K) bool {
 	return s != 0
 }
-func isAssignedArr[K []string | []int | []int8 | []int16 | []int32 | []int64 | []float32 | []float64](s K) bool {
-	return len(s) == 0
-}
 
 // IsAssigned
 func IsAssigned(a interface{}) bool {
+	if a == nil {
+		return false
+	}
 	val := reflect.ValueOf(a)
 	switch val.Kind() {
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
@@ -38,10 +38,16 @@ func IsAssigned(a interface{}) bool {
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
 		return isAssignedUint(val.Uint())
 	case reflect.Bool:
-		return true
-	case reflect.Array:
-		return true
+		return isAssignedBool(val.Bool())
 	default:
-		return true
+		kind := val.Kind()
+		switch kind {
+		case reflect.Pointer, reflect.Chan, reflect.Func, reflect.Struct, reflect.UnsafePointer:
+			tt := reflect.Zero(val.Type())
+			return !reflect.DeepEqual(val, tt)
+		case reflect.Array, reflect.Slice:
+			return val.Len() > 0
+		}
+		return false
 	}
 }
