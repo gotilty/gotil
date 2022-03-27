@@ -37,11 +37,8 @@ Go to project folder
 ```
 cd gotil
 ```
-### Step 2: download dependencies
-```
-go mod download
-```
-### Step 3: run test
+
+### Step 2: run test
 ```
 go test -v ./... 
 ```
