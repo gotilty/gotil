@@ -7,7 +7,7 @@ import (
 )
 
 func TestIsNotAssigned(t *testing.T) {
-	testData := getTestData()
+	testData := getIsNotAssignedTestData()
 	for key, test := range testData {
 		a, b := test.output, gotil.IsNotAssigned(test.inputValue)
 		if a != b {
@@ -17,30 +17,34 @@ func TestIsNotAssigned(t *testing.T) {
 }
 
 func BenchmarkIsNotAssignedString(b *testing.B) {
-	testData := getTestData()
+	testData := getIsNotAssignedTestData()
 	for n := 0; n < b.N; n++ {
 		gotil.IsNotAssigned(testData["string"].inputValue)
 	}
 }
 func BenchmarkIsNotAssignedInteger(b *testing.B) {
-	testData := getTestData()
+	testData := getIsNotAssignedTestData()
 	for n := 0; n < b.N; n++ {
 		gotil.IsNotAssigned(testData["integer"].inputValue)
 	}
 }
 
 func BenchmarkIsNotAssignedStruct(b *testing.B) {
-	testData := getTestData()
+	testData := getIsNotAssignedTestData()
 	for n := 0; n < b.N; n++ {
 		gotil.IsNotAssigned(testData["struct"].inputValue)
 	}
 }
 
-func getTestData() map[string]struct {
+type testStructIsNotAssigned struct {
+	a int
+}
+
+func getIsNotAssignedTestData() map[string]struct {
 	inputValue interface{}
 	output     bool
 } {
-	_testStruct := &testStruct{
+	_testStruct := &testStructIsNotAssigned{
 		a: 1,
 	}
 	stringArray := make([]string, 5)

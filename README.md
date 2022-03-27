@@ -43,7 +43,7 @@ go mod download
 ```
 ### Step 3: run test
 ```
-go test -v ./... 
+go test -v ./tests/... 
 ```
 
 ### Step 3: run benchmarks
