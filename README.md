@@ -1,13 +1,11 @@
 # gotil
-utility library for go 
+ utility library for go 
 
-# gotil
- ![bashtop](images/logo.png)
+ ![gotil-logo](images/logo.png)
 
 ## Table of Contents
 
 - [gotil](#gotil)
-- [gotil](#gotil-1)
   - [Table of Contents](#table-of-contents)
   - [Description](#description)
   - [Features](#features)
