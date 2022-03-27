@@ -1,7 +1,7 @@
 # gotil
  utility library for go 
 
- ![gotil-logo](images/logo.png)
+ ![gotil-logo](images/gotil.png)
 
 ## Table of Contents
 
