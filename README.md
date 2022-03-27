@@ -40,7 +40,7 @@ cd gotil
 
 ### Step 2: run test
 ```
-go test -v ./... 
+go test -v ./tests/... 
 ```
 
 ### Step 3: run benchmarks

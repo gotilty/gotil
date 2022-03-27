@@ -36,7 +36,7 @@ func BenchmarkIsAssignedStruct(b *testing.B) {
 	}
 }
 
-type testStruct struct {
+type testStructIsAssigned struct {
 	a int
 }
 
@@ -44,7 +44,7 @@ func getIsAssignedTestData() map[string]struct {
 	inputValue interface{}
 	output     bool
 } {
-	_testStruct := &testStruct{
+	_testStruct := &testStructIsAssigned{
 		a: 1,
 	}
 	stringArray := make([]string, 5)
