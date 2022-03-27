@@ -1,4 +1,4 @@
-package gotil_test
+package tests
 
 import (
 	"testing"
@@ -6,38 +6,34 @@ import (
 	"github.com/gotility/gotil"
 )
 
-func TestIsAssigned(t *testing.T) {
+func TestIsNotAssigned(t *testing.T) {
 	testData := getTestData()
 	for key, test := range testData {
-		a, b := test.output, gotil.IsAssigned(test.inputValue)
+		a, b := test.output, gotil.IsNotAssigned(test.inputValue)
 		if a != b {
-			t.Errorf("IsAssigned not works expected\ncase: %s\nexpected: %t taken: %t", key, a, b)
+			t.Errorf("IsNotAssigned does not works expected\ncase: %s\nexpected: %t taken: %t", key, a, b)
 		}
 	}
 }
 
-func BenchmarkIsAssignedString(b *testing.B) {
+func BenchmarkIsNotAssignedString(b *testing.B) {
 	testData := getTestData()
 	for n := 0; n < b.N; n++ {
-		gotil.IsAssigned(testData["string"].inputValue)
+		gotil.IsNotAssigned(testData["string"].inputValue)
 	}
 }
-func BenchmarkIsAssignedInteger(b *testing.B) {
+func BenchmarkIsNotAssignedInteger(b *testing.B) {
 	testData := getTestData()
 	for n := 0; n < b.N; n++ {
-		gotil.IsAssigned(testData["integer"].inputValue)
-	}
-}
-
-func BenchmarkIsAssignedStruct(b *testing.B) {
-	testData := getTestData()
-	for n := 0; n < b.N; n++ {
-		gotil.IsAssigned(testData["struct"].inputValue)
+		gotil.IsNotAssigned(testData["integer"].inputValue)
 	}
 }
 
-type testStruct struct {
-	a int
+func BenchmarkIsNotAssignedStruct(b *testing.B) {
+	testData := getTestData()
+	for n := 0; n < b.N; n++ {
+		gotil.IsNotAssigned(testData["struct"].inputValue)
+	}
 }
 
 func getTestData() map[string]struct {
@@ -55,32 +51,32 @@ func getTestData() map[string]struct {
 	}{
 		"integer": {
 			inputValue: 10,
-			output:     true,
+			output:     false,
 			// err:        errors.New("exception"),
 		},
 		"string1": {
 			inputValue: "test string data",
-			output:     true,
+			output:     false,
 		},
 		"float": {
 			inputValue: 10.0,
-			output:     true,
+			output:     false,
 		},
 		"empty_string": {
 			inputValue: "",
-			output:     false,
+			output:     true,
 		},
 		"nil_reference": {
 			inputValue: nil,
-			output:     false,
+			output:     true,
 		},
 		"struct": {
 			inputValue: _testStruct,
-			output:     true,
+			output:     false,
 		},
 		"string_array": {
 			inputValue: stringArray,
-			output:     true,
+			output:     false,
 		},
 	}
 	return testData
