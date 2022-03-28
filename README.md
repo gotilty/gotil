@@ -11,8 +11,7 @@
   - [Features](#features)
   - [Run on Local](#run-on-local)
     - [Step 1: git clone this repository gotilty/gotil@github](#step-1-git-clone-this-repository-gotiltygotilgithub)
-    - [Step 2: download dependencies](#step-2-download-dependencies)
-    - [Step 3: run test](#step-3-run-test)
+    - [Step 2: run test](#step-2-run-test)
     - [Step 3: run benchmarks](#step-3-run-benchmarks)
   - [TODO](#todo)
 
@@ -40,15 +39,15 @@ cd gotil
 
 ### Step 2: run test
 ```
-go test -v ./tests/... 
+go test -v ./...
 ```
 
 ### Step 3: run benchmarks
 ```
-go test -bench . -v
+go test -v ./... -bench=. -run=xxx -benchmem
 ```
 ```
-└─(02:55:58 on feature/readme ✹ ✭)──> go test -bench . -v                                                                                                                       ──(Sun,Mar27)─┘
+└─(02:55:58 on feature/readme ✹ ✭)──> go test -v ./... -bench=. -run=xxx -benchmem -v                                                                                                                       ──(Sun,Mar27)─┘
 === RUN   TestIsAssigned
 --- PASS: TestIsAssigned (0.00s)
 goos: darwin

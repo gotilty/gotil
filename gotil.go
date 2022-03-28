@@ -1,6 +1,7 @@
 package gotil
 
 import (
+	"errors"
 	"fmt"
 	"reflect"
 	"strconv"
@@ -151,10 +152,10 @@ func ToString(a interface{}) string {
 
 // Index of
 func indexOf[T comparable](s []T, x T) (int, error) {
-    for i, v := range s {
-        if v == x {
-            return i, nil
-        }
-    }
-    return 0, errors.New("not found")
+	for i, v := range s {
+		if v == x {
+			return i, nil
+		}
+	}
+	return 0, errors.New("not found")
 }
