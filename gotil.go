@@ -148,3 +148,13 @@ func ToString(a interface{}) string {
 		return "aa"
 	}
 }
+
+// Index of
+func indexOf[T comparable](s []T, x T) (int, error) {
+    for i, v := range s {
+        if v == x {
+            return i, nil
+        }
+    }
+    return 0, errors.New("not found")
+}
