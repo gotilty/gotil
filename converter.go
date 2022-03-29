@@ -13,3 +13,11 @@ func ToInt32(a interface{}) (int32, error) {
 	val := reflect.ValueOf(a)
 	return converter.ToInt32(val)
 }
+
+func ToString(a ...interface{}) string {
+	if a == nil {
+		return ""
+	}
+	val := reflect.ValueOf(a)
+	return converter.ToString(val)
+}
