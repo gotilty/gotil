@@ -1,0 +1,93 @@
+package converter_test
+
+import (
+	"math/rand"
+	"testing"
+
+	"github.com/gotility/gotil"
+	"github.com/gotility/gotil/converter"
+)
+
+func TestToString(t *testing.T) {
+	testData := getConvertToStringTestData()
+	for key, test := range testData {
+		a := test.output
+		b := converter.ToString(test.inputValue)
+
+		if a != b {
+			t.Errorf("Convert.ToString does not works expected\ncase: %s\nexpected: %s taken: %s ", key, a, b)
+		}
+	}
+}
+
+func BenchmarkConvertToString_Int32(b *testing.B) {
+	testData := getConvertToStringTestData()
+	for n := 0; n < b.N; n++ {
+		gotil.ToInt32(testData["integer"].inputValue)
+	}
+}
+
+func BenchmarkConvertToString_Int32Array(b *testing.B) {
+	testData := getConvertToStringTestData()
+	for n := 0; n < b.N; n++ {
+		gotil.ToInt32(testData["struct"].inputValue)
+	}
+}
+func BenchmarkConvertToStringUInt(b *testing.B) {
+	testData := getConvertToStringTestData()
+	for n := 0; n < b.N; n++ {
+		gotil.ToInt32(testData["uint"].inputValue)
+	}
+}
+
+func getConvertToStringTestData() map[string]struct {
+	inputValue interface{}
+	output     string
+} {
+	_testStruct := &testStructIsAssigned{
+		a: 1,
+	}
+	stringArray := make([]int, 5)
+	for i := 0; i < 1000; i++ {
+		stringArray[i] = rand.Int()
+	}
+
+	testData := map[string]struct {
+		inputValue interface{}
+		output     string
+	}{
+		"integer": {
+			inputValue: 10,
+			output:     "10",
+		},
+		"uint": {
+			inputValue: uint64(18446744073709551615),
+			output:     "0",
+		},
+		"string1": {
+			inputValue: "1215123123",
+			output:     "1215123123",
+		},
+		"float": {
+			inputValue: 11234550.1254135,
+			output:     "11234550.1254135",
+		},
+		"empty_string": {
+			inputValue: "",
+			output:     "",
+		},
+		"nil_reference": {
+			inputValue: nil,
+			output:     "",
+		},
+		"struct": {
+			inputValue: _testStruct,
+			output:     "",
+		},
+		"string_array": {
+			inputValue: stringArray,
+			output:     "0",
+		},
+	}
+	return testData
+}
