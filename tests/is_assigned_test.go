@@ -3,7 +3,7 @@ package tests
 import (
 	"testing"
 
-	"github.com/gotility/gotil"
+	"github.com/gotilty/gotil"
 )
 
 func TestIsAssigned(t *testing.T) {
