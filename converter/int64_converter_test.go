@@ -2,6 +2,7 @@ package converter_test
 
 import (
 	"errors"
+	"math"
 	"testing"
 
 	"github.com/gotilty/gotil"
@@ -46,13 +47,9 @@ func BenchmarkConvertToInt64Uint(b *testing.B) {
 	}
 }
 
-type testStructIsAssigned struct {
-	a int
-}
-
 func getConvertToInt64TestData() map[string]struct {
 	inputValue interface{}
-	output     int32
+	output     int64
 	err        error
 } {
 	_testStruct := &testStructIsAssigned{
@@ -61,7 +58,7 @@ func getConvertToInt64TestData() map[string]struct {
 	stringArray := make([]string, 5)
 	testData := map[string]struct {
 		inputValue interface{}
-		output     int32
+		output     int64
 		err        error
 	}{
 		"integer": {
@@ -70,9 +67,9 @@ func getConvertToInt64TestData() map[string]struct {
 			err:        nil,
 		},
 		"uint": {
-			inputValue: uint64(18446744073709551615),
-			output:     0,
-			err:        errors.New("exception"),
+			inputValue: math.MaxInt64,
+			output:     math.MaxInt64,
+			err:        nil,
 		},
 		"string1": {
 			inputValue: "1215123123",
