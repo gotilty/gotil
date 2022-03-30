@@ -3,7 +3,7 @@ package gotil
 import (
 	"reflect"
 
-	"github.com/gotility/gotil/converter"
+	"github.com/gotilty/gotil/converter"
 )
 
 func ToInt32(a interface{}) (int32, error) {

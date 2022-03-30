@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/gotility/gotil"
+	"github.com/gotilty/gotil"
 )
 
 func main() {

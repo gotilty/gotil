@@ -52,7 +52,7 @@ go test -v ./... -bench=. -run=xxx -benchmem
 --- PASS: TestIsAssigned (0.00s)
 goos: darwin
 goarch: arm64
-pkg: github.com/gotility/gotil
+pkg: github.com/gotilty/gotil
 BenchmarkIsAssignedString
 BenchmarkIsAssignedString-8     107678102               10.78 ns/op
 BenchmarkIsAssignedInteger
@@ -60,7 +60,7 @@ BenchmarkIsAssignedInteger-8    235145172                5.076 ns/op
 BenchmarkIsAssignedStruct
 BenchmarkIsAssignedStruct-8      9016149               131.4 ns/op
 PASS
-ok      github.com/gotility/gotil       5.155s
+ok      github.com/gotilty/gotil       5.155s
 ```
 ## TODO
 
