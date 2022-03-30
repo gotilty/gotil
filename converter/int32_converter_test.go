@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/gotility/gotil"
+	"github.com/gotilty/gotil"
 )
 
 func TestConvertToInt32(t *testing.T) {

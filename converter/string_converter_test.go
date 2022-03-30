@@ -1,11 +1,13 @@
 package converter_test
 
 import (
+	"bytes"
 	"math/rand"
 	"testing"
 
-	"github.com/gotility/gotil"
-	"github.com/gotility/gotil/converter"
+	"github.com/gotilty/gotil"
+	"github.com/gotilty/gotil/config"
+	"github.com/gotilty/gotil/converter"
 )
 
 func TestToString(t *testing.T) {
@@ -47,10 +49,18 @@ func getConvertToStringTestData() map[string]struct {
 	_testStruct := &testStructIsAssigned{
 		a: 1,
 	}
-	stringArray := make([]int, 5)
-	for i := 0; i < 1000; i++ {
+	arrayLenght := 3
+	stringArray := make([]int, arrayLenght)
+	var buffer bytes.Buffer
+	for i := 0; i < arrayLenght; i++ {
 		stringArray[i] = rand.Int()
+		if i == arrayLenght-1 {
+			buffer.WriteString(converter.ToString(stringArray[i]))
+		} else {
+			buffer.WriteString(converter.ToString(stringArray[i]) + config.GetDefaultSeperator())
+		}
 	}
+	stringArrayResult := buffer.String()
 
 	testData := map[string]struct {
 		inputValue interface{}
@@ -62,7 +72,7 @@ func getConvertToStringTestData() map[string]struct {
 		},
 		"uint": {
 			inputValue: uint64(18446744073709551615),
-			output:     "0",
+			output:     "18446744073709551615",
 		},
 		"string1": {
 			inputValue: "1215123123",
@@ -86,7 +96,7 @@ func getConvertToStringTestData() map[string]struct {
 		},
 		"string_array": {
 			inputValue: stringArray,
-			output:     "0",
+			output:     stringArrayResult,
 		},
 	}
 	return testData
