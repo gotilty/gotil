@@ -7,42 +7,42 @@ import (
 	"github.com/gotilty/gotil"
 )
 
-func TestConvertToInt32(t *testing.T) {
-	testData := getConvertToInt32TestData()
+func TestConvertToInt64(t *testing.T) {
+	testData := getConvertToInt64TestData()
 	for key, test := range testData {
 		a, erra := test.output, test.err
-		b, errb := gotil.ToInt32(test.inputValue)
+		b, errb := gotil.ToInt64(test.inputValue)
 		if erra == nil {
 			if a != b || errb != nil {
-				t.Errorf("Convert.ToInt32 does not works expected\ncase: %s\nexpected: %d taken: %d error: %s", key, a, b, errb.Error())
+				t.Errorf("Convert.ToInt64 does not works expected\ncase: %s\nexpected: %d taken: %d error: %s", key, a, b, errb.Error())
 			}
 		}
 	}
 }
 
-func BenchmarkConvertToInt32String(b *testing.B) {
-	testData := getConvertToInt32TestData()
+func BenchmarkConvertToInt64String(b *testing.B) {
+	testData := getConvertToInt64TestData()
 	for n := 0; n < b.N; n++ {
-		gotil.ToInt32(testData["string"].inputValue)
+		gotil.ToInt64(testData["string"].inputValue)
 	}
 }
-func BenchmarkConvertToInt32Integer(b *testing.B) {
-	testData := getConvertToInt32TestData()
+func BenchmarkConvertToInt64Integer(b *testing.B) {
+	testData := getConvertToInt64TestData()
 	for n := 0; n < b.N; n++ {
-		gotil.ToInt32(testData["integer"].inputValue)
+		gotil.ToInt64(testData["integer"].inputValue)
 	}
 }
 
-func BenchmarkConvertToInt32Struct(b *testing.B) {
-	testData := getConvertToInt32TestData()
+func BenchmarkConvertToInt64Struct(b *testing.B) {
+	testData := getConvertToInt64TestData()
 	for n := 0; n < b.N; n++ {
-		gotil.ToInt32(testData["struct"].inputValue)
+		gotil.ToInt64(testData["struct"].inputValue)
 	}
 }
-func BenchmarkConvertToInt32Uint(b *testing.B) {
-	testData := getConvertToInt32TestData()
+func BenchmarkConvertToInt64Uint(b *testing.B) {
+	testData := getConvertToInt64TestData()
 	for n := 0; n < b.N; n++ {
-		gotil.ToInt32(testData["uint"].inputValue)
+		gotil.ToInt64(testData["uint"].inputValue)
 	}
 }
 
@@ -50,7 +50,7 @@ type testStructIsAssigned struct {
 	a int
 }
 
-func getConvertToInt32TestData() map[string]struct {
+func getConvertToInt64TestData() map[string]struct {
 	inputValue interface{}
 	output     int32
 	err        error
