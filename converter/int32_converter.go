@@ -17,11 +17,11 @@ func ToInt32(val reflect.Value) (int32, error) {
 	case reflect.String:
 		return fromStringToInt32(val.String())
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
-		return fromUInt64ToInt32(val.Uint())
+		return fromUint64ToInt32(val.Uint())
 	case reflect.Bool:
 		return fromBoolToInt32(val.Bool())
 	default:
-		return 0, errors.New(fmt.Sprintf("cannot convert from %s to int32", val.Kind().String()))
+		return 0, errors.New(fmt.Sprintf("The entered value cannot convert from %s to int32", val.Kind().String()))
 	}
 }
 
@@ -29,7 +29,7 @@ func fromInt64ToInt32(s int64) (int32, error) {
 	var maxInt int64 = math.MaxInt32 + 1
 	// maxInt == 2147483648
 	if s > maxInt {
-		return 0, errors.New("cannot convert if max int value reached")
+		return 0, errors.New("The entered number cannot be greater than max int32.")
 	}
 	return int32(s), nil
 }
@@ -37,7 +37,7 @@ func fromInt64ToInt32(s int64) (int32, error) {
 func fromFloat64ToInt32(s float64) (int32, error) {
 	var maxInt int64 = math.MaxInt32 + 1
 	if s > float64(maxInt) {
-		return 0, errors.New("cannot convert if max int value reached")
+		return 0, errors.New("The entered number cannot be greater than max int32.")
 	}
 	return int32(s), nil
 }
@@ -53,13 +53,14 @@ func fromStringToInt32(s string) (int32, error) {
 	return 0, err
 }
 
-func fromUInt64ToInt32(s uint64) (int32, error) {
+func fromUint64ToInt32(s uint64) (int32, error) {
 	var maxInt int64 = math.MaxInt32 + 1
 	if s > uint64(maxInt) {
-		return 0, errors.New("cannot convert if max int value reached")
+		return 0, errors.New("The entered number cannot be greater than max int32.")
 	}
 	return int32(s), nil
 }
+
 func fromBoolToInt32(s bool) (int32, error) {
 	if s {
 		return 1, nil
