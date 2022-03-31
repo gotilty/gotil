@@ -9,7 +9,7 @@ import (
 func main() {
 
 	// var tt = [2]string{"ertugrul", "kutluer"}
-	b, _ := converter.ToString(123123123.1231233)
+	b, err := converter.ToInt64("ertugrul")
 	// fmt.Println(a)
-	fmt.Println(b)
+	fmt.Println(b, err)
 }

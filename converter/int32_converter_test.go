@@ -89,6 +89,7 @@ func getConvertToInt32TestData() map[string]struct {
 		"nil_reference": {
 			inputValue: nil,
 			output:     0,
+			err:        errors.New("exception"),
 		},
 		"struct": {
 			inputValue: _testStruct,

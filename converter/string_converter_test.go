@@ -13,7 +13,7 @@ func TestToString(t *testing.T) {
 	testData := getConvertToStringTestData()
 	for key, test := range testData {
 		a := test.output
-		b, _ := converter.ToString(test.inputValue)
+		b := converter.ToString(test.inputValue)
 
 		if a != b {
 			t.Errorf("Convert.ToString does not works expected\ncase: %s\nexpected: %s taken: %s ", key, a, b)
@@ -53,7 +53,7 @@ func getConvertToStringTestData() map[string]struct {
 	var buffer bytes.Buffer
 	for i := 0; i < arrayLenght; i++ {
 		stringArray[i] = rand.Int()
-		b, _ := converter.ToString(stringArray[i])
+		b := converter.ToString(stringArray[i])
 		if i == arrayLenght-1 {
 			buffer.WriteString(b)
 		} else {
@@ -79,8 +79,8 @@ func getConvertToStringTestData() map[string]struct {
 			output:     "1215123123",
 		},
 		"float": {
-			inputValue: 11234550.1254135123,
-			output:     "11234550.1254135123",
+			inputValue: 11234550.1254135,
+			output:     "11234550.1254135",
 		},
 		"empty_string": {
 			inputValue: "",

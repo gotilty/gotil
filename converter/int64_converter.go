@@ -8,6 +8,8 @@ import (
 	"strconv"
 )
 
+//ToInt64 returns 0 with an error if the parameter is unsupported type.
+//Just works with all primitive types.
 func ToInt64(a interface{}) (int64, error) {
 	val := reflect.ValueOf(a)
 	switch val.Kind() {
