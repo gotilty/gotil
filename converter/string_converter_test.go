@@ -45,7 +45,7 @@ func getConvertToStringTestData() map[string]struct {
 	inputValue interface{}
 	output     string
 } {
-	_testStruct := &testStructIsAssigned{
+	_testStruct := &testStruct{
 		a: 1,
 	}
 	arrayLenght := 3
