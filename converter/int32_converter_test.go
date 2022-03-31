@@ -4,14 +4,14 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/gotilty/gotil"
+	"github.com/gotilty/gotil/converter"
 )
 
 func TestConvertToInt32(t *testing.T) {
 	testData := getConvertToInt32TestData()
 	for key, test := range testData {
 		a, erra := test.output, test.err
-		b, errb := gotil.ToInt32(test.inputValue)
+		b, errb := converter.ToInt32(test.inputValue)
 		if erra == nil {
 			if a != b || errb != nil {
 				t.Errorf("Convert.ToInt32 does not works expected\ncase: %s\nexpected: %d taken: %d error: %s", key, a, b, errb.Error())
@@ -23,26 +23,26 @@ func TestConvertToInt32(t *testing.T) {
 func BenchmarkConvertToInt32String(b *testing.B) {
 	testData := getConvertToInt32TestData()
 	for n := 0; n < b.N; n++ {
-		gotil.ToInt32(testData["string"].inputValue)
+		converter.ToInt32(testData["string"].inputValue)
 	}
 }
 func BenchmarkConvertToInt32Integer(b *testing.B) {
 	testData := getConvertToInt32TestData()
 	for n := 0; n < b.N; n++ {
-		gotil.ToInt32(testData["integer"].inputValue)
+		converter.ToInt32(testData["integer"].inputValue)
 	}
 }
 
 func BenchmarkConvertToInt32Struct(b *testing.B) {
 	testData := getConvertToInt32TestData()
 	for n := 0; n < b.N; n++ {
-		gotil.ToInt32(testData["struct"].inputValue)
+		converter.ToInt32(testData["struct"].inputValue)
 	}
 }
 func BenchmarkConvertToInt32Uint(b *testing.B) {
 	testData := getConvertToInt32TestData()
 	for n := 0; n < b.N; n++ {
-		gotil.ToInt32(testData["uint"].inputValue)
+		converter.ToInt32(testData["uint"].inputValue)
 	}
 }
 

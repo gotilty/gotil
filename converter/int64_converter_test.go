@@ -5,14 +5,14 @@ import (
 	"math"
 	"testing"
 
-	"github.com/gotilty/gotil"
+	"github.com/gotilty/gotil/converter"
 )
 
 func TestConvertToInt64(t *testing.T) {
 	testData := getConvertToInt64TestData()
 	for key, test := range testData {
 		a, erra := test.output, test.err
-		b, errb := gotil.ToInt64(test.inputValue)
+		b, errb := converter.ToInt64(test.inputValue)
 		if erra == nil {
 			if a != b || errb != nil {
 				t.Errorf("Convert.ToInt64 does not works expected\ncase: %s\nexpected: %d taken: %d error: %s", key, a, b, errb.Error())
@@ -24,26 +24,26 @@ func TestConvertToInt64(t *testing.T) {
 func BenchmarkConvertToInt64String(b *testing.B) {
 	testData := getConvertToInt64TestData()
 	for n := 0; n < b.N; n++ {
-		gotil.ToInt64(testData["string"].inputValue)
+		converter.ToInt64(testData["string"].inputValue)
 	}
 }
 func BenchmarkConvertToInt64Integer(b *testing.B) {
 	testData := getConvertToInt64TestData()
 	for n := 0; n < b.N; n++ {
-		gotil.ToInt64(testData["integer"].inputValue)
+		converter.ToInt64(testData["integer"].inputValue)
 	}
 }
 
 func BenchmarkConvertToInt64Struct(b *testing.B) {
 	testData := getConvertToInt64TestData()
 	for n := 0; n < b.N; n++ {
-		gotil.ToInt64(testData["struct"].inputValue)
+		converter.ToInt64(testData["struct"].inputValue)
 	}
 }
 func BenchmarkConvertToInt64Uint(b *testing.B) {
 	testData := getConvertToInt64TestData()
 	for n := 0; n < b.N; n++ {
-		gotil.ToInt64(testData["uint"].inputValue)
+		converter.ToInt64(testData["uint"].inputValue)
 	}
 }
 

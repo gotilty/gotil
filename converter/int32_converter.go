@@ -8,7 +8,8 @@ import (
 	"strconv"
 )
 
-func ToInt32(val reflect.Value) (int32, error) {
+func ToInt32(a interface{}) (int32, error) {
+	val := reflect.ValueOf(a)
 	switch val.Kind() {
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
 		return fromInt64ToInt32(val.Int())
