@@ -75,6 +75,11 @@ func getConvertToInt64TestData() map[string]struct {
 			inputValue: "1215123123",
 			output:     1215123123,
 		},
+		"string2": {
+			inputValue: "ertugrul",
+			output:     0,
+			err:        errors.New("exception"),
+		},
 		"float": {
 			inputValue: 11234550.1254135,
 			output:     11234550,
