@@ -10,33 +10,34 @@ import (
 	"github.com/gotilty/gotil/encoding"
 )
 
-func TestToString(t *testing.T) {
-	testData := getConvertToStringTestData()
+func TestHexEncode(t *testing.T) {
+	testData := getHexEncodeTestData()
 	for key, test := range testData {
-		a := test.output
-		b := encoding.HexEncode(test.inputValue)
-
-		if a != b {
-			t.Errorf("Encoding.HexEncode does not works expected\ncase: %s\nexpected: %s taken: %s ", key, a, b)
+		a, erra := test.output, test.err
+		b, errb := encoding.HexEncode(test.inputValue)
+		if erra == nil {
+			if a != b || errb != nil {
+				t.Errorf("Encoding.HexEncode does not works expected\ncase: %s\nexpected: %s taken: %s ", key, a, b)
+			}
 		}
 	}
 }
 
 func BenchmarkConvertToString_Int32(b *testing.B) {
-	testData := getConvertToStringTestData()
+	testData := getHexEncodeTestData()
 	for n := 0; n < b.N; n++ {
 		converter.ToString(testData["string"].inputValue)
 	}
 }
 
 // func BenchmarkConvertToString_Int32Array(b *testing.B) {
-// 	testData := getConvertToStringTestData()
+// 	testData := getHexEncodeTestData()
 // 	for n := 0; n < b.N; n++ {
 // 		converter.ToString(testData["struct"].inputValue)
 // 	}
 // }
 // func BenchmarkConvertToStringUInt(b *testing.B) {
-// 	testData := getConvertToStringTestData()
+// 	testData := getHexEncodeTestData()
 // 	for n := 0; n < b.N; n++ {
 // 		converter.ToString(testData["uint"].inputValue)
 // 	}
@@ -46,9 +47,10 @@ type testStruct struct {
 	a int
 }
 
-func getConvertToStringTestData() map[string]struct {
+func getHexEncodeTestData() map[string]struct {
 	inputValue interface{}
 	output     string
+	err        error
 } {
 	// _testStruct := &testStruct{
 	// 	a: 1,
@@ -58,7 +60,7 @@ func getConvertToStringTestData() map[string]struct {
 	var buffer bytes.Buffer
 	for i := 0; i < arrayLenght; i++ {
 		stringArray[i] = rand.Int()
-		b := converter.ToString(stringArray[i])
+		b, _ := converter.ToString(stringArray[i])
 		if i == arrayLenght-1 {
 			buffer.WriteString(b)
 		} else {
@@ -70,6 +72,7 @@ func getConvertToStringTestData() map[string]struct {
 	testData := map[string]struct {
 		inputValue interface{}
 		output     string
+		err        error
 	}{
 		"string": {
 			inputValue: "Hello Gopher!",

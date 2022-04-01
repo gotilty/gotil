@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/gotilty/gotil/config"
+	"github.com/gotilty/gotil/internal/errs"
 )
 
 type arrayJoinOpt struct {
@@ -16,23 +17,26 @@ type arrayJoinOpt struct {
 
 //ToString returns empty string if the parameter is unsupported type.
 //Just works with all primitive types, arrays and slices.
-func ToString(a interface{}) string {
+func ToString(a interface{}) (string, error) {
+	if a == nil {
+		return "", errs.NilReferenceTypeError()
+	}
 	val := reflect.ValueOf(a)
 	switch val.Kind() {
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-		return intToStr(val.Int())
+		return intToStr(val.Int()), nil
 	case reflect.Float32, reflect.Float64:
-		return floatToStr(val.Float())
+		return floatToStr(val.Float()), nil
 	case reflect.String:
-		return val.String()
+		return val.String(), nil
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
-		return uintToStr(val.Uint())
+		return uintToStr(val.Uint()), nil
 	case reflect.Bool:
-		return boolToStr(val.Bool())
+		return boolToStr(val.Bool()), nil
 	case reflect.Array, reflect.Slice:
 		return arrayToStringWithSeperator(val, config.GetDefaultSeperator())
 	default:
-		return ""
+		return "", errs.NewUnsupportedTypeError(val.Kind().String())
 	}
 }
 
@@ -41,25 +45,27 @@ func Join(a interface{}, seperator string) (string, error) {
 	val := reflect.ValueOf(a)
 	switch val.Kind() {
 	case reflect.Array, reflect.Slice:
-		return arrayToStringWithSeperator(val, seperator), nil
+		return arrayToStringWithSeperator(val, seperator)
 	default:
 		return "", errors.New(fmt.Sprintf("%s cannot join with seperator", val.Kind().String()))
 	}
 }
-func arrayToStringWithSeperator(val reflect.Value, seperator string) string {
+func arrayToStringWithSeperator(val reflect.Value, seperator string) (string, error) {
 	buffer := ""
 	length := val.Len()
-	// kind := val.Type().Elem().Kind()
 	for i := 0; i < length; i++ {
 		val := val.Index(i)
-		b := ToString(val.Interface())
-		if i == length-1 {
-			buffer += b
+		if b, err := ToString(val.Interface()); err == nil {
+			if i == length-1 {
+				buffer += b
+			} else {
+				buffer += b + seperator
+			}
 		} else {
-			buffer += b + seperator
+			return "", err
 		}
 	}
-	return buffer
+	return buffer, nil
 }
 
 func intToStr(s int64) string {
