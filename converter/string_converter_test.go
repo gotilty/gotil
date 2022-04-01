@@ -7,16 +7,18 @@ import (
 
 	"github.com/gotilty/gotil/config"
 	"github.com/gotilty/gotil/converter"
+	"github.com/gotilty/gotil/internal/errs"
 )
 
 func TestToString(t *testing.T) {
 	testData := getConvertToStringTestData()
 	for key, test := range testData {
-		a := test.output
-		b := converter.ToString(test.inputValue)
-
-		if a != b {
-			t.Errorf("Convert.ToString does not works expected\ncase: %s\nexpected: %s taken: %s ", key, a, b)
+		a, erra := test.output, test.err
+		b, errb := converter.ToString(test.inputValue)
+		if erra == nil {
+			if a != b || errb != nil {
+				t.Errorf("Convert.ToString does not works expected\ncase: %s\nexpected: %s taken: %s error: %s", key, a, b, errb.Error())
+			}
 		}
 	}
 }
@@ -44,8 +46,9 @@ func BenchmarkConvertToStringUInt(b *testing.B) {
 func getConvertToStringTestData() map[string]struct {
 	inputValue interface{}
 	output     string
+	err        error
 } {
-	_testStruct := &testStructIsAssigned{
+	_testStruct := &testStruct{
 		a: 1,
 	}
 	arrayLenght := 3
@@ -53,7 +56,7 @@ func getConvertToStringTestData() map[string]struct {
 	var buffer bytes.Buffer
 	for i := 0; i < arrayLenght; i++ {
 		stringArray[i] = rand.Int()
-		b := converter.ToString(stringArray[i])
+		b, _ := converter.ToString(stringArray[i])
 		if i == arrayLenght-1 {
 			buffer.WriteString(b)
 		} else {
@@ -65,6 +68,7 @@ func getConvertToStringTestData() map[string]struct {
 	testData := map[string]struct {
 		inputValue interface{}
 		output     string
+		err        error
 	}{
 		"integer": {
 			inputValue: 10,
@@ -89,10 +93,12 @@ func getConvertToStringTestData() map[string]struct {
 		"nil_reference": {
 			inputValue: nil,
 			output:     "",
+			err:        errs.NilReferenceTypeError(),
 		},
 		"struct": {
 			inputValue: _testStruct,
 			output:     "",
+			err:        errs.NewUnsupportedTypeError("struct"),
 		},
 		"string_array": {
 			inputValue: stringArray,

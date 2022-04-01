@@ -52,7 +52,7 @@ func getConvertToInt64TestData() map[string]struct {
 	output     int64
 	err        error
 } {
-	_testStruct := &testStructIsAssigned{
+	_testStruct := &testStruct{
 		a: 1,
 	}
 	stringArray := make([]string, 5)

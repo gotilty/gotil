@@ -46,7 +46,7 @@ func BenchmarkConvertToInt32Uint(b *testing.B) {
 	}
 }
 
-type testStructIsAssigned struct {
+type testStruct struct {
 	a int
 }
 
@@ -55,7 +55,7 @@ func getConvertToInt32TestData() map[string]struct {
 	output     int32
 	err        error
 } {
-	_testStruct := &testStructIsAssigned{
+	_testStruct := &testStruct{
 		a: 1,
 	}
 	stringArray := make([]string, 5)
