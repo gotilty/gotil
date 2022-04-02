@@ -23,7 +23,7 @@ func TestHexEncode(t *testing.T) {
 	}
 }
 
-func BenchmarkConvertToString_Int32(b *testing.B) {
+func BenchmarkConvertToStringToHex(b *testing.B) {
 	testData := getHexEncodeTestData()
 	for n := 0; n < b.N; n++ {
 		converter.ToString(testData["string"].inputValue)

@@ -22,7 +22,7 @@ func hexToString(s string) (string, error) {
 	src := []byte(s)
 	dst := make([]byte, hex.DecodedLen(len(src)))
 	if n, err := hex.Decode(dst, src); err == nil {
-		return fmt.Sprintf("%x", dst[:n]), nil
+		return fmt.Sprintf("%s", dst[:n]), nil
 	} else {
 		return "", err
 	}

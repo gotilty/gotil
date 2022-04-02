@@ -1,11 +1,11 @@
 package converter
 
 import (
-	"errors"
-	"fmt"
 	"math"
 	"reflect"
 	"strconv"
+
+	"github.com/gotilty/gotil/internal/errs"
 )
 
 //ToInt64 returns 0 with an error if the parameter is unsupported type.
@@ -27,14 +27,14 @@ func ToInt64(a interface{}) (int64, error) {
 		if a == nil {
 			return 0, nil
 		}
-		return 0, errors.New(fmt.Sprintf("The entered value cannot convert from %s to int32", val.Kind().String()))
+		return 0, errs.Int64Error(val.Kind().String())
 	}
 }
 
 func fromFloat64ToInt64(s float64) (int64, error) {
 	var maxInt int64 = math.MaxInt64
 	if s > float64(maxInt) {
-		return 0, errors.New("The entered number cannot be greater than max int64.")
+		return 0, errs.CustomError("the entered number cannot be greater than max int64.")
 	}
 	return int64(s), nil
 }
@@ -53,7 +53,7 @@ func fromStringToInt64(s string) (int64, error) {
 func fromUint64ToInt64(s uint64) (int64, error) {
 	var maxInt int64 = math.MaxInt32 + 1
 	if s > uint64(maxInt) {
-		return 0, errors.New("The entered number cannot be greater than max int64.")
+		return 0, errs.CustomError("The entered number cannot be greater than max int64.")
 	}
 	return int64(s), nil
 }

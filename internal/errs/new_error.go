@@ -1,18 +1,29 @@
 package errs
 
 import (
-	"errors"
 	"fmt"
 )
 
 func NewUnsupportedTypeError(kind string) error {
-	return errors.New(fmt.Sprintf("the given parameter(%s) is unsupported type ", kind))
+	return fmt.Errorf("the given parameter(%s) is unsupported type ", kind)
 }
 
 func NilReferenceTypeError() error {
-	return errors.New(fmt.Sprintf("the given parameter is nil "))
+	return fmt.Errorf("the given parameter is nil ")
 }
 
 func EmptyStringError() error {
-	return errors.New(fmt.Sprintf("the given string is empty"))
+	return fmt.Errorf("the given string is empty")
+}
+
+func Int64Error(kind string) error {
+	return fmt.Errorf("the entered value cannot convert from %s to int64", kind)
+}
+
+func Int32Error(kind string) error {
+	return fmt.Errorf("the entered value cannot convert from %s to int32", kind)
+}
+
+func CustomError(message string) error {
+	return fmt.Errorf(message)
 }
