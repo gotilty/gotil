@@ -1,15 +1,15 @@
-package tests
+package operator_test
 
 import (
 	"testing"
 
-	"github.com/gotilty/gotil"
+	"github.com/gotilty/gotil/operator"
 )
 
 func TestIsAssigned(t *testing.T) {
 	testData := getIsAssignedTestData()
 	for key, test := range testData {
-		a, b := test.output, gotil.IsAssigned(test.inputValue)
+		a, b := test.output, operator.IsAssigned(test.inputValue)
 		if a != b {
 			t.Errorf("IsAssigned does not works expected\ncase: %s\nexpected: %t taken: %t", key, a, b)
 		}
@@ -19,20 +19,20 @@ func TestIsAssigned(t *testing.T) {
 func BenchmarkIsAssignedString(b *testing.B) {
 	testData := getIsAssignedTestData()
 	for n := 0; n < b.N; n++ {
-		gotil.IsAssigned(testData["string"].inputValue)
+		operator.IsAssigned(testData["string"].inputValue)
 	}
 }
 func BenchmarkIsAssignedInteger(b *testing.B) {
 	testData := getIsAssignedTestData()
 	for n := 0; n < b.N; n++ {
-		gotil.IsAssigned(testData["integer"].inputValue)
+		operator.IsAssigned(testData["integer"].inputValue)
 	}
 }
 
 func BenchmarkIsAssignedStruct(b *testing.B) {
 	testData := getIsAssignedTestData()
 	for n := 0; n < b.N; n++ {
-		gotil.IsAssigned(testData["struct"].inputValue)
+		operator.IsAssigned(testData["struct"].inputValue)
 	}
 }
 
