@@ -6,32 +6,6 @@ import (
 	"github.com/gotilty/gotil/internal/errs"
 )
 
-// Example Usage
-// ----------------------------------------------------------------
-// func main() {
-// 	sample_array1 := []uint64{9, 12, 15, 34525423452435234, 4, 4532584375937459345, 3, 1, 345345342342423523, 21, 12}
-// 	sample_array2 := []string{"Gotilty", "Gotil"}
-// 	sample_res1 := array.Map(sample_array1, square).([]uint64)
-// 	sample_res2 := array.Map(sample_array2, addChar).([]string)
-// 	fmt.Println(sample_res1)
-// 	for _, a := range sample_res2 {
-// 		fmt.Println(a)
-// 	}
-// }
-
-// func square(a interface{}, i int) interface{} {
-// 	b, _ := converter.ToUint64(a)
-// 	return b * 2
-// }
-
-// func addChar(a interface{}, i int) interface{} {
-// 	b, _ := converter.ToString(a)
-// 	if i == 0 {
-// 		return b + "->"
-// 	}
-// 	return b + " is the best utility tool for Golang!"
-// }
-
 // Creates an array of values by running each element in the given array thru iteratee.
 // The value to be iterated should be given as the first parameter.
 // The second parameter will be a function that will take the parameter and return value type interface{}.

@@ -1,6 +1,7 @@
 package array_test
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 
@@ -19,6 +20,15 @@ func TestMap(t *testing.T) {
 			}
 		}
 	}
+}
+
+func ExampleMap() {
+	data := []int64{10, 20, 30}
+	newData, _ := array.Map(data, func(a interface{}, i int) interface{} {
+		return fmt.Sprintf("%d apples", a)
+	})
+	fmt.Println(newData)
+	// Output: [10 apples 20 apples 30 apples]
 }
 
 func BenchmarkMapInt(b *testing.B) {
