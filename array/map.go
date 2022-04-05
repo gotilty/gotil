@@ -3,8 +3,6 @@ package array
 import (
 	"reflect"
 
-	. "github.com/gotilty/gotil/config"
-	"github.com/gotilty/gotil/converter"
 	"github.com/gotilty/gotil/internal/errs"
 )
 
@@ -42,34 +40,50 @@ import (
 // 	return (b * b)
 // }
 //
-func Map(a interface{}, f func(i interface{}, a int) interface{}) (interface{}, error) {
+func Map(a interface{}, f func(a interface{}, i int) interface{}) (interface{}, error) {
 	val := reflect.ValueOf(a)
+	// valF := reflect.ValueOf(f)
 	switch val.Kind() {
 	case reflect.Slice, reflect.Array:
-		typ := reflect.TypeOf(a).Elem().Kind()
-		if typ == reflect.Int || typ == reflect.Int8 || typ == reflect.Int16 || typ == reflect.Int32 || typ == reflect.Int64 {
-			for i := 0; i < val.Len(); i++ {
-				arr_i := val.Index(i)
-				result, _ := converter.ToInt64(f(arr_i.Int(), i))
-				Types.Int64_slice = append(Types.Int64_slice, result)
+		var slice reflect.Value
+		var kind reflect.Kind
+		assign := false
+		for i := 0; i < val.Len(); i++ {
+			value := val.Index(i)
+			result := f(value.Interface(), i)
+			if !assign {
+				t2 := reflect.ValueOf(result).Type()
+				kind = t2.Kind()
+				slice = reflect.Zero(reflect.SliceOf(t2))
+				assign = true
 			}
-			return Types.Int64_slice, nil
-		} else if typ == reflect.Uint || typ == reflect.Uint8 || typ == reflect.Uint16 || typ == reflect.Uint32 || typ == reflect.Uint64 {
-			for i := 0; i < val.Len(); i++ {
-				arr_i := val.Index(i)
-				result, _ := converter.ToUint64(f(arr_i.Uint(), i))
-				Types.Uint64_slice = append(Types.Uint64_slice, result)
-			}
-			return Types.Uint64_slice, nil
-		} else if typ == reflect.String {
-			for i := 0; i < val.Len(); i++ {
-				arr_i := val.Index(i)
-				result, _ := converter.ToString(f(arr_i.String(), i))
-				Types.String_slice = append(Types.String_slice, result)
-			}
-			return Types.String_slice, nil
+			slice = reflect.Append(slice, reflect.ValueOf(result))
 		}
-
+		switch kind {
+		case reflect.Int:
+			return slice.Interface().([]int), nil
+		case reflect.Int16:
+			return slice.Interface().([]int16), nil
+		case reflect.Int32:
+			return slice.Interface().([]int32), nil
+		case reflect.Int64:
+			return slice.Interface().([]int64), nil
+		case reflect.String:
+			return slice.Interface().([]string), nil
+		case reflect.Uint:
+			return slice.Interface().([]uint), nil
+		case reflect.Uint16:
+			return slice.Interface().([]uint16), nil
+		case reflect.Uint32:
+			return slice.Interface().([]uint32), nil
+		case reflect.Uint64:
+			return slice.Interface().([]uint64), nil
+		case reflect.Float32:
+			return slice.Interface().([]float32), nil
+		case reflect.Float64:
+			return slice.Interface().([]float64), nil
+		}
+		return slice.Slice, nil
 	}
 	return nil, errs.NewUnsupportedTypeError(val.Kind().String())
 }
