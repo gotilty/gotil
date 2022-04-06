@@ -1,4 +1,4 @@
-package array
+package collection
 
 import (
 	"reflect"
@@ -6,17 +6,8 @@ import (
 	"github.com/gotilty/gotil/internal/errs"
 )
 
-// Creates an array of values by running each element in the given array thru iteratee.
-// The value to be iterated should be given as the first parameter.
-// The second parameter will be a function that will take the parameter and return value type interface{}.
-// Example: func square(a interface{}, i int()) interface{} {
-// 	b, _ := converter.ToInt64(a)
-// 	return (b * b)
-// }
-//
-func Map(a interface{}, f func(val interface{}, i int) interface{}) (interface{}, error) {
+func FilterByIterate(a interface{}, f func(val interface{}, i int) bool) (interface{}, error) {
 	val := reflect.ValueOf(a)
-	// valF := reflect.ValueOf(f)
 	switch val.Kind() {
 	case reflect.Slice, reflect.Array:
 		var slice reflect.Value
@@ -26,12 +17,14 @@ func Map(a interface{}, f func(val interface{}, i int) interface{}) (interface{}
 			value := val.Index(i)
 			result := f(value.Interface(), i)
 			if !assign {
-				t2 := reflect.ValueOf(result).Type()
+				t2 := value.Type()
 				kind = t2.Kind()
 				slice = reflect.Zero(reflect.SliceOf(t2))
 				assign = true
 			}
-			slice = reflect.Append(slice, reflect.ValueOf(result))
+			if result {
+				slice = reflect.Append(slice, value)
+			}
 		}
 		switch kind {
 		case reflect.Int:
@@ -57,7 +50,7 @@ func Map(a interface{}, f func(val interface{}, i int) interface{}) (interface{}
 		case reflect.Float64:
 			return slice.Interface().([]float64), nil
 		}
-		return slice.Slice, nil
+		return slice.Interface(), nil
 	}
 	return nil, errs.NewUnsupportedTypeError(val.Kind().String())
 }

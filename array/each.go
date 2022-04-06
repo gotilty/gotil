@@ -14,7 +14,7 @@ import (
 // 	return (b * b)
 // }
 //
-func Each(a interface{}, f func(a interface{}, i int)) error {
+func Each(a interface{}, f func(val interface{}, i int)) error {
 	val := reflect.ValueOf(a)
 	switch val.Kind() {
 	case reflect.Slice, reflect.Array:

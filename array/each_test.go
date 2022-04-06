@@ -23,15 +23,14 @@ func TestEach(t *testing.T) {
 
 func ExampleEach() {
 	data := []int64{10, 20, 30}
-	_ = array.Each(data, func(a interface{}, i int) {
-		fmt.Printf("%d apples", a)
+	_ = array.Each(data, func(val interface{}, i int) {
+		fmt.Printf("%d apples", val)
 	})
 	// Out: [10 apples 20 apples 30 apples]
 	// Output: 10 apples20 apples30 apples
 }
-func printTestLine(a interface{}, i int) {
-
-	fmt.Fprintln(os.Stdout, a)
+func printTestLine(val interface{}, i int) {
+	fmt.Fprintln(os.Stdout, val)
 }
 
 func getEachTestData() map[string]struct {

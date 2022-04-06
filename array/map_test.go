@@ -24,8 +24,8 @@ func TestMap(t *testing.T) {
 
 func ExampleMap() {
 	data := []int64{10, 20, 30}
-	newData, _ := array.Map(data, func(a interface{}, i int) interface{} {
-		return fmt.Sprintf("%d apples", a)
+	newData, _ := array.Map(data, func(val interface{}, i int) interface{} {
+		return fmt.Sprintf("%d apples", val)
 	})
 	fmt.Println(newData)
 	// Output: [10 apples 20 apples 30 apples]
@@ -52,20 +52,20 @@ func BenchmarkIntToString(b *testing.B) {
 	}
 }
 
-func square(a interface{}, i int) interface{} {
-	return a.(int64) * a.(int64)
+func square(val interface{}, i int) interface{} {
+	return val.(int64) * val.(int64)
 }
 
-func addChar(a interface{}, i int) interface{} {
-	b, _ := converter.ToString(a)
+func addChar(val interface{}, i int) interface{} {
+	b, _ := converter.ToString(val)
 	if i == 0 {
 		return b
 	}
 	return b + " is perfect"
 }
 
-func intToString(a interface{}, i int) interface{} {
-	b, _ := converter.ToString(a)
+func intToString(val interface{}, i int) interface{} {
+	b, _ := converter.ToString(val)
 	if i == 0 {
 		return "gotilty " + b
 	} else {
