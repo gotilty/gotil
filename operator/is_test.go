@@ -10,7 +10,7 @@ import (
 
 func TestIsArray(t *testing.T) {
 	testData := getTestData()
-	key := "find_number"
+	key := "is_array"
 	test := testData[key]
 	a := test.output
 	b := operator.IsArray(test.inputValue)
@@ -76,10 +76,10 @@ func TestIsFloat(t *testing.T) {
 
 func TestIsNumber(t *testing.T) {
 	testData := getTestData()
-	key := "is_bool"
+	key := "is_number"
 	test := testData[key]
 	a := test.output
-	b := operator.IsBool(test.inputValue)
+	b := operator.IsNumber(test.inputValue)
 	if !reflect.DeepEqual(a, b) {
 		t.Errorf("Convert.ToUint64 does not works expected\ncase: %s\nexpected: %v taken: %v", key, a, b)
 	}
@@ -152,7 +152,6 @@ func getTestData() map[string]struct {
 	inputValue interface{}
 	output     bool
 } {
-
 	testData := map[string]struct {
 		inputValue interface{}
 		output     bool
@@ -195,6 +194,27 @@ func getTestData() map[string]struct {
 			inputValue: user{
 				name: "Martha",
 				age:  15,
+			},
+			output: true,
+		},
+		"is_pointer": {
+			inputValue: &user{
+				name: "Martha",
+				age:  15,
+			},
+			output: true,
+		},
+		"is_chan": {
+			inputValue: make(chan int),
+			output:     true,
+		},
+		"is_map": {
+			inputValue: map[string]struct {
+				test bool
+			}{
+				"test": {
+					test: true,
+				},
 			},
 			output: true,
 		},
