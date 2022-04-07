@@ -49,13 +49,12 @@ func baseFindIndex(val reflect.Value, f func(val interface{}, i int) bool, from 
 			index--
 		}
 	} else {
-		index -= 1
 		for index < length {
-			index++
 			value := val.Index(index)
 			if f(value.Interface(), index) {
 				return index
 			}
+			index++
 		}
 	}
 	return -1
