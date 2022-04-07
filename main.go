@@ -14,8 +14,10 @@ func main() {
 		_, _ = converter.ToInt64(i)
 		return a1 + "ertu"
 	}); err == nil {
-		fmt.Println(result)
+		for _, v := range result.([]string) {
+			fmt.Println(v)
+		}
 	} else {
-		fmt.Println(err.Error())
+
 	}
 }
