@@ -21,6 +21,20 @@ func TestFindByPredicate(t *testing.T) {
 	}
 }
 
+func BenchmarkFindByPredicateIntegerSlice(b *testing.B) {
+	testData := getFindByPredicateTestData()
+	for n := 0; n < b.N; n++ {
+		collection.FindByPredicate(testData["find_number"].inputValue, testData["find_number"].mapFunction)
+	}
+}
+
+func BenchmarkFindByPredicateStructSlice(b *testing.B) {
+	testData := getFindByPredicateTestData()
+	for n := 0; n < b.N; n++ {
+		collection.FindByPredicate(testData["find_by_name"].inputValue, testData["find_by_name"].mapFunction)
+	}
+}
+
 func ExampleFindByPredicate() {
 	data := []int64{-100, -5, 30, 100}
 	// Input: [-100 -5 30 100]
