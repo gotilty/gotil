@@ -6,7 +6,7 @@ import (
 	"github.com/gotilty/gotil/internal/errs"
 )
 
-func FilterByIterate(a interface{}, f func(val interface{}, i int) bool) (interface{}, error) {
+func FilterByPredicate(a interface{}, f func(val interface{}, i int) bool) (interface{}, error) {
 	val := reflect.ValueOf(a)
 	switch val.Kind() {
 	case reflect.Slice, reflect.Array:

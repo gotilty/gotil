@@ -1,13 +1,14 @@
 package collection_test
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 
 	"github.com/gotilty/gotil/collection"
 )
 
-func TestFindLast(t *testing.T) {
+func TestFindLastByPredicate(t *testing.T) {
 	testData := getFindLastTestData()
 	for key, test := range testData {
 		a, erra := test.output, test.err
@@ -20,19 +21,33 @@ func TestFindLast(t *testing.T) {
 	}
 }
 
-// func ExampleFindByIterate() {
-// 	data := []int64{-100, -5, 30, 100}
-// 	// Input: [-100 -5 30 100]
-// 	newData, _ := collection.FilterByIterate(data, func(val interface{}, i int) bool {
-// 		if val.(int64) == 30 {
-// 			return true
-// 		} else {
-// 			return false
-// 		}
-// 	})
-// 	fmt.Println(newData)
-// 	// Output: [30]
-// }
+func BenchmarkFindLastByPredicateIntegerSlice(b *testing.B) {
+	testData := getFindLastTestData()
+	for n := 0; n < b.N; n++ {
+		collection.FindLastByPredicate(testData["find_number"].inputValue, testData["find_number"].mapFunction)
+	}
+}
+
+func BenchmarkFindLastByPredicateStructSlice(b *testing.B) {
+	testData := getFindLastTestData()
+	for n := 0; n < b.N; n++ {
+		collection.FindLastByPredicate(testData["find_by_name"].inputValue, testData["find_by_name"].mapFunction)
+	}
+}
+
+func ExampleFindLastByPredicate() {
+	data := []int64{-100, -5, 30, 100}
+	// Input: [-100 -5 30 100]
+	newData, _ := collection.FindLastByPredicate(data, func(val interface{}, i int) bool {
+		if val.(int64) == 30 {
+			return true
+		} else {
+			return false
+		}
+	})
+	fmt.Println(newData)
+	// Output: 30
+}
 
 func getFindLastTestData() map[string]struct {
 	inputValue  interface{}
