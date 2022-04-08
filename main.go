@@ -2,21 +2,21 @@ package main
 
 import (
 	"fmt"
+	"math"
 
-	"github.com/gotilty/gotil/array"
-	"github.com/gotilty/gotil/converter"
+	"github.com/gotilty/gotil/collection"
 )
 
 func main() {
-	m1 := []int64{5, 10}
-	if result, err := array.Map(m1, func(a interface{}, i int) interface{} {
-		a1, _ := converter.ToString(a)
-		_, _ = converter.ToInt64(i)
-		return a1 + "ertu"
+	m1 := []float64{5, 10.5, 10, 10, 20, 20}
+	if result, err := collection.GroupBy(m1, func(a interface{}, i int) interface{} {
+		return math.Floor(a.(float64))
 	}); err == nil {
-		for _, v := range result.([]string) {
+		for _, v := range result.([]float64) {
 			fmt.Println(v)
 		}
+		r := result.([]float64)
+		fmt.Println(len(r))
 	} else {
 
 	}

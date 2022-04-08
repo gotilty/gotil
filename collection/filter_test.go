@@ -13,11 +13,11 @@ type user struct {
 	age  int
 }
 
-func TestFilterByPredicate(t *testing.T) {
-	testData := getFilterByPredicateTestData()
+func TestFilterBy(t *testing.T) {
+	testData := getFilterByTestData()
 	for key, test := range testData {
 		a, erra := test.output, test.err
-		b, errb := collection.FilterByPredicate(test.inputValue, test.mapFunction)
+		b, errb := collection.FilterBy(test.inputValue, test.mapFunction)
 		if erra == nil {
 			if !reflect.DeepEqual(a, b) || errb != nil {
 				t.Errorf("Convert.ToUint64 does not works expected\ncase: %s\nexpected: %d taken: %d error: %s", key, a, b, errb.Error())
@@ -26,10 +26,10 @@ func TestFilterByPredicate(t *testing.T) {
 	}
 }
 
-func ExampleFilterByPredicate() {
+func ExampleFilterBy() {
 	data := []int64{-100, -5, 30, 100}
 	// Input: [-100 -5 30 100]
-	newData, _ := collection.FilterByPredicate(data, func(val interface{}, i int) bool {
+	newData, _ := collection.FilterBy(data, func(val interface{}, i int) bool {
 		if val.(int64) > 0 {
 			return true
 		} else {
@@ -40,7 +40,7 @@ func ExampleFilterByPredicate() {
 	// Output: [30 100]
 }
 
-func getFilterByPredicateTestData() map[string]struct {
+func getFilterByTestData() map[string]struct {
 	inputValue  interface{}
 	mapFunction func(a interface{}, i int) bool
 	output      interface{}
