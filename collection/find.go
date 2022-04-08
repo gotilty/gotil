@@ -6,12 +6,11 @@ import (
 	"github.com/gotilty/gotil/internal/errs"
 )
 
-func FindByPredicate(a interface{}, f func(val interface{}, i int) bool) (interface{}, error) {
-	return FindByPredicateFromIndex(a, f, 0)
-
+func FindBy(a interface{}, f func(val interface{}, i int) bool) (interface{}, error) {
+	return FindByFromIndex(a, f, 0)
 }
 
-func FindByPredicateFromIndex(a interface{}, f func(val interface{}, i int) bool, from int) (interface{}, error) {
+func FindByFromIndex(a interface{}, f func(val interface{}, i int) bool, from int) (interface{}, error) {
 	val := reflect.ValueOf(a)
 	switch val.Kind() {
 	case reflect.Slice, reflect.Array:

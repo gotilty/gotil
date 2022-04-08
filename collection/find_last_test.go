@@ -8,11 +8,11 @@ import (
 	"github.com/gotilty/gotil/collection"
 )
 
-func TestFindLastByPredicate(t *testing.T) {
+func TestFindLastBy(t *testing.T) {
 	testData := getFindLastTestData()
 	for key, test := range testData {
 		a, erra := test.output, test.err
-		b, errb := collection.FindLastByPredicate(test.inputValue, test.mapFunction)
+		b, errb := collection.FindLastBy(test.inputValue, test.mapFunction)
 		if erra == nil {
 			if !reflect.DeepEqual(a, b) {
 				t.Errorf("Convert.ToUint64 does not works expected\ncase: %s\nexpected: %v taken: %v error: %s", key, a, b, errb.Error())
@@ -21,24 +21,24 @@ func TestFindLastByPredicate(t *testing.T) {
 	}
 }
 
-func BenchmarkFindLastByPredicateIntegerSlice(b *testing.B) {
+func BenchmarkFindLastByIntegerSlice(b *testing.B) {
 	testData := getFindLastTestData()
 	for n := 0; n < b.N; n++ {
-		collection.FindLastByPredicate(testData["find_number"].inputValue, testData["find_number"].mapFunction)
+		collection.FindLastBy(testData["find_number"].inputValue, testData["find_number"].mapFunction)
 	}
 }
 
-func BenchmarkFindLastByPredicateStructSlice(b *testing.B) {
+func BenchmarkFindLastByStructSlice(b *testing.B) {
 	testData := getFindLastTestData()
 	for n := 0; n < b.N; n++ {
-		collection.FindLastByPredicate(testData["find_by_name"].inputValue, testData["find_by_name"].mapFunction)
+		collection.FindLastBy(testData["find_by_name"].inputValue, testData["find_by_name"].mapFunction)
 	}
 }
 
-func ExampleFindLastByPredicate() {
+func ExampleFindLastBy() {
 	data := []int64{-100, -5, 30, 100}
 	// Input: [-100 -5 30 100]
-	newData, _ := collection.FindLastByPredicate(data, func(val interface{}, i int) bool {
+	newData, _ := collection.FindLastBy(data, func(val interface{}, i int) bool {
 		if val.(int64) == 30 {
 			return true
 		} else {

@@ -142,7 +142,7 @@ func checkKind(k reflect.Kind, t reflect.Kind) bool {
 }
 
 func checkKindMultiple(k reflect.Kind, t ...reflect.Kind) bool {
-	if r, err := collection.FindByPredicate(t, func(val interface{}, i int) bool {
+	if r, err := collection.FindBy(t, func(val interface{}, i int) bool {
 		if kk, ok := val.(reflect.Kind); ok && kk == k {
 			return true
 		} else {
