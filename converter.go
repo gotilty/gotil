@@ -59,9 +59,9 @@ func ToString(a interface{}) (string, error) {
 
 }
 
-// ToStringWithSeperator
-func Join(a interface{}, seperator string) (string, error) {
-	return internal.Join(a, seperator)
+// ToStringWithSeparator
+func Join(a interface{}, separator string) (string, error) {
+	return internal.Join(a, separator)
 }
 
 //ToUint returns 0 with an error if the parameter is unsupported type.

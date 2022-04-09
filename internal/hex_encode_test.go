@@ -58,7 +58,7 @@ func getHexEncodeTestData() map[string]struct {
 		if i == arrayLenght-1 {
 			buffer.WriteString(b)
 		} else {
-			buffer.WriteString(b + config.GetDefaultSeperator())
+			buffer.WriteString(b + config.GetDefaultSeparator())
 		}
 	}
 	// stringArrayResult := buffer.String()

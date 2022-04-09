@@ -2,15 +2,15 @@ package config
 
 // 			PRIVATE METHODS
 
-var defaultSeperator string = ","
+var defaultSeparator string = ","
 
 // 			PRIVATE METHODS
 
 // 			PUBLIC METHODS
 
-//GetDefaultSeperator variable for arrays toString()
-func GetDefaultSeperator() string {
-	return defaultSeperator
+//GetDefaultSeparator variable for arrays toString()
+func GetDefaultSeparator() string {
+	return defaultSeparator
 }
 
 // 			PUBLIC METHODS
