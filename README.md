@@ -4,6 +4,9 @@
 
  utility library for go 
 
+
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/hayrullahcansu/aa8b0e537835faee0aedf96f9df1f86b/raw/test.json)
+
 <img src="images/gotil.png" width="250" height="100">
 
 
