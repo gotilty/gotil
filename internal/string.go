@@ -80,8 +80,7 @@ func intToStr(s int64) string {
  123.456000			Decimal point, no exponent	%f
  123.46				Default width, precision 2	%.2f
  123.46				Width 8, precision 2	%8.2f
- 123.456
- 			Exponent as needed, necessary digits only	%g
+ 123.456			Exponent as needed, necessary digits only	%g
 */
 
 func floatToStr(s float64) string {
