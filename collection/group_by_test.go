@@ -27,14 +27,14 @@ func TestGroupBy(t *testing.T) {
 func BenchmarkGroupByMathFloor(b *testing.B) {
 	testData := getGroupByTestData()
 	for n := 0; n < b.N; n++ {
-		collection.GroupBy(testData["math_floor"].inputValue, testData["string_len"].groupByFunction)
+		collection.GroupBy(testData["math_floor"].inputValue, testData["math_floor"].groupByFunction)
 	}
 }
 
 func BenchmarkGroupByStringLen(b *testing.B) {
 	testData := getGroupByTestData()
 	for n := 0; n < b.N; n++ {
-		collection.GroupBy(testData["math_floor"].inputValue, testData["string_len"].groupByFunction)
+		collection.GroupBy(testData["string_len"].inputValue, testData["string_len"].groupByFunction)
 	}
 }
 
@@ -78,18 +78,18 @@ func getGroupByTestData() map[string]struct {
 			output: map[int][]string{2: {"is", "to"}, 3: {"and", "use"}, 4: {"easy"}, 5: {"gotil"}, 7: {"gotilty", "perfect"}},
 			err:    nil,
 		},
-		"map_groupby": {
-			inputValue: map[int][]string{1: {"gotilty"}, 2: {"gotil"}, 3: {"is"}, 4: {"perfect"}, 5: {"and"}, 6: {"easy"}, 7: {"to"}, 8: {"use"}},
-			groupByFunction: func(val, i interface{}) interface{} {
-				for j := 0; j < len(val.([]string)); j++ {
-					value, _ := converter.ToString(val)
-					return len(strings.Split(value, ""))
-				}
-				return len(strings.Split(val.(string), ""))
-			},
-			output: map[int][]string{2: {"is", "to"}, 3: {"and", "use"}, 4: {"easy"}, 5: {"gotil"}, 7: {"gotilty", "perfect"}},
-			err:    nil,
-		},
+		// "map_groupby": {
+		// 	inputValue: map[int][]string{1: {"gotilty"}, 2: {"gotil"}, 3: {"is"}, 4: {"perfect"}, 5: {"and"}, 6: {"easy"}, 7: {"to"}, 8: {"use"}},
+		// 	groupByFunction: func(val, i interface{}) interface{} {
+		// 		for j := 0; j < len(val.([]string)); j++ {
+		// 			value, _ := converter.ToString(val)
+		// 			return len(strings.Split(value, ""))
+		// 		}
+		// 		return len(strings.Split(val.(string), ""))
+		// 	},
+		// 	output: map[int][]string{2: {"is", "to"}, 3: {"and", "use"}, 4: {"easy"}, 5: {"gotil"}, 7: {"gotilty", "perfect"}},
+		// 	err:    nil,
+		// },
 	}
 	return testData
 }
