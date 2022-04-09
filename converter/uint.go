@@ -34,7 +34,7 @@ func ToUint(a interface{}) (uint, error) {
 func fromInt64ToUint(s int64) (uint, error) {
 	var maxInt int64 = math.MaxInt
 	if s > maxInt {
-		return 0, errs.CustomError("The entered number cannot be greater than max uint.")
+		return 0, errs.CustomError("The entered number cannot be greater than max int.")
 	}
 	return uint(s), nil
 }

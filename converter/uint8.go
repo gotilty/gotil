@@ -61,7 +61,7 @@ func fromStringToUint8(s string) (uint8, error) {
 func fromUint64ToUint8(s uint64) (uint8, error) {
 	var maxInt uint64 = math.MaxUint16 + 1
 	if s > uint64(maxInt) {
-		return 0, errs.CustomError("The entered number cannot be greater than max uint16.")
+		return 0, errs.CustomError("The entered number cannot be greater than max uint8.")
 	}
 	return uint8(s), nil
 }
