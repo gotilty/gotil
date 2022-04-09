@@ -2,22 +2,21 @@ package main
 
 import (
 	"fmt"
-	"math"
+	"strings"
 
 	"github.com/gotilty/gotil/collection"
+	"github.com/gotilty/gotil/converter"
 )
 
 func main() {
-	m1 := []float64{5, 10.5, 10, 10, 20, 20}
-	if result, err := collection.GroupBy(m1, func(a interface{}, i int) interface{} {
-		return math.Floor(a.(float64))
-	}); err == nil {
-		for _, v := range result.([]float64) {
-			fmt.Println(v)
-		}
-		r := result.([]float64)
-		fmt.Println(len(r))
-	} else {
+	m1 := map[int][]string{1: {"gotilty"}, 2: {"gotil"}, 3: {"is"}, 4: {"perfect"}, 5: {"and"}, 6: {"easy"}, 7: {"to"}, 8: {"use"}}
 
-	}
+	result, _ := collection.GroupBy(m1, func(val interface{}, i interface{}) interface{} {
+		for j := 0; j < len(val.([]string)); j++ {
+			value, _ := converter.ToString(val)
+			return len(strings.Split(value, ""))
+		}
+		return len(strings.Split(val.(string), ""))
+	})
+	fmt.Println(result)
 }

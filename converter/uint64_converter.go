@@ -57,6 +57,7 @@ func fromUint64ToUint64(s uint64) (uint64, error) {
 	}
 	return uint64(s), nil
 }
+
 func fromBoolToUint64(s bool) (uint64, error) {
 	if s {
 		return 1, nil
