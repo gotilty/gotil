@@ -25,6 +25,7 @@ utility library for go
 ## Features
 
 * No thirdparty libraries.
+* all features [wiki](https://github.com/gotilty/gotil)
 
 ## Run on Local 
 
