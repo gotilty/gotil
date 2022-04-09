@@ -9,8 +9,13 @@ import (
 )
 
 type user struct {
-	name string
-	age  int
+	name     string
+	age      int
+	location location
+}
+
+type location struct {
+	city string
 }
 
 func TestFilterBy(t *testing.T) {

@@ -27,3 +27,11 @@ func Int32Error(kind string) error {
 func CustomError(message string) error {
 	return fmt.Errorf(message)
 }
+
+func NewUnsupportedParameterTypeError(kind string, desc string) error {
+	return fmt.Errorf("the given parameter/s(%s) is unsupported type. %s", kind, desc)
+}
+
+func NewMissingParameterError(kind string, desc string) error {
+	return fmt.Errorf("the given parameter/s(%s) is missing. %s", kind, desc)
+}
