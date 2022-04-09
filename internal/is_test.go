@@ -112,7 +112,7 @@ func TestIsPointer(t *testing.T) {
 	a := test.output
 	b := IsPointer(test.inputValue)
 	if !reflect.DeepEqual(a, b) {
-		t.Errorf("Convert.ToUint64 does not works expected\ncase: %s\nexpected: %v taken: %v", key, a, b)
+		t.Errorf("operator.IsPointer does not works expected\ncase: %s\nexpected: %v taken: %v", key, a, b)
 	}
 }
 

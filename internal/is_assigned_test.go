@@ -73,7 +73,7 @@ func getIsAssignedTestData() map[string]struct {
 			output:     false,
 		},
 		"struct": {
-			inputValue: _testStruct,
+			inputValue: *_testStruct,
 			output:     true,
 		},
 		"string_array": {
