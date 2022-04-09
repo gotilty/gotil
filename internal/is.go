@@ -103,7 +103,6 @@ func IsPointer(a interface{}) bool {
 	val := reflect.ValueOf(a)
 	return checkKindMultiple(
 		val.Kind(),
-		reflect.Pointer,
 		reflect.UnsafePointer,
 	)
 }
