@@ -1,7 +1,11 @@
 # gotil
+
+[methods](https://github.com/gotilty/gotil/wiki/methods) | [wiki](https://github.com/gotilty/gotil/wiki)
+
  utility library for go 
 
- ![gotil-logo](images/gotil.png)
+<img src="images/gotil.png" width="250" height="100">
+
 
 ## Table of Contents
 
@@ -25,7 +29,7 @@ utility library for go
 ## Features
 
 * No thirdparty libraries.
-* all features [wiki](https://github.com/gotilty/gotil)
+* all features [wiki](https://github.com/gotilty/gotil/wiki/methods)
 
 ## Run on Local 
 
