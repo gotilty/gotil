@@ -126,6 +126,13 @@ func IsMap(a interface{}) bool {
 	return checkKind(val.Kind(), reflect.Map)
 }
 
+func IsByteArray(a interface{}) bool {
+	if a == nil {
+		return false
+	}
+	return reflect.TypeOf(a) == reflect.TypeOf([]byte(nil))
+}
+
 func IsEqual(a interface{}, b interface{}) bool {
 	if a == nil && b == nil {
 		return true
@@ -135,6 +142,14 @@ func IsEqual(a interface{}, b interface{}) bool {
 		return false
 	}
 	return reflect.DeepEqual(a, b)
+}
+
+func IsEmpty(a interface{}, b interface{}) bool {
+	return IsNotAssigned(a)
+}
+
+func IsNil(a interface{}, b interface{}) bool {
+	return IsNotAssigned(a)
 }
 
 func checkKind(k reflect.Kind, t reflect.Kind) bool {

@@ -24,6 +24,10 @@ func Int32Error(kind string) error {
 	return fmt.Errorf("the entered value cannot convert from %s to int32", kind)
 }
 
+func Int16Error(kind string) error {
+	return fmt.Errorf("the entered value cannot convert from %s to int16", kind)
+}
+
 func CustomError(message string) error {
 	return fmt.Errorf(message)
 }
