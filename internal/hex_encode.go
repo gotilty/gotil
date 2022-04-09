@@ -15,6 +15,7 @@ func HexEncode(a interface{}) (string, error) {
 		return "", err
 	}
 }
+
 func stringToHex(s string) (string, error) {
 	src := []byte(s)
 	dst := make([]byte, hex.EncodedLen(len(src)))

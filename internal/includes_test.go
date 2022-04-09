@@ -11,8 +11,6 @@ func TestIncludes(t *testing.T) {
 	for _, test := range testData {
 		a, erra := test.output, test.err
 		b, errb := Includes(test.inputValue, test.Includes)
-		fmt.Println(a)
-		fmt.Println(b)
 		if erra == nil {
 			if !reflect.DeepEqual(a, b) || errb != nil {
 				t.Errorf("Includes does not works expected\ncase")
