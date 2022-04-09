@@ -22,7 +22,7 @@ func IsAssigned(a interface{}) bool {
 		return (val.Uint()) != 0
 	case reflect.Bool:
 		return (val.Bool())
-	case reflect.Pointer, reflect.Chan, reflect.Func, reflect.Struct, reflect.UnsafePointer:
+	case reflect.Chan, reflect.Func, reflect.Struct, reflect.UnsafePointer:
 		tt := reflect.Zero(val.Type())
 		return !reflect.DeepEqual(val, tt)
 	case reflect.Array, reflect.Slice:

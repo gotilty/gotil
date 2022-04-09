@@ -1,7 +1,7 @@
 package internal
 
 import (
-	"math"
+	"github.com/gotilty/gotil/math"
 	"reflect"
 	"strconv"
 
