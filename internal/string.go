@@ -52,6 +52,7 @@ func Join(a interface{}, seperator string) (string, error) {
 		return "", errors.New(fmt.Sprintf("%s cannot join with seperator", val.Kind().String()))
 	}
 }
+
 func arrayToStringWithSeperator(val reflect.Value, seperator string) (string, error) {
 	buffer := ""
 	length := val.Len()
