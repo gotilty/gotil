@@ -5,7 +5,12 @@
  utility library for go 
 
 
-![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/hayrullahcansu/aa8b0e537835faee0aedf96f9df1f86b/raw/test.json)
+[![CodeFactor](https://www.codefactor.io/repository/github/gotilty/gotil/badge)](https://www.codefactor.io/repository/github/gotilty/gotil)
+[![Go Report Card](https://goreportcard.com/badge/github.com/gotilty/gotil)](https://goreportcard.com/report/github.com/gotilty/gotil)
+![SymfonyInsight Grade](https://img.shields.io/symfony/i/grade/3a820096-5934-4bac-ab0e-a55e0a78141e)
+![Scrutinizer code quality (GitHub/Bitbucket)](https://img.shields.io/scrutinizer/quality/g/gotilty/gotil/master)
+![GitHub](https://img.shields.io/github/license/gotilty/gotil)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/gotilty/gotil)
 
 <img src="images/gotil.png" width="250" height="100">
 
