@@ -34,7 +34,7 @@ func ToString(a interface{}) (string, error) {
 	case reflect.Bool:
 		return boolToStr(val.Bool()), nil
 	case reflect.Array, reflect.Slice:
-		return arrayToStringWithSeperator(val, config.GetDefaultSeperator())
+		return arrayToStringWithSeparator(val, config.GetDefaultSeparator())
 	case reflect.Map, reflect.Ptr, reflect.Complex128, reflect.Complex64, reflect.Interface, reflect.Struct:
 		return fmt.Sprint(val), nil
 	default:
@@ -42,18 +42,18 @@ func ToString(a interface{}) (string, error) {
 	}
 }
 
-// ToStringWithSeperator
-func Join(a interface{}, seperator string) (string, error) {
+// ToStringWithSeparator
+func Join(a interface{}, separator string) (string, error) {
 	val := reflect.ValueOf(a)
 	switch val.Kind() {
 	case reflect.Array, reflect.Slice:
-		return arrayToStringWithSeperator(val, seperator)
+		return arrayToStringWithSeparator(val, separator)
 	default:
-		return "", errors.New(fmt.Sprintf("%s cannot join with seperator", val.Kind().String()))
+		return "", errors.New(fmt.Sprintf("%s cannot join with separator", val.Kind().String()))
 	}
 }
 
-func arrayToStringWithSeperator(val reflect.Value, seperator string) (string, error) {
+func arrayToStringWithSeparator(val reflect.Value, separator string) (string, error) {
 	buffer := ""
 	length := val.Len()
 	for i := 0; i < length; i++ {
@@ -62,7 +62,7 @@ func arrayToStringWithSeperator(val reflect.Value, seperator string) (string, er
 			if i == length-1 {
 				buffer += b
 			} else {
-				buffer += b + seperator
+				buffer += b + separator
 			}
 		} else {
 			return "", err

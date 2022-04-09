@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"reflect"
 	"testing"
-	"time"
 )
 
 func TestShuffle(t *testing.T) {
@@ -35,8 +34,8 @@ func BenchmarkShuffleStructSlice(b *testing.B) {
 }
 
 func ExampleShuffle() {
-	seed := time.Now().UnixNano()
-	seed = 58239238
+	// seed := time.Now().UnixNano()
+	seed := int64(58239238)
 	//Seed you will get the same sequence of pseudo­random numbers
 	// each time you run the program.
 
