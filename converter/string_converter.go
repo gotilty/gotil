@@ -35,6 +35,8 @@ func ToString(a interface{}) (string, error) {
 		return boolToStr(val.Bool()), nil
 	case reflect.Array, reflect.Slice:
 		return arrayToStringWithSeperator(val, config.GetDefaultSeperator())
+	case reflect.Map, reflect.Ptr, reflect.Complex128, reflect.Complex64, reflect.Interface, reflect.Struct:
+		return fmt.Sprint(val), nil
 	default:
 		return "", errs.NewUnsupportedTypeError(val.Kind().String())
 	}

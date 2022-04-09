@@ -7,11 +7,11 @@ import (
 	"github.com/gotilty/gotil/internal/errs"
 )
 
-func TestMD5(t *testing.T) {
+func TestMd5(t *testing.T) {
 	testData := getMD5TestData()
 	for key, test := range testData {
 		a, erra := test.output, test.err
-		b, errb := crypto.MD5(test.inputValue)
+		b, errb := crypto.Md5(test.inputValue)
 		if erra == nil {
 			if a != b || errb != nil {
 				t.Errorf("Convert.ToString does not works expected\ncase: %s\nexpected: %s taken: %s error: %s", key, a, b, errb.Error())
@@ -23,7 +23,7 @@ func TestMD5(t *testing.T) {
 func BenchmarkMD5String(b *testing.B) {
 	testData := getMD5TestData()
 	for n := 0; n < b.N; n++ {
-		crypto.MD5(testData["string"].inputValue)
+		crypto.Md5(testData["string"].inputValue)
 	}
 }
 
