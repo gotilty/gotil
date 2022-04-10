@@ -4,6 +4,7 @@ import (
 	"reflect"
 )
 
+// IsArray checks the given parameter is an array
 func IsArray(a interface{}) bool {
 	if a == nil {
 		return false
@@ -12,6 +13,7 @@ func IsArray(a interface{}) bool {
 	return checkKind(val.Kind(), reflect.Array)
 }
 
+// IsSlice checks the given parameter is a slice
 func IsSlice(a interface{}) bool {
 	if a == nil {
 		return false
@@ -20,6 +22,7 @@ func IsSlice(a interface{}) bool {
 	return checkKind(val.Kind(), reflect.Slice)
 }
 
+// IsString checks the given parameter is a string
 func IsString(a interface{}) bool {
 	if a == nil {
 		return false
@@ -28,6 +31,7 @@ func IsString(a interface{}) bool {
 	return checkKind(val.Kind(), reflect.String)
 }
 
+// IsBool checks the given parameter is a bool
 func IsBool(a interface{}) bool {
 	if a == nil {
 		return false
@@ -36,6 +40,8 @@ func IsBool(a interface{}) bool {
 	return checkKind(val.Kind(), reflect.Bool)
 }
 
+// IsInteger checks the given parameter is an integer
+// int, int8, int16, int32, int64, uint, uint8, uint16, uint32, unit64
 func IsInteger(a interface{}) bool {
 	if a == nil {
 		return false
@@ -56,6 +62,8 @@ func IsInteger(a interface{}) bool {
 	)
 }
 
+// IsFloat checks the given parameter is an float
+// float32, float64
 func IsFloat(a interface{}) bool {
 	if a == nil {
 		return false
@@ -68,6 +76,8 @@ func IsFloat(a interface{}) bool {
 	)
 }
 
+// IsNumber checks the given parameter is type of any golang number
+// int, int8, int16, int32, int64, uint, uint8, uint16, uint32, unit64, float32, float64
 func IsNumber(a interface{}) bool {
 	if a == nil {
 		return false
@@ -80,6 +90,8 @@ func IsNumber(a interface{}) bool {
 	)
 }
 
+// IsFunc checks the given parameter is a func
+// int, int8, int16, int32, int64, uint, uint8, uint16, uint32, unit64, float32, float64
 func IsFunc(a interface{}) bool {
 	if a == nil {
 		return false
@@ -88,6 +100,7 @@ func IsFunc(a interface{}) bool {
 	return checkKind(val.Kind(), reflect.Func)
 }
 
+// IsStruct checks the given parameter is a struct
 func IsStruct(a interface{}) bool {
 	if a == nil {
 		return false
@@ -96,6 +109,7 @@ func IsStruct(a interface{}) bool {
 	return checkKind(val.Kind(), reflect.Struct)
 }
 
+// IsPointer checks the given parameter is a pointer
 func IsPointer(a interface{}) bool {
 	if a == nil {
 		return false
@@ -107,6 +121,7 @@ func IsPointer(a interface{}) bool {
 	)
 }
 
+// IsChan checks the given parameter is a channel
 func IsChan(a interface{}) bool {
 	if a == nil {
 		return false
@@ -115,6 +130,7 @@ func IsChan(a interface{}) bool {
 	return checkKind(val.Kind(), reflect.Chan)
 }
 
+// IsMap checks the given parameter is a map
 func IsMap(a interface{}) bool {
 	if a == nil {
 		return false
@@ -123,6 +139,7 @@ func IsMap(a interface{}) bool {
 	return checkKind(val.Kind(), reflect.Map)
 }
 
+// IsByteArray checks the given parameter is a byte array
 func IsByteArray(a interface{}) bool {
 	if a == nil {
 		return false
@@ -130,6 +147,7 @@ func IsByteArray(a interface{}) bool {
 	return reflect.TypeOf(a) == reflect.TypeOf([]byte(nil))
 }
 
+// IsEqual checks the given any 2 parameters are equal
 func IsEqual(a interface{}, b interface{}) bool {
 	if a == nil && b == nil {
 		return true
@@ -141,10 +159,14 @@ func IsEqual(a interface{}, b interface{}) bool {
 	return reflect.DeepEqual(a, b)
 }
 
+// IsEmpty checks the given parameter has not value also if it's slice or array that checks has not any element.
+// It works same IsNotAssigned()
 func IsEmpty(a interface{}, b interface{}) bool {
 	return IsNotAssigned(a)
 }
 
+// IsNil checks the given parameter has not value also if it's slice or array that checks has not any element.
+// It works same IsNotAssigned()
 func IsNil(a interface{}, b interface{}) bool {
 	return IsNotAssigned(a)
 }

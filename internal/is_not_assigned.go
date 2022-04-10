@@ -5,7 +5,14 @@ import (
 	"reflect"
 )
 
-// IsNotAssigned
+// IsNotAssigned checks the given parameter has not value also if it's slice or array that checks has not any element.
+// It works same IsEmpty()
+//
+// Example:
+//
+// result := IsNotAssigned("test data")
+//
+// Output: false
 func IsNotAssigned(a interface{}) bool {
 	if a == nil {
 		return true

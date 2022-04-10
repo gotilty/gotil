@@ -8,7 +8,7 @@ import (
 	"github.com/gotilty/gotil/internal/errs"
 )
 
-//ToUint32 returns 0 with an error if the parameter is unsupported type.
+///ToUint32 returns uint32(0) with an error if the parameter is unsupported type.
 //Just works with all primitive types.
 func ToUint32(a interface{}) (uint32, error) {
 	val := reflect.ValueOf(a)

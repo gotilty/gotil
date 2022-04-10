@@ -2,11 +2,18 @@ package internal
 
 import (
 	"reflect"
-	"strings"
 
 	"github.com/gotilty/gotil/internal/errs"
 )
 
+// Size returns a length of given parameter
+//
+// data := []int64{100, 30, -100, -5}
+// result, _ := Size(data)
+// result2, _ := Size("gotil")
+
+// Output: 4
+// Output2: 5
 func Size(val interface{}) (int, error) {
 	value := reflect.ValueOf(val)
 	switch value.Kind() {
@@ -15,7 +22,7 @@ func Size(val interface{}) (int, error) {
 	case reflect.String:
 		val_str, err := ToString(val)
 		if err == nil {
-			return len(strings.Split(val_str, "")), nil
+			return len(val_str), nil
 		}
 		return 0, errs.CustomError(value.Kind().String())
 	default:

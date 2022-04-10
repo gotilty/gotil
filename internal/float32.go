@@ -8,7 +8,7 @@ import (
 	"github.com/gotilty/gotil/internal/errs"
 )
 
-//ToFloat32 returns 0 with an error if the parameter is unsupported type.
+//ToFloat32 returns float32(0) with an error if the parameter is unsupported type.
 //Just works with all primitive types.
 func ToFloat32(a interface{}) (float32, error) {
 	val := reflect.ValueOf(a)

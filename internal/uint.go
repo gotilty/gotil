@@ -1,14 +1,15 @@
 package internal
 
 import (
-	"github.com/gotilty/gotil/math"
 	"reflect"
 	"strconv"
+
+	"github.com/gotilty/gotil/math"
 
 	"github.com/gotilty/gotil/internal/errs"
 )
 
-//ToUint returns 0 with an error if the parameter is unsupported type.
+//ToUint returns uint(0) with an error if the parameter is unsupported type.
 //Just works with all primitive types.
 func ToUint(a interface{}) (uint, error) {
 	val := reflect.ValueOf(a)

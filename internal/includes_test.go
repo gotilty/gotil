@@ -34,9 +34,9 @@ func BenchmarkIncludesStringLen(b *testing.B) {
 }
 
 func ExampleIncludes() {
-	m1 := []float64{5, 10.5, 10, 20, 10.75, 100, 4.23, 5.15, 5.99, 100.0001}
+	data := []float64{5, 10.5, 10, 20, 10.75, 100, 4.23, 5.15, 5.99, 100.0001}
 	// Input: [5, 10.5, 10, 20, 10.75, 100, 4.23, 5.15, 5.99, 100.0001]
-	result, _ := Includes(m1, "gotil")
+	result, _ := Includes(data, "gotil")
 	fmt.Println(result)
 	// Output: false
 }
