@@ -5,7 +5,7 @@
 - Documentation
   - [Array](array.md)
   - [Collection](collection.md)
-  - [Crypto](cryto.md)
+  - [Crypto](crypto.md)
   - [Encoding](encoding.md)
   - [Converter](converter.md)
   - [Operator](operator.md)
