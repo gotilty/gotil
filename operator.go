@@ -82,10 +82,10 @@ func IsEqual(a interface{}, b interface{}) bool {
 
 }
 
-func IsEmpty(a interface{}, b interface{}) bool {
-	return IsEmpty(a, b)
+func IsEmpty(a interface{}) bool {
+	return IsEmpty(a)
 }
 
-func IsNil(a interface{}, b interface{}) bool {
-	return IsNil(a, b)
+func IsNil(a interface{}) bool {
+	return IsNil(a)
 }

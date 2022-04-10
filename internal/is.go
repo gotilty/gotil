@@ -141,11 +141,11 @@ func IsEqual(a interface{}, b interface{}) bool {
 	return reflect.DeepEqual(a, b)
 }
 
-func IsEmpty(a interface{}, b interface{}) bool {
+func IsEmpty(a interface{}) bool {
 	return IsNotAssigned(a)
 }
 
-func IsNil(a interface{}, b interface{}) bool {
+func IsNil(a interface{}) bool {
 	return IsNotAssigned(a)
 }
 
