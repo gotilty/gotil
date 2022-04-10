@@ -500,6 +500,7 @@ false
 false
 ```
 
+
 ## IsEmpty
 
 Checks whether the given parameters have equal value. Returns boolean.
