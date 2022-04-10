@@ -1,6 +1,6 @@
 # gotil
 
-documentation(https://gotilty.github.io) | [methods](https://github.com/gotilty/gotil/wiki/methods) | [wiki](https://github.com/gotilty/gotil/wiki)
+[documentation](https://gotilty.github.io) | [methods](https://github.com/gotilty/gotil/wiki/methods) | [wiki](https://github.com/gotilty/gotil/wiki)
 
 lodash inspired utility library for go
 
