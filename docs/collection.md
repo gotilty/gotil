@@ -180,7 +180,7 @@ if result, err := gotil.GroupBy(m1, func(a interface{}, i interface{}) interface
 
 ## Includes
 
-Creates a map composed of keys generated from the results of running each element of collection through the iteratee function.
+It checks whether the given value exists in the given parameter. Returns boolean.
 
 > ***array & slice are supported***
 ```go
