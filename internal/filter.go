@@ -6,6 +6,7 @@ import (
 	"github.com/gotilty/gotil/internal/errs"
 )
 
+// Iterates over elements of collection, returning an array of all elements predicate returns true for.
 func FilterBy(a interface{}, f func(val interface{}, i int) bool) (interface{}, error) {
 	val := reflect.ValueOf(a)
 	switch val.Kind() {
