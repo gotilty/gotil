@@ -21,7 +21,7 @@ numbers, objects, strings, etc. GOtil's modular methods are great for:
 
 ## 👀 Examples
 
-Listed below are some of the common examples. If you want to see more code examples , please visit our [Recipes repository](https://github.com/gotilty/gotil) or visit our hosted [API documentation](https://gotilty.github.io).
+Listed below are some of the common examples. If you want to see more code examples , please visit our [Recipes repository](https://github.com/gotilty/gotil) or visit our hosted [API documentation](https://gotilty.github.io/gotil/#/).
 
 #### 📖 [**Each**]
 
