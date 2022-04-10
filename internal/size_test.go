@@ -34,9 +34,6 @@ func BenchmarkSizeStructSlice(b *testing.B) {
 }
 
 func ExampleSize() {
-	//Seed you will get the same sequence of pseudo­random numbers
-	// each time you run the program.
-
 	data := []int64{-100, -5, 30, 100}
 	// Input: [-100 -5 30 100]
 	newData, _ := Size(data)

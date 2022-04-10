@@ -5,10 +5,10 @@
 - Documentation
   - [Array](array.md)
   - [Collection](collection.md)
-  - [Crypto](array.md)
-  - [Encoding](collection.md)
-  - [Converter](array.md)
-  - [Operator](collection.md)
+  - [Crypto](crypto.md)
+  - [Encoding](encoding.md)
+  - [Converter](converter.md)
+  - [Operator](operator.md)
 
 - Contributors
   - [ertugrulkutluer](https://github.com/ertugrulkutluer)
