@@ -88,6 +88,6 @@ _ = Each(data, func(val interface{}, i int) {
 ## TODO
 
 - [x] Readme File
-- [ ] Go Doc
+- [x] Go Doc
 - [x] ApiDoc
 - [x] Tests
