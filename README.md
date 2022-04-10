@@ -76,8 +76,7 @@ data := []int64{10, 20, 30}
 _ = Each(data, func(val interface{}, i int) {
     fmt.Printf("%d apples", val)
 })
-// Out: [10 apples 20 apples 30 apples]
-// Output: 10 apples20 apples30 apples
+// Output: 10 apples 20 apples 30 apples
 ```
 
 
