@@ -6,7 +6,7 @@ import (
 )
 
 //HexEncode returns empty string if the parameter is unsupported type.
-//Just works with all primitive types, except arrays and slices.
+//Just works with all primitive types.
 //In decimal numbers, it should be used as a "string" in numbers where the total number of digits is too many.
 func HexEncode(a interface{}) (string, error) {
 	if s, err := ToString(a); err == nil {

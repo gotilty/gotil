@@ -17,6 +17,23 @@ type arrayJoinOpt struct {
 
 //ToString returns empty string if the parameter is unsupported type.
 //Just works with all primitive types, arrays and slices.
+//alternative for slice and array gotil.Join(a, separator)
+//
+//Example1: ToString([]int{10,20,30}) returns "10,20,30"
+//
+//Example2:
+//
+//data := []user{
+// {
+//		name: "Micheal",
+//  	age:  27,
+// },
+// {
+// 		name: "Joe",
+// 		age:  30,
+// },
+//}
+//ToString(data) returns "{Micheal 27},{Joe 30}"
 func ToString(a interface{}) (string, error) {
 	if a == nil {
 		return "", errs.NilReferenceTypeError()
@@ -35,14 +52,15 @@ func ToString(a interface{}) (string, error) {
 		return boolToStr(val.Bool()), nil
 	case reflect.Array, reflect.Slice:
 		return arrayToStringWithSeparator(val, config.GetDefaultSeparator())
-	case reflect.Map, reflect.Ptr, reflect.Complex128, reflect.Complex64, reflect.Interface, reflect.Struct:
+	case reflect.Map, reflect.Ptr, reflect.Complex64, reflect.Interface, reflect.Struct:
 		return fmt.Sprint(val), nil
 	default:
 		return "", errs.NewUnsupportedTypeError(val.Kind().String())
 	}
 }
 
-// ToStringWithSeparator
+//Join just works with array and slice
+//Example1: Join([]int{10,20,30},"-") returns "10-20-30"
 func Join(a interface{}, separator string) (string, error) {
 	val := reflect.ValueOf(a)
 	switch val.Kind() {

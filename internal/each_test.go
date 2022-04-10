@@ -24,7 +24,6 @@ func ExampleEach() {
 	_ = Each(data, func(val interface{}, i int) {
 		fmt.Printf("%d apples", val)
 	})
-	// Out: [10 apples 20 apples 30 apples]
 	// Output: 10 apples20 apples30 apples
 }
 func printTestLine(val interface{}, i int) {
