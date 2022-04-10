@@ -82,12 +82,10 @@ _ = Each(data, func(val interface{}, i int) {
 ```
 
 
-[methods](https://github.com/gotilty/gotil/wiki/methods) | [wiki](https://github.com/gotilty/gotil/wiki)
-
 
 ## TODO
 
 - [x] Readme File
-- [ ] Go Doc
+- [x] Go Doc
 - [x] ApiDoc
 - [x] Tests
