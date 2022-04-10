@@ -2,20 +2,24 @@
 
 [methods](https://github.com/gotilty/gotil/wiki/methods) | [wiki](https://github.com/gotilty/gotil/wiki)
 
- utility library for go 
+lodash inspired utility library for go
 
 
 
 <img src="images/gotil.png" width="250" height="100" style="display: block; margin: 0 auto">
 
-<p style="text-align: center;">
+
+------------
+
+
 [![Build Status](https://scrutinizer-ci.com/g/gotilty/gotil/badges/build.png?b=master)](https://scrutinizer-ci.com/g/gotilty/gotil/build-status/master)
 [![CodeFactor](https://www.codefactor.io/repository/github/gotilty/gotil/badge)](https://www.codefactor.io/repository/github/gotilty/gotil)
 [![Go Report Card](https://goreportcard.com/badge/github.com/gotilty/gotil)](https://goreportcard.com/report/github.com/gotilty/gotil)
 ![Scrutinizer code quality (GitHub/Bitbucket)](https://img.shields.io/scrutinizer/quality/g/gotilty/gotil/master)
 ![GitHub](https://img.shields.io/github/license/gotilty/gotil)
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/gotilty/gotil)
-</p>
+
+------------
 ## ⚙️ Installation
 
 Make sure you have Go installed ([download](https://go.dev/dl/)). Version `1.13` or higher is required.
