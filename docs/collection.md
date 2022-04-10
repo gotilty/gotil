@@ -1,4 +1,4 @@
-## Every
+## Every TODO
 
 Checks if predicate returns true for all elements of collection. Iteration is stopped once predicate returns false.
 
@@ -97,7 +97,7 @@ Checks if predicate returns true for all elements of collection. Iteration is st
 gotil.Filter(val, f)
 ```
 
-### examples TODO
+### examples
 
 >💻 [Try on Playground](https://go.dev/play/p/9CHhvvipA8w) 
 
@@ -126,7 +126,7 @@ Inversely checks whether the predicate is true for all elements of the collectio
 gotil.FindLastBy(val, f)
 ```
 
-### examples TODO
+### examples
 
 >💻 [Try on Playground](https://go.dev/play/p/ay1huuG2ipx) 
 
@@ -156,7 +156,7 @@ Creates a map composed of keys generated from the results of running each elemen
 gotil.GroupBy(val, f)
 ```
 
-### examples TODO
+### examples
 
 >💻 [Try on Playground](https://go.dev/play/p/ay1huuG2ipx) 
 
@@ -187,7 +187,7 @@ Creates a map composed of keys generated from the results of running each elemen
 gotil.Includes(array, val)
 ```
 
-### examples TODO
+### examples
 
 >💻 [Try on Playground](https://go.dev/play/p/IeA4GbdIqjd) 
 
@@ -236,7 +236,7 @@ Shuffles the list randomly. A new array is returned.
 gotil.Shuffle(data)
 ```
 
-### examples TODO
+### examples
 
 >💻 [Try on Playground](https://go.dev/play/p/jxNSYukWBZR) 
 
@@ -259,7 +259,7 @@ Shuffles the list based on the given seed. A new array is returned.
 gotil.ShuffleSeed(data, seed)
 ```
 
-### examples TODO
+### examples
 
 >💻 [Try on Playground](https://go.dev/play/p/IeA4GbdIqjd) 
 
@@ -288,7 +288,7 @@ Returns size of given array or slice.
 gotil.Size(data)
 ```
 
-### examples TODO
+### examples
 
 >💻 [Try on Playground](https://go.dev/play/p/EY4ca2fMJhR) 
 
@@ -312,7 +312,7 @@ Returns sorted version of given array or slice.
 gotil.Sort(data)
 ```
 
-### examples TODO
+### examples
 
 >💻 [Try on Playground](https://go.dev/play/p/jmZZjaS6gqC) 
 
@@ -336,17 +336,47 @@ Returns sorted version of given array or slice.
 gotil.SortBy(data)
 ```
 
-### examples TODO
+### examples
 
->💻 [Try on Playground](https://go.dev/play/p/jmZZjaS6gqC) 
+>💻 [Try on Playground](https://go.dev/play/p/8BrQFoMJAVm) 
 
 ```go
-data := []int64{100, 30, -100, -5}
-newData, _ := gotil.Sort(data)
+var data = []user{
+    {
+        name: "Micheal",
+        age:  27,
+        location: location{
+            city: "New York",
+        },
+    },
+    {
+        name: "Joe",
+        age:  30,
+        location: location{
+            city: "Detroit",
+        },
+    },
+    {
+        name: "Olivia",
+        age:  42,
+        location: location{
+            city: "New York",
+        },
+    },
+    {
+        name: "Kevin",
+        age:  10,
+        location: location{
+            city: "Boston",
+        },
+    },
+}
+newData, _ := gotil.SortBy(data, "location.city")
 fmt.Println(newData)
 ```
 
 ```go
 //output:
-[-100 -5 30 100]
+[{Kevin 10 {Boston}} {Joe 30 {Detroit}} {Olivia 42 {New York}} {Micheal 27 {New York}}]
 ```
+
