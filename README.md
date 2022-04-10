@@ -1,5 +1,20 @@
-#gotil
-<p align="center" width="100%">[![CodeFactor](https://www.codefactor.io/repository/github/gotilty/gotil/badge)](https://www.codefactor.io/repository/github/gotilty/gotil)[![Go Report Card](https://goreportcard.com/badge/github.com/gotilty/gotil)](https://goreportcard.com/report/github.com/gotilty/gotil)![Scrutinizer code quality (GitHub/Bitbucket)](https://img.shields.io/scrutinizer/quality/g/gotilty/gotil/master)![GitHub](https://img.shields.io/github/license/gotilty/gotil)![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/gotilty/gotil)
+# gotil
+
+[methods](https://github.com/gotilty/gotil/wiki/methods) | [wiki](https://github.com/gotilty/gotil/wiki)
+
+ utility library for go 
+
+
+
+<img src="images/gotil.png" width="250" height="100" style="display: block; margin: 0 auto">
+
+<p style="text-align: center;">
+[![Build Status](https://scrutinizer-ci.com/g/gotilty/gotil/badges/build.png?b=master)](https://scrutinizer-ci.com/g/gotilty/gotil/build-status/master)
+[![CodeFactor](https://www.codefactor.io/repository/github/gotilty/gotil/badge)](https://www.codefactor.io/repository/github/gotilty/gotil)
+[![Go Report Card](https://goreportcard.com/badge/github.com/gotilty/gotil)](https://goreportcard.com/report/github.com/gotilty/gotil)
+![Scrutinizer code quality (GitHub/Bitbucket)](https://img.shields.io/scrutinizer/quality/g/gotilty/gotil/master)
+![GitHub](https://img.shields.io/github/license/gotilty/gotil)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/gotilty/gotil)
 </p>
 ## ⚙️ Installation
 
@@ -62,31 +77,12 @@ _ = Each(data, func(val interface{}, i int) {
 ```
 
 
-
-# gotil
-
 [methods](https://github.com/gotilty/gotil/wiki/methods) | [wiki](https://github.com/gotilty/gotil/wiki)
 
- utility library for go
 
+## TODO
 
-
-<img src="images/gotil.png" width="250" height="100">
-
-## Table of Contents
-
-- [gotil](#gotil)
-  - [Table of Contents](#table-of-contents)
-  - [Description](#description)
-  - [Features](#features)
-
----
-
-## Description
-
-utility library for go
-
-## Features
-
-- No thirdparty libraries.
-- all features [wiki](https://github.com/gotilty/gotil/wiki/methods)
+- [x] Readme File
+- [ ] Go Doc
+- [x] ApiDoc
+- [x] Tests
