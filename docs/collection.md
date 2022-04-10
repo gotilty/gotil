@@ -338,15 +338,45 @@ gotil.SortBy(data)
 
 ### examples
 
->💻 [Try on Playground](https://go.dev/play/p/jmZZjaS6gqC) 
+>💻 [Try on Playground](https://go.dev/play/p/8BrQFoMJAVm) 
 
 ```go
-data := []int64{100, 30, -100, -5}
-newData, _ := gotil.Sort(data)
+var data = []user{
+    {
+        name: "Micheal",
+        age:  27,
+        location: location{
+            city: "New York",
+        },
+    },
+    {
+        name: "Joe",
+        age:  30,
+        location: location{
+            city: "Detroit",
+        },
+    },
+    {
+        name: "Olivia",
+        age:  42,
+        location: location{
+            city: "New York",
+        },
+    },
+    {
+        name: "Kevin",
+        age:  10,
+        location: location{
+            city: "Boston",
+        },
+    },
+}
+newData, _ := gotil.SortBy(data, "location.city")
 fmt.Println(newData)
 ```
 
 ```go
 //output:
-[-100 -5 30 100]
+[{Kevin 10 {Boston}} {Joe 30 {Detroit}} {Olivia 42 {New York}} {Micheal 27 {New York}}]
 ```
+
