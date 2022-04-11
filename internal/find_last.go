@@ -7,15 +7,15 @@ import (
 )
 
 // FindLastBy iterates over elements of collection, returns an object of lastest element predicate if returns true for.
-// 		data := []int64{-100, -5, 30, 100}
-// 		newData, _ := FindLastBy(data, func(val interface{}, i int) bool {
-// 			if val.(int64) == 30 {
-// 				return true
-// 			} else {
-// 				return false
-// 			}
-// 		})
-// 		// Output: 30
+// 	data := []int64{-100, -5, 30, 100}
+// 	newData, _ := FindLastBy(data, func(val interface{}, i int) bool {
+// 		if val.(int64) == 30 {
+// 			return true
+// 		} else {
+// 			return false
+// 		}
+// 	})
+// 	// Output: 30
 func FindLastBy(a interface{}, f func(val interface{}, i int) bool) (interface{}, error) {
 	return FindLastByFromIndex(a, f, 0)
 }

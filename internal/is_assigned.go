@@ -6,9 +6,10 @@ import (
 )
 
 // IsAssigned checks the given parameter has value also if it's slice or array that checks has element.
+//
 // Example:
-// 		result := IsAssigned("test data")
-// 		// Output: true
+// 	result := IsAssigned("test data")
+// 	// Output: true
 func IsAssigned(a interface{}) bool {
 	if a == nil {
 		return false
