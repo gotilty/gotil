@@ -2,14 +2,15 @@
 
 Checks if predicate returns true for all elements of collection. Iteration is stopped once predicate returns false.
 
-> ***array & slice are supported***
+> **_array & slice are supported_**
+
 ```go
 gotil.Every(val, f)
 ```
 
 ### examples TODO
 
->💻 [Try on Playground](https://go.dev/play/p/sgH-q0eERn4)
+> 💻 [Try on Playground](https://go.dev/play/p/sgH-q0eERn4)
 
 ```go
  m1 := []float64{5, 10.5, 10, 10, 20, 20, 10.75, 100, 4.23, 5.15, 5.99, 100.0001}
@@ -32,14 +33,15 @@ false
 
 Checks if predicate returns true for all elements of collection. Iteration is stopped once predicate returns false.
 
-> ***array & slice are supported***
+> **_array & slice are supported_**
+
 ```go
 gotil.Filter(val, f)
 ```
 
 ### examples
 
->💻 [Try on Playground](https://go.dev/play/p/9CHhvvipA8w)
+> 💻 [Try on Playground](https://go.dev/play/p/9CHhvvipA8w)
 
 ```go
 data := []int64{-100, -5, 30, 100}
@@ -62,18 +64,20 @@ fmt.Println(result)
 
 Checks if predicate returns true for all elements of collection. Iteration is stopped once predicate returns false.
 
-> ***array & slice are supported***
+> **_array & slice are supported_**
+
 ```go
 gotil.Filter(val, f)
 ```
 
 ### examples
 
->💻 [Try on Playground](https://go.dev/play/p/9CHhvvipA8w)
+> 💻 [Try on Playground](https://go.dev/play/p/9CHhvvipA8w)
 
 ```go
 data := []int64{-100, -5, 30, 100}
-result, _ := gotil.FilterBy(data, func(val interface{}, i int) bool {
+// Input: [-100 -5 30 100]
+result, _ := gotil.FindBy(data, func(val interface{}, i int) bool {
     if val.(int64) > 0 {
         return true
     } else {
@@ -85,50 +89,54 @@ fmt.Println(result)
 
 ```go
 //output:
-[30 100]
+30
 ```
 
 ## FindByFromIndex
 
 Checks if predicate returns true for all elements of collection. Iteration is stopped once predicate returns false.
 
-> ***array & slice are supported***
+> **_array & slice are supported_**
+
 ```go
-gotil.Filter(val, f)
+gotil.FindByFromIndex(val, f, i)
 ```
 
 ### examples
 
->💻 [Try on Playground](https://go.dev/play/p/9CHhvvipA8w) 
+> 💻 [Try on Playground](https://go.dev/play/p/A98eBoD6Nxi)
 
 ```go
-data := []int64{-100, -5, 30, 100, 200, 300, 400}
+data := []int64{-100, -5, 30, 100}
+// Input: [-100 -5 30 100]
 result, _ := gotil.FindByFromIndex(data, func(val interface{}, i int) bool {
-    if val.(int64) > 30 {
+    if val.(int64) > 0 {
         return true
     } else {
         return false
     }
-}, 5)
+}, 3)
 fmt.Println(result)
 ```
 
 ```go
 //output:
-400
+100
 ```
+
 ## FindLastBy
 
 Inversely checks whether the predicate is true for all elements of the collection. Iteration is stopped once predicate returns false.
 
-> ***array & slice are supported***
+> **_array & slice are supported_**
+
 ```go
 gotil.FindLastBy(val, f)
 ```
 
 ### examples
 
->💻 [Try on Playground](https://go.dev/play/p/ay1huuG2ipx) 
+> 💻 [Try on Playground](https://go.dev/play/p/ay1huuG2ipx)
 
 ```go
 data := []int64{-100, -5, 30, 100}
@@ -151,14 +159,15 @@ fmt.Println(result)
 
 Creates a map composed of keys generated from the results of running each element of collection through the iteratee function.
 
-> ***array & slice are supported***
+> **_array & slice are supported_**
+
 ```go
 gotil.GroupBy(val, f)
 ```
 
 ### examples
 
->💻 [Try on Playground](https://go.dev/play/p/ay1huuG2ipx) 
+> 💻 [Try on Playground](https://go.dev/play/p/ay1huuG2ipx)
 
 ```go
 m1 := []string{"eight", "nine", "four", "seven"}
@@ -182,14 +191,15 @@ if result, err := gotil.GroupBy(m1, func(a interface{}, i interface{}) interface
 
 It checks whether the given value exists in the given parameter. Returns boolean.
 
-> ***array & slice are supported***
+> **_array & slice are supported_**
+
 ```go
 gotil.Includes(array, val)
 ```
 
 ### examples
 
->💻 [Try on Playground](https://go.dev/play/p/IeA4GbdIqjd) 
+> 💻 [Try on Playground](https://go.dev/play/p/IeA4GbdIqjd)
 
 ```go
 m1 := []float64{5, 10.5, 10, 20, 10.75, 100, 4.23, 5.15, 5.99, 100.0001}
@@ -206,14 +216,15 @@ false
 
 Creates a map composed of keys generated from the results of running each element of collection through the iteratee function.
 
-> ***array & slice are supported***
+> **_array & slice are supported_**
+
 ```go
 gotil.Includes(array, val)
 ```
 
 ### examples TODO
 
->💻 [Try on Playground](https://go.dev/play/p/IeA4GbdIqjd) 
+> 💻 [Try on Playground](https://go.dev/play/p/IeA4GbdIqjd)
 
 ```go
 m1 := []float64{5, 10.5, 10, 20, 10.75, 100, 4.23, 5.15, 5.99, 100.0001}
@@ -226,19 +237,19 @@ fmt.Println(result)
 false
 ```
 
-
 ## Shuffle
 
 Shuffles the list randomly. A new array is returned.
 
-> ***array & slice are supported***
+> **_array & slice are supported_**
+
 ```go
 gotil.Shuffle(data)
 ```
 
 ### examples
 
->💻 [Try on Playground](https://go.dev/play/p/jxNSYukWBZR) 
+> 💻 [Try on Playground](https://go.dev/play/p/jxNSYukWBZR)
 
 ```go
 data := []int64{-100, -5, 30, 100, 1, 2, 3, 4, 5, 6, 7, 8, 9}
@@ -250,18 +261,20 @@ fmt.Println(newData)
 //output:
 [8 6 4 -100 7 2 9 -5 100 30 3 1 5]
 ```
+
 ## ShuffleSeed
 
 Shuffles the list based on the given seed. A new array is returned.
 
-> ***array & slice are supported***
+> **_array & slice are supported_**
+
 ```go
 gotil.ShuffleSeed(data, seed)
 ```
 
 ### examples
 
->💻 [Try on Playground](https://go.dev/play/p/IeA4GbdIqjd) 
+> 💻 [Try on Playground](https://go.dev/play/p/IeA4GbdIqjd)
 
 ```go
 // Use "seed := time.Now().UnixNano()" for random result
@@ -283,14 +296,15 @@ fmt.Println(newData)
 
 Returns size of given array or slice.
 
-> ***array & slice are supported***
+> **_array & slice are supported_**
+
 ```go
 gotil.Size(data)
 ```
 
 ### examples
 
->💻 [Try on Playground](https://go.dev/play/p/EY4ca2fMJhR) 
+> 💻 [Try on Playground](https://go.dev/play/p/EY4ca2fMJhR)
 
 ```go
 data := []int64{-100, -5, 30, 100}
@@ -307,14 +321,15 @@ fmt.Println(newData)
 
 Returns sorted version of given array or slice.
 
-> ***array, slice, map & struct are supported***
+> **_array, slice, map & struct are supported_**
+
 ```go
 gotil.Sort(data)
 ```
 
 ### examples
 
->💻 [Try on Playground](https://go.dev/play/p/jmZZjaS6gqC) 
+> 💻 [Try on Playground](https://go.dev/play/p/jmZZjaS6gqC)
 
 ```go
 data := []int64{100, 30, -100, -5}
@@ -331,14 +346,15 @@ fmt.Println(newData)
 
 Returns sorted version of given array or slice.
 
-> ***array, slice, map & struct are supported***
+> **_array, slice, map & struct are supported_**
+
 ```go
 gotil.SortBy(data)
 ```
 
 ### examples
 
->💻 [Try on Playground](https://go.dev/play/p/8BrQFoMJAVm) 
+> 💻 [Try on Playground](https://go.dev/play/p/8BrQFoMJAVm)
 
 ```go
 var data = []user{
@@ -379,4 +395,3 @@ fmt.Println(newData)
 //output:
 [{Kevin 10 {Boston}} {Joe 30 {Detroit}} {Olivia 42 {New York}} {Micheal 27 {New York}}]
 ```
-
