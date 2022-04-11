@@ -7,11 +7,11 @@ import (
 )
 
 // Size returns a length of given parameter
-// 		data := []int64{100, 30, -100, -5}
-// 		result, _ := Size(data)
-// 		result2, _ := Size("gotil")
-// 		// Output: 4
-// 		// Output2: 5
+// 	data := []int64{100, 30, -100, -5}
+// 	result, _ := Size(data)
+//	result2, _ := Size("gotil")
+// 	// Output: 4
+// 	// Output2: 5
 func Size(val interface{}) (int, error) {
 	value := reflect.ValueOf(val)
 	switch value.Kind() {

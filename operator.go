@@ -3,18 +3,20 @@ package gotil
 import "github.com/gotilty/gotil/internal"
 
 // IsAssigned checks the given parameter has value also if it's slice or array that checks has element.
+//
 // Example:
-// 		result := IsAssigned("test data")
-// 		// Output: true
+// 	result := IsAssigned("test data")
+// 	// Output: true
 func IsAssigned(a interface{}) bool {
 	return internal.IsAssigned(a)
 }
 
 // IsNotAssigned checks the given parameter has not value also if it's slice or array that checks has not any element.
 // It works same IsEmpty()
+//
 // Example:
-// 		result := IsNotAssigned("test data")
-// 		// Output: false
+// 	result := IsNotAssigned("test data")
+// 	// Output: false
 func IsNotAssigned(a interface{}) bool {
 	return internal.IsNotAssigned(a)
 }
@@ -120,11 +122,11 @@ func IsNil(a interface{}, b interface{}) bool {
 }
 
 // Size returns a length of given parameter
-// 		data := []int64{100, 30, -100, -5}
-// 		result, _ := Size(data)
-// 		result2, _ := Size("gotil")
-// 		// Output: 4
-// 		// Output2: 5
+// 	data := []int64{100, 30, -100, -5}
+// 	result, _ := Size(data)
+//	result2, _ := Size("gotil")
+// 	// Output: 4
+// 	// Output2: 5
 func Size(val interface{}) (int, error) {
 	return internal.Size(val)
 }
