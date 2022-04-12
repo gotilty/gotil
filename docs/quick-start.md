@@ -5,7 +5,7 @@ Make sure you have Go installed ([download](https://go.dev/dl/)). Version `1.13`
 Initialize your project by creating a folder and then running `go mod init github.com/your/repo` ([learn more](https://go.dev/blog/using-go-modules)) inside the folder. Then install Gotil with the [`go get`](https://pkg.go.dev/cmd/go/#hdr-Add_dependencies_to_current_module_and_install_them) command:
 
 ```bash
-go get -u github.com/gotilty/gotil/v1.0.0
+go get -u github.com/gotilty/gotil/v0.0.0-alpha
 ```
 
 ## 🎯 Why GOtil?

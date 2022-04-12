@@ -1,34 +1,3 @@
-## Every TODO
-
-Checks if predicate returns true for all elements of collection. Iteration is stopped once predicate returns false.
-
-> **_array & slice are supported_**
-
-```go
-gotil.Every(val, f)
-```
-
-### examples TODO
-
-> 💻 [Try on Playground](https://go.dev/play/p/sgH-q0eERn4)
-
-```go
- m1 := []float64{5, 10.5, 10, 10, 20, 20, 10.75, 100, 4.23, 5.15, 5.99, 100.0001}
-
-    if result, err := gotil.Every(m1, func(a interface{}, i interface{}) interface{} {
-        return int
-    }); err == nil {
-        for k, v := range result.(map[float64][]float64) {
-            fmt.Println(k, v)
-        }
-    }
-```
-
-```go
-//output:
-false
-```
-
 ## Filter
 
 Checks if predicate returns true for all elements of collection. Iteration is stopped once predicate returns false.
@@ -214,12 +183,17 @@ false
 
 ## Reduce TODO
 
-Creates a map composed of keys generated from the results of running each element of collection through the iteratee function.
+// Reduce iterates given collection and returns the accumulated result of running each element the last param is initial value of accumulator.
 
 > **_array & slice are supported_**
 
 ```go
-gotil.Includes(array, val)
+data := []int{5, 10}
+result, _ := gotil.Reduce(data, func(accumulator, val interface{}, i int) interface{} {
+    return accumulator.(int) + val.(int)
+}, 0)
+fmt.Println(result)
+// Output: 15
 ```
 
 ### examples TODO
