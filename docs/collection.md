@@ -181,11 +181,15 @@ fmt.Println(result)
 false
 ```
 
-## Reduce TODO
+## Reduce
 
 // Reduce iterates given collection and returns the accumulated result of running each element the last param is initial value of accumulator.
 
 > **_array & slice are supported_**
+
+### examples
+
+> 💻 [Try on Playground](https://go.dev/play/p/r5EICJ1v90W)
 
 ```go
 data := []int{5, 10}
@@ -194,21 +198,6 @@ result, _ := gotil.Reduce(data, func(accumulator, val interface{}, i int) interf
 }, 0)
 fmt.Println(result)
 // Output: 15
-```
-
-### examples TODO
-
-> 💻 [Try on Playground](https://go.dev/play/p/IeA4GbdIqjd)
-
-```go
-m1 := []float64{5, 10.5, 10, 20, 10.75, 100, 4.23, 5.15, 5.99, 100.0001}
-result, _ := gotil.Includes(m1, "gotil")
-fmt.Println(result)
-```
-
-```go
-//output:
-false
 ```
 
 ## Shuffle
