@@ -25,7 +25,7 @@ Listed below are some of the common examples. If you want to see more code examp
 
 ```go
 data := []int64{10, 20, 30}
-_ = Each(data, func(val interface{}, i int) {
+_ = gotil.Each(data, func(val interface{}, i int) {
     fmt.Printf("%d apples", val)
 })
 // Output: [10 apples 20 apples 30 apples]
