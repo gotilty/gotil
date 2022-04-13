@@ -21,24 +21,24 @@ func TestEach(t *testing.T) {
 
 func ExampleEach() {
 	data := []int64{10, 20, 30}
-	_ = Each(data, func(k interface{}, v interface{}) {
+	_ = Each(data, func(k, v interface{}) {
 		fmt.Printf("%d apples", v)
 	})
 	// Output: 10 apples20 apples30 apples
 }
-func printTestLine(i interface{}, val interface{}) {
+func printTestLine(i, val interface{}) {
 	fmt.Fprintln(os.Stdout, val)
 }
 
 func getEachTestData() map[string]struct {
 	inputValue  interface{}
-	mapFunction func(k interface{}, v interface{})
+	mapFunction func(k, v interface{})
 	err         error
 } {
 
 	testData := map[string]struct {
 		inputValue  interface{}
-		mapFunction func(k interface{}, v interface{})
+		mapFunction func(k, v interface{})
 		err         error
 	}{
 		"string_slice": {

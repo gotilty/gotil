@@ -1,31 +1,3 @@
-## Each
-
-Iterates an array of values by running each element in the given array thru iteratee.
-
-> ***array & slice are supported***
-
-```go
-gotil.Each(val, f)
-```
-
-### examples
-
->💻 [Try on Playground](https://go.dev/play/p/sgH-q0eERn4)
-
-```go
-m1 := []int{123, 6787}
-
-gotil.Each(m1, func(a interface{}, i int) {
-    fmt.Println(i, a)
-})
-```
-
-```go
-//output:
-0 123
-1 6787
-```
-
 ## Map
 
 Creates a map composed of keys generated from the results of running each element of collection through the iteratee function.
