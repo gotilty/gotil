@@ -25,6 +25,7 @@ func BenchmarkConvertToUint64String(b *testing.B) {
 		ToUint64(testData["string"].inputValue)
 	}
 }
+
 func BenchmarkConvertToUint64Integer(b *testing.B) {
 	testData := getConvertToUint64TestData()
 	for n := 0; n < b.N; n++ {
