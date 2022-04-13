@@ -7,6 +7,12 @@ import (
 )
 
 func TestShuffle(t *testing.T) {
+	data := []int{5, 10}
+	result, _ := Reduce(data, func(accumulator, val interface{}, i int) interface{} {
+		return accumulator.(int) + val.(int)
+	}, 0)
+	fmt.Println(result)
+	// Output: 15
 	testData := getShuffleTestData()
 	for key, test := range testData {
 		a, erra := test.output, test.err

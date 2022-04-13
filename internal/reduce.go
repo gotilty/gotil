@@ -24,9 +24,12 @@ func Reduce(a interface{}, f func(accumulator interface{}, val interface{}, i in
 			index++
 			accumulator = newSlice.Index(index).Interface()
 		}
-		for index++; index < length; {
+		index++
+		for index < length {
+
 			rowVal := val.Index(index)
 			accumulator = f(accumulator, rowVal.Interface(), index)
+			index++
 		}
 		return accumulator, nil
 	}
