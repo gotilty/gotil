@@ -41,7 +41,7 @@ func groupBySlice(kind reflect.Kind, val reflect.Value, f func(val, i interface{
 		value = val.Index(k)
 		result = f(value.Interface(), k)
 		result_val := reflect.ValueOf(result)
-		if assign == false {
+		if !assign {
 			map_type = reflect.MapOf(
 				reflect.TypeOf(result), val_type)
 			map_value = reflect.MakeMap(map_type)
