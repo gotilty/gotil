@@ -1,3 +1,31 @@
+## Each
+
+Iterates an array of values by running each element in the given array thru iteratee.
+
+> ***array, slice, map & struct are supported***
+
+```go
+gotil.Each(val, f)
+```
+
+### examples
+
+>💻 [Try on Playground](https://go.dev/play/p/WifLSEZaMSS)
+
+```go
+m1 := []int{123, 6787}
+
+gotil.Each(m1, func(v interface{}, k interface{}) {
+    fmt.Println(k, v)
+})
+```
+
+```go
+//output:
+0 123
+1 6787
+```
+
 ## Filter
 
 Checks if predicate returns true for all elements of collection. Iteration is stopped once predicate returns false.

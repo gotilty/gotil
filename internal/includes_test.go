@@ -60,14 +60,20 @@ func getIncludesTestData() map[string]struct {
 			err:        nil,
 		},
 		"map": {
-			inputValue: map[int][]string{1: {"gotilty"}, 2: {"gotil"}, 3: {"is"}, 4: {"perfect"}, 5: {"and"}, 6: {"easy", "to", "use"}},
-			Includes:   "gotilty",
+			inputValue: map[int][]string{9: {"gotilty"}, 25: {"gotil"}, 3: {"is"}, 4: {"perfect"}, 5: {"and"}, 6: {"easy", "to", "use"}},
+			Includes:   "easy",
 			output:     true,
 			err:        nil,
 		},
 		"map2": {
 			inputValue: map[int][]string{1: {"gotilty"}, 2: {"gotil"}, 3: {"is"}, 4: {"perfect"}, 5: {"and"}, 6: {"easy", "to", "use"}},
 			Includes:   12,
+			output:     false,
+			err:        nil,
+		},
+		"map3": {
+			inputValue: map[int][]string{1: {"gotilty"}, 2: {"gotil"}, 3: {"is"}, 4: {"perfect"}, 5: {"and"}, 6: {"easy", "to", "use"}},
+			Includes:   "got",
 			output:     false,
 			err:        nil,
 		},

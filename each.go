@@ -11,6 +11,6 @@ import (
 //		fmt.Printf("%d apples", val)
 //	})
 // 	// Output: 10 apples20 apples30 apples
-func Each(a interface{}, f func(val interface{}, i int)) error {
+func Each(a interface{}, f func(k, v interface{})) error {
 	return internal.Each(a, f)
 }
