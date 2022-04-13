@@ -10,7 +10,7 @@ gotil.Every(val, f)
 
 ### examples
 
->💻 [Try on Playground](https://go.dev/play/p/WifLSEZaMSS)
+>💻 [Try on Playground](https://go.dev/play/p/Vzh-hJoVpBe)
 
 ```go
 m1 := []int{123, 6787}
