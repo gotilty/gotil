@@ -24,7 +24,7 @@ func ExampleSome() {
 	// Input: [-100 -5 30 100]
 	result, _ := Some(data, -100)
 	fmt.Println(result)
-	// Output: false
+	// Output: true
 }
 
 func getSomeTestData() map[string]struct {
