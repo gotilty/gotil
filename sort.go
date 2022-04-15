@@ -2,7 +2,11 @@ package gotil
 
 import (
 	"errors"
+	"fmt"
+	"reflect"
 	"strings"
+
+	"github.com/gotilty/gotil/internal/errs"
 )
 
 // Sort returns a new array of ordered values as ascending, using a version of Merge Algorithm.
@@ -209,25 +213,25 @@ func getcomparer[T any](k T, path string) (icomparable[T], error) {
 		comparer = stringComparer{}
 		return (comparer).(icomparable[T]), nil
 	default:
-
-		//TODO: impl struct
-		// if path == "" {
-		// 	return nil, errs.NewMissingParameterError("path", "")
-		// }
-		// properties := strings.SplitN(path, ".", 2)
-		// property := ""
-		// if len(properties) >= 2 {
-		// 	property = properties[0]
-		// 	path = properties[1]
-		// } else {
-		// 	property = properties[0]
-		// 	path = ""
-		// }
-		// comparer = structComparer[T]{
-		// 	property: property,
-		// 	path:     path,
-		// }
-		// return (comparer).(icomparable[T]), nil
+		if reflect.ValueOf(k).Elem().Kind() == reflect.Struct {
+			if path == "" {
+				return nil, errs.NewMissingParameterError("path", "")
+			}
+			properties := strings.SplitN(path, ".", 2)
+			property := ""
+			if len(properties) >= 2 {
+				property = properties[0]
+				path = properties[1]
+			} else {
+				property = properties[0]
+				path = ""
+			}
+			comparer = structComparer[T]{
+				property: property,
+				path:     path,
+			}
+			return (comparer).(icomparable[T]), nil
+		}
 		return nil, errors.New("unsupported type")
 	}
 }
@@ -356,36 +360,56 @@ func (s boolComparer) compare(a *bool, b *bool) (bool, error) {
 	return (*a) != true, nil
 }
 
-// func (s *structComparer[T]) compare(a *T, b *T) (bool, error) {
-// 	ap := (*a).FieldByName(s.property)
-// 	bp := (*b).FieldByName(s.property)
-// 	apk := ap.Kind()
-// 	bpk := bp.Kind()
-// 	if apk.String() != bpk.String() {
-// 		return false, errs.NewUnsupportedParameterTypeError(
-// 			fmt.Sprintf("%s [%v]: %s [%v]",
-// 				apk.String(),
-// 				ap.Interface(),
-// 				bpk.String(),
-// 				bp.Interface()),
-// 			"they must be the same type",
-// 		)
-// 	}
-// 	if checkKind(apk, reflect.Struct) {
-// 		if s.path == "" {
-// 			return false, errs.NewMissingParameterError(apk.String(), fmt.Sprintf("set a value in this property %s", s.property))
-// 		} else {
-// 			if cn, err := getcomparer(apk, s.path); err != nil {
-// 				return false, err
-// 			} else {
-// 				return cn.compare(&ap, &bp)
-// 			}
-// 		}
-// 	} else {
-// 		if cn, err := getcomparer(apk, ""); err != nil {
-// 			return false, err
-// 		} else {
-// 			return cn.compare(&ap, &bp)
-// 		}
-// 	}
-// }
+func (s *structComparer[T]) compare(a *T, b *T) (bool, error) {
+	ar := reflect.ValueOf(*a)
+	br := reflect.ValueOf(*b)
+	ap := (ar).FieldByName(s.property)
+	bp := (br).FieldByName(s.property)
+	apk := ap.Kind()
+	bpk := bp.Kind()
+	if apk.String() != bpk.String() {
+		return false, errs.NewUnsupportedParameterTypeError(
+			fmt.Sprintf("%s [%v]: %s [%v]",
+				apk.String(),
+				ap.Interface(),
+				bpk.String(),
+				bp.Interface()),
+			"they must be the same type",
+		)
+	}
+	if checkKind(apk, reflect.Struct) {
+		if s.path == "" {
+			return false, errs.NewMissingParameterError(apk.String(), fmt.Sprintf("set a value in this property %s", s.property))
+		} else {
+			if cn, err := getcomparer(ap.Interface(), s.path); err != nil {
+				return false, err
+			} else {
+				return cn.compare(ap.Pointer(), bp.Pointer())
+			}
+		}
+	} else {
+		if cn, err := getcomparer(ap.Interface(), ""); err != nil {
+			return false, err
+		} else {
+			return cn.compare(ap.Pointer(), bp.Pointer())
+		}
+	}
+}
+
+func checkKind(k reflect.Kind, t reflect.Kind) bool {
+	return k == t
+}
+
+func checkKindMultiple(k reflect.Kind, t ...reflect.Kind) bool {
+	if r, err := FindBy(t, func(val interface{}, i int) bool {
+		if kk, ok := val.(reflect.Kind); ok && kk == k {
+			return true
+		} else {
+			return false
+		}
+	}); err == nil && r != nil {
+		return true
+	} else {
+		return false
+	}
+}
