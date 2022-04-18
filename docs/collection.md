@@ -102,12 +102,8 @@ gotil.Filter(val, f)
 ```go
 data := []int64{-100, -5, 30, 100}
 // Input: [-100 -5 30 100]
-result, _ := gotil.FindBy(data, func(val interface{}, i int) bool {
-    if val.(int64) > 0 {
-        return true
-    } else {
-        return false
-    }
+result := gotil.FindBy(data, func(val int64) bool {
+    return val > 0
 })
 fmt.Println(result)
 ```
@@ -134,12 +130,8 @@ gotil.FindByFromIndex(val, f, i)
 ```go
 data := []int64{-100, -5, 30, 100}
 // Input: [-100 -5 30 100]
-result, _ := gotil.FindByFromIndex(data, func(val interface{}, i int) bool {
-    if val.(int64) > 0 {
-        return true
-    } else {
-        return false
-    }
+result := gotil.FindByFromIndex(data, func(val int64) bool {
+    return val > 0
 }, 3)
 fmt.Println(result)
 ```
@@ -165,12 +157,8 @@ gotil.FindLastBy(val, f)
 
 ```go
 data := []int64{-100, -5, 30, 100}
-result, _ := gotil.FindLastBy(data, func(val interface{}, i int) bool {
-    if val.(int64) > 29 {
-        return true
-    } else {
-        return false
-    }
+result, _ := gotil.FindLastBy(data, func(val int64) bool {
+    return val > 29
 })
 fmt.Println(result)
 ```
