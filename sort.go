@@ -523,15 +523,8 @@ func checkKind(k reflect.Kind, t reflect.Kind) bool {
 }
 
 func checkKindMultiple(k reflect.Kind, t ...reflect.Kind) bool {
-	if r, err := FindBy(t, func(val interface{}, i int) bool {
-		if kk, ok := val.(reflect.Kind); ok && kk == k {
-			return true
-		} else {
-			return false
-		}
-	}); err == nil && r != nil {
-		return true
-	} else {
-		return false
-	}
+	r := FindBy(t, func(val reflect.Kind) bool {
+		return k == val
+	})
+	return r.String() == k.String()
 }
