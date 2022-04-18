@@ -1,7 +1,6 @@
 package gotil
 
 import (
-	"errors"
 	"fmt"
 	"reflect"
 	"strings"
@@ -11,7 +10,7 @@ import (
 
 // Sort returns a new array of ordered values as ascending, using a version of Merge Algorithm.
 //	data := []int64{100, 30, -100, -5}
-//	newData, _ := gotil.Sort(data)
+//	newData := gotil.Sort(data)
 //	// Output: [-100 -5 30 100]
 func Sort[T any](s []T) []T {
 	return SortBy(s, "")
@@ -19,13 +18,15 @@ func Sort[T any](s []T) []T {
 
 // SortDesc returns a new array of ordered values as descending, using a version of Merge Algorithm.
 //	data := []int64{100, 30, -100, -5}
-//	newData, _ := SortDesc(data)
+//	newData := gotilSortDesc(data)
 //	// Output: [100 30 -5 -100]
 func SortDesc[T any](s []T) []T {
 	return SortDescBy(s, "")
 }
 
-// SortBy returns a new array of ordered values as ascending, using a version of Merge Algorithm with a given property path list of struct
+// SortBy returns a new array of ordered values as ascending, using a version of Merge Algorithm with a given property path and list of struct
+// First param is slice of any type
+// Second param is path delimited by dot. More information please check documentation.
 //
 // Example:
 //	SortBy(data, "location.city")
@@ -57,9 +58,11 @@ func SortBy[T any](s []T, path string) []T {
 	return r
 }
 
-// SortDescBy returns a new array of ordered values as descending, using a version of Merge Algorithm with a given property path list of struct
+// SortDescBy returns a new array of ordered values as descending, using a version of Merge Algorithm with a given property path and list of struct
+// First param is slice of any type
+// Second param is path delimited by dot. More information please check documentation.
 //
-// Example: SortDescBy(data, "location.city")
+// Example: gotil.SortDescBy(data, "location.city")
 //	data := []user{
 //  	{
 // 			name: "Micheal",
@@ -76,7 +79,7 @@ func SortBy[T any](s []T, path string) []T {
 // 			},
 // 		 },
 //	}
-//	newData, _ := SortDescBy(data, "location.city")
+//	newData, _ := gotil.SortDescBy(data, "location.city")
 //	// Output: [{Micheal 27 {New York}} {Joe 30 {Detroit}}]
 func SortDescBy[T any](s []T, path string) []T {
 	sr := sortResult[T]{
@@ -107,7 +110,7 @@ func (sr sortResult[T]) sortByThen(s []T, path string) sortResult[T] {
 		return sr
 	}
 	k := newSlice[0]
-	c, errc := getcomparer(&k, "")
+	c, errc := getcomparer(&k, path)
 	if errc != nil {
 		sr.r = nil
 		sr.e = errc
@@ -176,71 +179,6 @@ func merge[T any](a *[]T, b *[]T, c icomparable[*T], asc bool) (*[]T, error) {
 	}
 	return &final, nil
 }
-func getcomparer[T any](k T, path string) (icomparable[T], error) {
-	var comparer interface{}
-	switch any(k).(type) {
-	case *int:
-		comparer = intComparer{}
-		return comparer.(icomparable[T]), nil
-	case *int8:
-		comparer = int8Comparer{}
-		return comparer.(icomparable[T]), nil
-	case *int16:
-		comparer = int16Comparer{}
-		return comparer.(icomparable[T]), nil
-	case *int32:
-		comparer = int32Comparer{}
-		return comparer.(icomparable[T]), nil
-	case *int64:
-		comparer = int64Comparer{}
-		return comparer.(icomparable[T]), nil
-	case *uint:
-		comparer = uIntComparer{}
-		return comparer.(icomparable[T]), nil
-	case *uint8:
-		comparer = uInt8Comparer{}
-		return comparer.(icomparable[T]), nil
-	case *uint16:
-		comparer = uInt16Comparer{}
-		return comparer.(icomparable[T]), nil
-	case *uint32:
-		comparer = uInt32Comparer{}
-		return comparer.(icomparable[T]), nil
-	case *uint64:
-		comparer = uInt64Comparer{}
-		return comparer.(icomparable[T]), nil
-	case *string:
-		comparer = stringComparer{}
-		return (comparer).(icomparable[T]), nil
-	default:
-		if reflect.ValueOf(k).Elem().Kind() == reflect.Struct {
-			if path == "" {
-				return nil, errs.NewMissingParameterError("path", "")
-			}
-			properties := strings.SplitN(path, ".", 2)
-			property := ""
-			if len(properties) >= 2 {
-				property = properties[0]
-				path = properties[1]
-			} else {
-				property = properties[0]
-				path = ""
-			}
-			comparer = structComparer[T]{
-				property: property,
-				path:     path,
-			}
-			return (comparer).(icomparable[T]), nil
-		}
-		return nil, errors.New("unsupported type")
-	}
-}
-
-func copySlice[T any](src []T) []T {
-	new := make([]T, len(src))
-	copy(new, src)
-	return new
-}
 
 type icomparable[T any] interface {
 	compare(a T, b T) (bool, error)
@@ -304,10 +242,17 @@ type Integer interface {
 }
 
 type structComparer[T any] struct {
-	icomparable,
+	icomparable[*T]
 	property string
-	path  string
-	child icomparable[T]
+	path     string
+	child    icomparable[*T]
+}
+
+type reflectComparer struct {
+	icomparable[*reflect.Value]
+	property string
+	path     string
+	child    icomparable[*reflect.Value]
 }
 
 func (s stringComparer) compare(a *string, b *string) (bool, error) {
@@ -360,40 +305,217 @@ func (s boolComparer) compare(a *bool, b *bool) (bool, error) {
 	return (*a) != true, nil
 }
 
-func (s *structComparer[T]) compare(a *T, b *T) (bool, error) {
-	ar := reflect.ValueOf(*a)
-	br := reflect.ValueOf(*b)
-	ap := (ar).FieldByName(s.property)
-	bp := (br).FieldByName(s.property)
-	apk := ap.Kind()
-	bpk := bp.Kind()
-	if apk.String() != bpk.String() {
-		return false, errs.NewUnsupportedParameterTypeError(
-			fmt.Sprintf("%s [%v]: %s [%v]",
-				apk.String(),
-				ap.Interface(),
-				bpk.String(),
-				bp.Interface()),
-			"they must be the same type",
-		)
-	}
-	if checkKind(apk, reflect.Struct) {
-		if s.path == "" {
-			return false, errs.NewMissingParameterError(apk.String(), fmt.Sprintf("set a value in this property %s", s.property))
-		} else {
-			if cn, err := getcomparer(ap.Interface(), s.path); err != nil {
-				return false, err
-			} else {
-				return cn.compare(ap.Pointer(), bp.Pointer())
-			}
-		}
+func (s reflectComparer) compare(ar *reflect.Value, br *reflect.Value) (bool, error) {
+	var a, b reflect.Value
+	if (*ar).Kind() == reflect.Ptr || (*ar).Kind() == reflect.Pointer {
+		a = (*ar).Elem()
+		b = (*br).Elem()
 	} else {
-		if cn, err := getcomparer(ap.Interface(), ""); err != nil {
-			return false, err
+		a = (*ar)
+		b = (*br)
+	}
+
+	switch (a).Kind() {
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		iv := (a).Int()
+		iv2 := (b).Int()
+		if cn, err := getcomparer(&iv, s.path); err == nil {
+			return cn.compare(&iv, &iv2)
 		} else {
-			return cn.compare(ap.Pointer(), bp.Pointer())
+			return false, err
+		}
+	case reflect.Float32, reflect.Float64:
+		fv := (a).Float()
+		fv2 := (b).Float()
+		if cn, err := getcomparer(&fv, s.path); err == nil {
+			return cn.compare(&fv, &fv2)
+		} else {
+			return false, err
+		}
+	case reflect.String:
+		sv := (a).String()
+		sv2 := (b).String()
+		if cn, err := getcomparer(&sv, s.path); err == nil {
+			return cn.compare(&sv, &sv2)
+		} else {
+			return false, err
+		}
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
+		uiv := (a).Uint()
+		uiv2 := (b).Uint()
+		if cn, err := getcomparer(&uiv, s.path); err == nil {
+			return cn.compare(&uiv, &uiv2)
+		} else {
+			return false, err
+		}
+	case reflect.Bool:
+		bv := (a).Bool()
+		bv2 := (b).Bool()
+		if cn, err := getcomparer(&bv, s.path); err == nil {
+			return cn.compare(&bv, &bv2)
+		} else {
+			return false, err
+		}
+	case reflect.Struct:
+		if s.path == "" {
+			return false, errs.NewMissingParameterError("path", "")
+		}
+		properties := strings.SplitN(s.path, ".", 2)
+		property := ""
+		path := ""
+		if len(properties) >= 2 {
+			property = properties[0]
+			path = properties[1]
+		} else {
+			property = properties[0]
+			path = ""
+		}
+		ap := a.FieldByName(property)
+		bp := b.FieldByName(property)
+		apr := ap
+		bpr := bp
+
+		apk := ap.Kind()
+		bpk := bp.Kind()
+		if apk.String() != bpk.String() {
+			return false, errs.NewUnsupportedParameterTypeError(
+				fmt.Sprintf("%s [%v]: %s [%v]",
+					apk.String(),
+					ap.Interface(),
+					bpk.String(),
+					bp.Interface()),
+				"they must be the same type",
+			)
+		}
+		rl := reflectComparer{
+			path: path,
+		}
+		return rl.compare(&apr, &bpr)
+	default:
+		return false, errs.ErrUnsupportedType
+	}
+}
+
+func (s structComparer[T]) compare(a T, b T) (bool, error) {
+	comparer := reflectComparer{
+		path:     s.path,
+		property: s.property,
+	}
+	a1 := reflect.ValueOf(a)
+	b1 := reflect.ValueOf(b)
+	return comparer.compare(&a1, &b1)
+}
+
+func getcomparer[T any](k T, path string) (icomparable[T], error) {
+	var comparer interface{}
+	switch any(k).(type) {
+	case *int:
+		comparer = intComparer{}
+		return comparer.(icomparable[T]), nil
+	case *int8:
+		comparer = int8Comparer{}
+		return comparer.(icomparable[T]), nil
+	case *int16:
+		comparer = int16Comparer{}
+		return comparer.(icomparable[T]), nil
+	case *int32:
+		comparer = int32Comparer{}
+		return comparer.(icomparable[T]), nil
+	case *int64:
+		comparer = int64Comparer{}
+		return comparer.(icomparable[T]), nil
+	case *uint:
+		comparer = uIntComparer{}
+		return comparer.(icomparable[T]), nil
+	case *uint8:
+		comparer = uInt8Comparer{}
+		return comparer.(icomparable[T]), nil
+	case *uint16:
+		comparer = uInt16Comparer{}
+		return comparer.(icomparable[T]), nil
+	case *uint32:
+		comparer = uInt32Comparer{}
+		return comparer.(icomparable[T]), nil
+	case *uint64:
+		comparer = uInt64Comparer{}
+		return comparer.(icomparable[T]), nil
+	case *string:
+		comparer = stringComparer{}
+		return (comparer).(icomparable[T]), nil
+	default:
+		krf := reflect.ValueOf(k).Kind()
+		if krf == reflect.Ptr {
+			e := reflect.ValueOf(k).Elem()
+			switch e.Kind() {
+			case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+				iv := e.Int()
+				if cn, err := getcomparer(&iv, ""); err == nil {
+					var c2 interface{}
+					c2 = cn
+					return c2.(icomparable[T]), err
+				} else {
+					return nil, err
+				}
+			case reflect.Float32, reflect.Float64:
+				fv := e.Float()
+				if cn, err := getcomparer(&fv, ""); err == nil {
+					var c2 interface{}
+					c2 = cn
+					return c2.(icomparable[T]), err
+				} else {
+					return nil, err
+				}
+			case reflect.String:
+				sv := e.String()
+				if cn, err := getcomparer(&sv, ""); err == nil {
+					var c2 interface{}
+					c2 = cn
+					return c2.(icomparable[T]), err
+				} else {
+					return nil, err
+				}
+			case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
+				uiv := e.Uint()
+				if cn, err := getcomparer(&uiv, ""); err == nil {
+					var c2 interface{}
+					c2 = cn
+					return c2.(icomparable[T]), err
+				} else {
+					return nil, err
+				}
+			case reflect.Bool:
+				bv := e.Bool()
+				if cn, err := getcomparer(&bv, ""); err == nil {
+					var c2 interface{}
+					c2 = cn
+					return c2.(icomparable[T]), err
+				} else {
+					return nil, err
+				}
+			case reflect.Struct:
+
+				if path == "" {
+					return nil, errs.NewMissingParameterError("path", "")
+				}
+
+				comparer = structComparer[T]{
+					path: path,
+				}
+				return (comparer).(icomparable[T]), nil
+			default:
+				return nil, errs.ErrUnsupportedType
+			}
+
+		} else {
+			return nil, errs.ErrUnsupportedType
 		}
 	}
+}
+
+func copySlice[T any](src []T) []T {
+	new := make([]T, len(src))
+	copy(new, src)
+	return new
 }
 
 func checkKind(k reflect.Kind, t reflect.Kind) bool {

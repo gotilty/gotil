@@ -352,7 +352,7 @@ gotil.Sort(data)
 
 ```go
 data := []int64{100, 30, -100, -5}
-newData, _ := gotil.Sort(data)
+newData := gotil.Sort(data)
 fmt.Println(newData)
 ```
 
@@ -406,7 +406,7 @@ var data = []user{
         },
     },
 }
-newData, _ := gotil.SortBy(data, "location.city")
+newData := gotil.SortBy(data, "location.city")
 fmt.Println(newData)
 ```
 
