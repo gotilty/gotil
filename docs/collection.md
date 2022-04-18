@@ -260,7 +260,7 @@ gotil.Shuffle(data)
 
 ```go
 data := []int64{-100, -5, 30, 100, 1, 2, 3, 4, 5, 6, 7, 8, 9}
-newData, _ := gotil.Shuffle(data)
+newData := gotil.Shuffle(data)
 fmt.Println(newData)
 ```
 
@@ -290,7 +290,7 @@ seed := int64(58239238)
 // each time you run the program.
 
 data := []int64{-100, -5, 30, 100}
-newData, _ := gotil.ShuffleSeed(data, seed)
+newData := gotil.ShuffleSeed(data, seed)
 fmt.Println(newData)
 ```
 
