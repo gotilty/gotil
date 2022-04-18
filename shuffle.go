@@ -1,7 +1,8 @@
 package gotil
 
 import (
-	"github.com/gotilty/gotil/internal"
+	"math/rand"
+	"time"
 )
 
 // Shuffle returns a new array of shuffled values, using a version of the Fisher-Yates shuffle.
@@ -11,10 +12,10 @@ import (
 //	Seed you will get the same sequence of pseudo­random numbers
 // 	each time you run the program.
 // 	data := []int64{-100, -5, 30, 100}
-// 	newData, _ := Shuffle(data)
+// 	newData := Shuffle(data)
 // 	// Output: [-5 100 -100 30]
-func Shuffle(a interface{}) (interface{}, error) {
-	return internal.Shuffle(a)
+func Shuffle[T any](s []T) []T {
+	return ShuffleSeed(s, time.Now().UnixNano())
 }
 
 // ShuffleSeed returns a new array of shuffled values, using a version of the Fisher-Yates shuffle with given seed
@@ -25,8 +26,14 @@ func Shuffle(a interface{}) (interface{}, error) {
 // each time you run the program.
 //
 // 	data := []int64{-100, -5, 30, 100}
-// 	newData, _ := ShuffleSeed(data, seed)
+// 	newData := ShuffleSeed(data, seed)
 // 	// Output: [-5 100 -100 30]
-func ShuffleSeed(a interface{}, seed int64) (interface{}, error) {
-	return internal.ShuffleSeed(a, seed)
+func ShuffleSeed[T any](s []T, seed int64) []T {
+	rand.Seed(seed)
+	newSlice := copySlice(s)
+	for i := len(newSlice) - 1; i > 0; i-- { // Fisher–Yates shuffle
+		j := rand.Intn(i + 1)
+		newSlice[i], newSlice[j] = newSlice[j], newSlice[i]
+	}
+	return newSlice
 }

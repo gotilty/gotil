@@ -1,35 +1,49 @@
-package internal
+package gotil_test
 
 import (
 	"fmt"
-	"reflect"
 	"testing"
+
+	"github.com/gotilty/gotil"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestShuffle(t *testing.T) {
-	testData := getShuffleTestData()
-	for key, test := range testData {
-		a, erra := test.output, test.err
-		b, errb := ShuffleSeed(test.inputValue, test.seed)
-		if erra == nil {
-			if !reflect.DeepEqual(a, b) || errb != nil {
-				t.Errorf("Convert.ToUint64 does not works expected\ncase: %s\nexpected: %d taken: %d error: %s", key, a, b, errb.Error())
-			}
-		}
-	}
+	a := assert.New(t)
+	input := []int64{-100, -5, 30, 100, 5, 11, 1000, 33, 55}
+	expected := []int64{100, 33, 1000, 30, 55, -5, -100, 5, 11}
+	result := gotil.ShuffleSeed(input, int64(343434))
+	a.Equal(expected, result)
 }
 
 func BenchmarkShuffleIntegerSlice(b *testing.B) {
-	testData := getShuffleTestData()
+	input := []int64{-100, -5, 30, 100, 5, 11, 1000, 33, 55}
 	for n := 0; n < b.N; n++ {
-		Shuffle(testData["shuffle_numbers"].inputValue)
+		gotil.Shuffle(input)
 	}
 }
 
 func BenchmarkShuffleStructSlice(b *testing.B) {
-	testData := getShuffleTestData()
+	input := []user{
+		{
+			name: "Micheal",
+			age:  27,
+		},
+		{
+			name: "Joe",
+			age:  30,
+		},
+		{
+			name: "Olivia",
+			age:  42,
+		},
+		{
+			name: "Kevin",
+			age:  10,
+		},
+	}
 	for n := 0; n < b.N; n++ {
-		Shuffle(testData["shuffle_struct"].inputValue)
+		gotil.Shuffle(input)
 	}
 }
 
@@ -41,7 +55,7 @@ func ExampleShuffle() {
 
 	data := []int64{-100, -5, 30, 100}
 	// Input: [-100 -5 30 100]
-	newData, _ := ShuffleSeed(data, seed)
+	newData := gotil.ShuffleSeed(data, seed)
 	fmt.Println(newData)
 	// Output: [-5 100 -100 30]
 }
