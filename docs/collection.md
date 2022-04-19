@@ -102,12 +102,8 @@ gotil.Filter(val, f)
 ```go
 data := []int64{-100, -5, 30, 100}
 // Input: [-100 -5 30 100]
-result, _ := gotil.FindBy(data, func(val interface{}, i int) bool {
-    if val.(int64) > 0 {
-        return true
-    } else {
-        return false
-    }
+result := gotil.FindBy(data, func(val int64) bool {
+    return val > 0
 })
 fmt.Println(result)
 ```
@@ -134,12 +130,8 @@ gotil.FindByFromIndex(val, f, i)
 ```go
 data := []int64{-100, -5, 30, 100}
 // Input: [-100 -5 30 100]
-result, _ := gotil.FindByFromIndex(data, func(val interface{}, i int) bool {
-    if val.(int64) > 0 {
-        return true
-    } else {
-        return false
-    }
+result := gotil.FindByFromIndex(data, func(val int64) bool {
+    return val > 0
 }, 3)
 fmt.Println(result)
 ```
@@ -165,12 +157,8 @@ gotil.FindLastBy(val, f)
 
 ```go
 data := []int64{-100, -5, 30, 100}
-result, _ := gotil.FindLastBy(data, func(val interface{}, i int) bool {
-    if val.(int64) > 29 {
-        return true
-    } else {
-        return false
-    }
+result, _ := gotil.FindLastBy(data, func(val int64) bool {
+    return val > 29
 })
 fmt.Println(result)
 ```
@@ -272,7 +260,7 @@ gotil.Shuffle(data)
 
 ```go
 data := []int64{-100, -5, 30, 100, 1, 2, 3, 4, 5, 6, 7, 8, 9}
-newData, _ := gotil.Shuffle(data)
+newData := gotil.Shuffle(data)
 fmt.Println(newData)
 ```
 
@@ -302,7 +290,7 @@ seed := int64(58239238)
 // each time you run the program.
 
 data := []int64{-100, -5, 30, 100}
-newData, _ := gotil.ShuffleSeed(data, seed)
+newData := gotil.ShuffleSeed(data, seed)
 fmt.Println(newData)
 ```
 
@@ -352,7 +340,7 @@ gotil.Sort(data)
 
 ```go
 data := []int64{100, 30, -100, -5}
-newData, _ := gotil.Sort(data)
+newData := gotil.Sort(data)
 fmt.Println(newData)
 ```
 
@@ -406,7 +394,7 @@ var data = []user{
         },
     },
 }
-newData, _ := gotil.SortBy(data, "location.city")
+newData := gotil.SortBy(data, "location.city")
 fmt.Println(newData)
 ```
 
