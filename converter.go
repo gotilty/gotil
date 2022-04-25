@@ -139,39 +139,10 @@ func ToInt[T any](val T) (int, error) {
 //ToInt8 returns int8(0) with an error if the parameter is unsupported type.
 //Just works with all primitive types.
 func ToInt8[T any](val T) (int8, error) {
-	switch any(val).(type) {
-	case string:
-		v, err := fromStringToInt8(any(val).(string))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case int, int8, int16, int32, int64:
-		v, err := fromInt64ToInt8(any(val).(int64))
-		if err == nil {
-			return v, nil
-		}
-	case uint, uint8, uint16, uint32, uint64:
-		v, err := fromUint64ToInt8(any(val).(uint64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case float32, float64:
-		v, err := fromFloat64ToInt8(any(val).(float64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case bool:
-		v, err := fromBoolToInt8(any(val).(bool))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	}
-
-	return 0, nil
+	var result int8
+	convertable, def, _ := getConvertable[T, int8](val)
+	result, _ = convertable.convert(val, def)
+	return result, nil
 }
 
 //ToInt16 returns int16(0) with an error if the parameter is unsupported type.
@@ -625,14 +596,6 @@ func fromBoolToFloat32(s bool) (float32, error) {
 	}
 }
 
-func fromIntToFloat64(s int) (float64, error) {
-	var maxInt64 int = math.MaxInt64
-	if s > maxInt64 {
-		return 0, errs.CustomError("The entered number cannot be greater than max float64.")
-	}
-	return float64(s), nil
-}
-
 func fromFloat64ToFloat64(s float64) (float64, error) {
 	var maxFloat float64 = math.MaxFloat64
 	if s > float64(maxFloat) {
@@ -710,17 +673,107 @@ func fromBoolToInt(s bool) (int, error) {
 	}
 }
 
+// FROM INT
+
+func fromIntToInt8(s int) (int8, error) {
+	var maxInt int = math.MaxInt8
+	if s > maxInt {
+		return 0, errs.CustomError("The entered number cannot be greater than max than max int8.")
+	}
+	return int8(s), nil
+}
+
+func fromIntToInt16(s int) (int16, error) {
+	var maxInt int = math.MaxInt16
+	if s > maxInt {
+		return 0, errs.CustomError("The entered number cannot be greater than max than max int16.")
+	}
+	return int16(s), nil
+}
+
+func fromIntToInt32(s int) (int32, error) {
+	var maxInt int = math.MaxInt32
+	if s > maxInt {
+		return 0, errs.CustomError("The entered number cannot be greater than max int32.")
+	}
+	return int32(s), nil
+}
+
+func fromIntToInt64(s int) (int64, error) {
+	var maxInt int = math.MaxInt64
+	if s > maxInt {
+		return 0, errs.CustomError("The entered number cannot be greater than max int64.")
+	}
+	return int64(s), nil
+}
+
+func fromIntToUint8(s int) (uint8, error) {
+	var maxUint int = math.MaxUint8
+	if s > maxUint || s < 0 {
+		return 0, errs.CustomError("The entered number cannot be greater than max uint8 or smaller than 0.")
+	}
+	return uint8(s), nil
+}
+
+func fromIntToUint16(s int) (uint16, error) {
+	var maxInt int = math.MaxUint16
+	if s > maxInt || s < 0 {
+		return 0, errs.CustomError("The entered number cannot be greater than max uint16 or smaller than 0.")
+	}
+	return uint16(s), nil
+}
+
+func fromIntToUint32(s int) (uint32, error) {
+	var maxInt int = math.MaxUint32
+	if s > maxInt || s < 0 {
+		return 0, errs.CustomError("The entered number cannot be greater than max uint32 or smaller than 0.")
+	}
+	return uint32(s), nil
+}
+
+func fromIntToUint64(s int) (uint64, error) {
+	var maxUint uint = math.MaxUint64
+	if s > int(maxUint) || s < 0 {
+		return 0, errs.CustomError("The entered number cannot be greater than max uint or smaller than 0.")
+	}
+	return uint64(s), nil
+}
+
+func fromIntToUint(s int) (uint, error) {
+	var maxUint uint = math.MaxUint
+	if s > int(maxUint) || s < 0 {
+		return 0, errs.CustomError("The entered number cannot smaller than 0.")
+	}
+	return uint(s), nil
+}
+
+func fromIntToBool(s int) (bool, error) {
+	if s == 0 {
+		return false, nil
+	} else if s == 1 {
+		return true, nil
+	}
+	return false, errs.CustomError("The entered number should be 0 or 1.")
+}
+
 func fromInt64ToInt8(s int64) (int8, error) {
-	var maxInt int64 = math.MaxInt16 + 1
-	// maxInt == 2147483648
+	var maxInt int64 = math.MaxInt8
 	if s > maxInt {
 		return 0, errs.CustomError("The entered number cannot be greater than max int8.")
 	}
 	return int8(s), nil
 }
 
+func fromIntToFloat64(s int) (float64, error) {
+	var maxInt64 int = math.MaxInt64
+	if s > maxInt64 {
+		return 0, errs.CustomError("The entered number cannot be greater than max float64.")
+	}
+	return float64(s), nil
+}
+
 func fromFloat64ToInt8(s float64) (int8, error) {
-	var maxInt int64 = math.MaxInt8 + 1
+	var maxInt int64 = math.MaxInt8
 	if s > float64(maxInt) {
 		return 0, errs.CustomError("The entered number cannot be greater than max int8.")
 	}
@@ -739,7 +792,7 @@ func fromStringToInt8(s string) (int8, error) {
 }
 
 func fromUint64ToInt8(s uint64) (int8, error) {
-	var maxInt int64 = math.MaxInt8 + 1
+	var maxInt int64 = math.MaxInt8
 	if s > uint64(maxInt) {
 		return 0, errs.CustomError("The entered number cannot be greater than max int8.")
 	}
@@ -755,7 +808,7 @@ func fromBoolToInt8(s bool) (int8, error) {
 }
 
 func fromInt64ToInt16(s int64) (int16, error) {
-	var maxInt int64 = math.MaxInt16 + 1
+	var maxInt int64 = math.MaxInt16
 	// maxInt == 2147483648
 	if s > maxInt {
 		return 0, errs.CustomError("The entered number cannot be greater than max int16.")
@@ -764,7 +817,7 @@ func fromInt64ToInt16(s int64) (int16, error) {
 }
 
 func fromFloat64ToInt16(s float64) (int16, error) {
-	var maxInt int64 = math.MaxInt16 + 1
+	var maxInt int64 = math.MaxInt16
 	if s > float64(maxInt) {
 		return 0, errs.CustomError("The entered number cannot be greater than max int16.")
 	}
@@ -783,7 +836,7 @@ func fromStringToInt16(s string) (int16, error) {
 }
 
 func fromUint64ToInt16(s uint64) (int16, error) {
-	var maxInt int64 = math.MaxInt16 + 1
+	var maxInt int64 = math.MaxInt16
 	if s > uint64(maxInt) {
 		return 0, errs.CustomError("The entered number cannot be greater than max int16.")
 	}
@@ -799,7 +852,7 @@ func fromBoolToInt16(s bool) (int16, error) {
 }
 
 func fromInt64ToInt32(s int64) (int32, error) {
-	var maxInt int64 = math.MaxInt32 + 1
+	var maxInt int64 = math.MaxInt32
 	// maxInt == 2147483648
 	if s > maxInt {
 		return 0, errs.CustomError("The entered number cannot be greater than max int32.")
@@ -808,7 +861,7 @@ func fromInt64ToInt32(s int64) (int32, error) {
 }
 
 func fromFloat64ToInt32(s float64) (int32, error) {
-	var maxInt int64 = math.MaxInt32 + 1
+	var maxInt int64 = math.MaxInt32
 	if s > float64(maxInt) {
 		return 0, errs.CustomError("The entered number cannot be greater than max int32.")
 	}
@@ -827,7 +880,7 @@ func fromStringToInt32(s string) (int32, error) {
 }
 
 func fromUint64ToInt32(s uint64) (int32, error) {
-	var maxInt int64 = math.MaxInt32 + 1
+	var maxInt int64 = math.MaxInt32
 	if s > uint64(maxInt) {
 		return 0, errs.CustomError("The entered number cannot be greater than max int32.")
 	}
@@ -862,7 +915,7 @@ func fromStringToInt64(s string) (int64, error) {
 }
 
 func fromUint64ToInt64(s uint64) (int64, error) {
-	var maxInt int64 = math.MaxInt32 + 1
+	var maxInt int64 = math.MaxInt32
 	if s > uint64(maxInt) {
 		return 0, errs.CustomError("The entered number cannot be greater than max int64.")
 	}
@@ -969,7 +1022,7 @@ func fromBoolToUint(s bool) (uint, error) {
 }
 
 func fromInt64ToUint8(s int64) (uint8, error) {
-	var maxInt int64 = math.MaxInt8 + 1
+	var maxInt int64 = math.MaxInt8
 	if s > maxInt {
 		return 0, errs.CustomError("The entered number cannot be greater than max uint8.")
 	}
@@ -977,7 +1030,7 @@ func fromInt64ToUint8(s int64) (uint8, error) {
 }
 
 func fromFloat64ToUint8(s float64) (uint8, error) {
-	var maxUint uint64 = math.MaxUint8 + 1
+	var maxUint uint64 = math.MaxUint8
 	if s > float64(maxUint) {
 		return 0, errs.CustomError("the entered number cannot be greater than max uint8.")
 	}
@@ -996,7 +1049,7 @@ func fromStringToUint8(s string) (uint8, error) {
 }
 
 func fromUint64ToUint8(s uint64) (uint8, error) {
-	var maxInt uint64 = math.MaxUint16 + 1
+	var maxInt uint64 = math.MaxUint16
 	if s > uint64(maxInt) {
 		return 0, errs.CustomError("The entered number cannot be greater than max uint8.")
 	}
@@ -1012,7 +1065,7 @@ func fromBoolToUint8(s bool) (uint8, error) {
 }
 
 func fromInt64ToUint16(s int64) (uint16, error) {
-	var maxInt int64 = math.MaxUint16 + 1
+	var maxInt int64 = math.MaxUint16
 	if s > maxInt {
 		return 0, errs.CustomError("The entered number cannot be greater than max uint16.")
 	}
@@ -1020,7 +1073,7 @@ func fromInt64ToUint16(s int64) (uint16, error) {
 }
 
 func fromFloat64ToUint16(s float64) (uint16, error) {
-	var maxUint uint64 = math.MaxUint16 + 1
+	var maxUint uint64 = math.MaxUint16
 	if s > float64(maxUint) {
 		return 0, errs.CustomError("the entered number cannot be greater than max uint16.")
 	}
@@ -1039,7 +1092,7 @@ func fromStringToUint16(s string) (uint16, error) {
 }
 
 func fromUint64ToUint16(s uint64) (uint16, error) {
-	var maxInt uint64 = math.MaxUint16 + 1
+	var maxInt uint64 = math.MaxUint16
 	if s > uint64(maxInt) {
 		return 0, errs.CustomError("The entered number cannot be greater than max uint16.")
 	}
@@ -1066,7 +1119,7 @@ func fromStringToUint32(s string) (uint32, error) {
 }
 
 func fromUint64ToUint32(s uint64) (uint32, error) {
-	var maxInt uint64 = math.MaxUint32 + 1
+	var maxInt uint64 = math.MaxUint32
 	if s > uint64(maxInt) {
 		return 0, errs.CustomError("The entered number cannot be greater than max uint32.")
 	}
@@ -1082,7 +1135,7 @@ func fromBoolToUint32(s bool) (uint32, error) {
 }
 
 func fromFloat64ToUint32(s float64) (uint32, error) {
-	var maxUint uint64 = math.MaxUint32 + 1
+	var maxUint uint64 = math.MaxUint32
 	if s > float64(maxUint) {
 		return 0, errs.CustomError("the entered number cannot be greater than max uint32.")
 	}
@@ -1090,7 +1143,7 @@ func fromFloat64ToUint32(s float64) (uint32, error) {
 }
 
 func fromInt64ToUint32(s int64) (uint32, error) {
-	var maxInt int64 = math.MaxUint32 + 1
+	var maxInt int64 = math.MaxUint32
 	if s > maxInt {
 		return 0, errs.CustomError("The entered number cannot be greater than max uint32.")
 	}
@@ -1130,4 +1183,277 @@ func fromBoolToUint64(s bool) (uint64, error) {
 	} else {
 		return 0, nil
 	}
+}
+
+func fromStringToBool(s string) (bool, error) {
+	if s == "1" || s == "true" {
+		return true, nil
+	} else {
+		return false, nil
+	}
+}
+
+type iconverter[T any, D any] interface {
+	convert(a T, d D) (D, error)
+}
+
+type stringConverter[D any] struct {
+	iconverter[string, D]
+}
+
+type intConverter[D any] struct {
+	iconverter[int, D]
+}
+
+type int8Converter[D any] struct {
+	iconverter[int8, D]
+}
+
+type int16Converter[D any] struct {
+	iconverter[int8, D]
+}
+
+func (s stringConverter[D]) convert(a string, d D) (D, error) {
+	var res interface{}
+	var err error
+	switch any(d).(type) {
+	case int:
+		res, err = fromStringToInt(a)
+		if err == nil {
+			return res.(D), nil
+		}
+		return res.(D), err
+	case int8:
+		res, err = fromStringToInt8(a)
+		if err == nil {
+			return res.(D), nil
+		}
+		return res.(D), err
+	case int16:
+		res, err = fromStringToInt16(a)
+		if err == nil {
+			return res.(D), nil
+		}
+		return res.(D), err
+	case int32:
+		res, err = fromStringToInt32(a)
+		if err == nil {
+			return res.(D), nil
+		}
+		return res.(D), err
+	case int64:
+		res, err = fromStringToInt64(a)
+		if err == nil {
+			return res.(D), nil
+		}
+		return res.(D), err
+	case uint:
+		res, err = fromStringToUint(a)
+		if err == nil {
+			return res.(D), nil
+		}
+		return res.(D), err
+	case uint8:
+		res, err = fromStringToUint8(a)
+		if err == nil {
+			return res.(D), nil
+		}
+		return res.(D), err
+	case uint16:
+		res, err = fromStringToUint16(a)
+		if err == nil {
+			return res.(D), nil
+		}
+		return res.(D), err
+	case uint32:
+		res, err = fromStringToUint32(a)
+		if err == nil {
+			return res.(D), nil
+		}
+		return res.(D), err
+	case uint64:
+		res, err = fromStringToUint64(a)
+		if err == nil {
+			return res.(D), nil
+		}
+		return res.(D), err
+	case float32:
+		res, err = fromStringToFloat32(a)
+		if err == nil {
+			return res.(D), nil
+		}
+		return res.(D), err
+	case float64:
+		res, err = fromStringToFloat64(a)
+		if err == nil {
+			return res.(D), nil
+		}
+		return res.(D), err
+	case bool:
+		res, err = fromStringToBool(a)
+		if err == nil {
+			return res.(D), nil
+		}
+		return res.(D), err
+	case string:
+		return d, nil
+	}
+	return d, nil
+}
+
+func (s intConverter[D]) convert(a int, d D) (D, error) {
+	var res interface{}
+	var err error
+	switch any(d).(type) {
+	case int:
+		return d, nil
+	case int8:
+		res, err = fromIntToInt8(a)
+		if err == nil {
+			return res.(D), nil
+		}
+	case int16:
+		res, err = fromIntToInt16(a)
+		if err == nil {
+			return res.(D), nil
+		}
+	case int32:
+		res, err = fromIntToInt32(a)
+		if err == nil {
+			return res.(D), nil
+		}
+	case int64:
+		res, err = fromIntToInt64(a)
+		if err == nil {
+			return res.(D), nil
+		}
+	case uint:
+		res, err = fromIntToUint(a)
+		if err == nil {
+			return res.(D), nil
+		}
+	case uint8:
+		res, err = fromIntToUint8(a)
+		if err == nil {
+			return res.(D), nil
+		}
+	case uint16:
+		res, err = fromIntToUint16(a)
+		if err == nil {
+			return res.(D), nil
+		}
+	case uint32:
+		res, err = fromIntToUint32(a)
+		if err == nil {
+			return res.(D), nil
+		}
+	case uint64:
+		res, err = fromIntToUint64(a)
+		if err == nil {
+			return res.(D), nil
+		}
+	case float32:
+		res, err = fromIntToFloat32(a)
+		if err == nil {
+			return res.(D), nil
+		}
+	case float64:
+		res, err = fromIntToFloat64(a)
+		if err == nil {
+			return res.(D), nil
+		}
+	case bool:
+		res, err = fromIntToBool(a)
+		if err == nil {
+			return res.(D), nil
+		}
+	}
+	return d, nil
+}
+
+func (s int8Converter[D]) convert(a int8, d D) (D, error) {
+	var res interface{}
+	switch any(d).(type) {
+	case int, int8, int16, int32, int64:
+		return d, nil
+	case uint, uint8, uint16, uint32, uint64:
+		if a < 0 {
+			return res.(D), errs.CustomError("Given number should be greater or than zero.")
+		}
+		res = a
+		return res.(D), nil
+	case float32:
+		if a < 0 {
+			return res.(D), errs.CustomError("Given number should be greater or than zero.")
+		}
+		res = float32(a)
+		return res.(D), nil
+	case float64:
+		if a < 0 {
+			return res.(D), errs.CustomError("Given number should be greater or than zero.")
+		}
+		res = float64(a)
+		return res.(D), nil
+	case bool:
+		if a == 0 {
+			res = false
+			return res.(D), nil
+		} else if a == 1 {
+			res = true
+			return res.(D), nil
+		}
+		res = false
+		return res.(D), errs.CustomError("Given number should be equal zero or one.")
+	}
+	return d, nil
+}
+
+func (s int8Converter[D]) convert(a int8, d D) (D, error) {
+	var res interface{}
+	switch any(d).(type) {
+	case int, int8, int16, int32, int64:
+		return d, nil
+	case uint, uint8, uint16, uint32, uint64:
+		if a < 0 {
+			return res.(D), errs.CustomError("Given number should be greater or than zero.")
+		}
+		res = a
+		return res.(D), nil
+	case float32:
+		if a < 0 {
+			return res.(D), errs.CustomError("Given number should be greater or than zero.")
+		}
+		res = float32(a)
+		return res.(D), nil
+	case float64:
+		if a < 0 {
+			return res.(D), errs.CustomError("Given number should be greater or than zero.")
+		}
+		res = float64(a)
+		return res.(D), nil
+	case bool:
+		if a == 0 {
+			res = false
+			return res.(D), nil
+		} else if a == 1 {
+			res = true
+			return res.(D), nil
+		}
+		res = false
+		return res.(D), errs.CustomError("Given number should be equal zero or one.")
+	}
+	return d, nil
+}
+
+func getConvertable[T, D any](t T) (iconverter[T, D], D, error) {
+	var def D
+	var convertable interface{}
+	switch any(t).(type) {
+	case string:
+		convertable = stringConverter[D]{}
+		return convertable.(iconverter[T, D]), def, nil
+	default:
+		return nil, def, errs.ErrUnsupportedType
+	}
+
 }
