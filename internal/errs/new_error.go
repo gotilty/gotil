@@ -9,6 +9,7 @@ var (
 	ErrUnsupportedType = errors.New("unsupported type.")
 	ErrEmptyString     = errors.New("the given string is empty.")
 	ErrNilReference    = errors.New("the given parameter is nil.")
+	ErrOutOfRange      = errors.New("converter: out of range.")
 )
 
 func NewUnsupportedTypeError(kind string) error {

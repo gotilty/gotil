@@ -19,11 +19,15 @@ type location struct {
 }
 
 func TestSort(t *testing.T) {
-	a := assert.New(t)
-	input := []int64{-100, -5, 30, 100, 5, 11, 1000, 33, 55}
-	expected := []int64{-100, -5, 5, 11, 30, 33, 55, 100, 1000}
-	result := gotil.Sort(input)
-	a.Equal(expected, result)
+
+	a := "10"
+	r, _ := gotil.ToInt8(a)
+	fmt.Println(r)
+	// a := assert.New(t)
+	// input := []int64{-100, -5, 30, 100, 5, 11, 1000, 33, 55}
+	// expected := []int64{-100, -5, 5, 11, 30, 33, 55, 100, 1000}
+	// result := gotil.Sort(input)
+	// a.Equal(expected, result)
 }
 
 func ExampleSort() {
@@ -75,6 +79,7 @@ func TestSortBy(t *testing.T) {
 				city: "Boston",
 			},
 		},
+
 		{
 			name: "Joe",
 			age:  30,
