@@ -79,6 +79,7 @@ func TestSortBy(t *testing.T) {
 				city: "Boston",
 			},
 		},
+
 		{
 			name: "Joe",
 			age:  30,

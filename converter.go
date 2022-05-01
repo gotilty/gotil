@@ -1,10 +1,8 @@
 package gotil
 
 import (
-	"bytes"
 	"fmt"
 	"math"
-	"reflect"
 	"strconv"
 
 	"github.com/gotilty/gotil/internal/errs"
@@ -13,127 +11,28 @@ import (
 //ToFloat32 returns float32(0) with an error if the parameter is unsupported type.
 //Just works with all primitive types.
 func ToFloat32[T any](val T) (float32, error) {
-	switch any(val).(type) {
-	case string:
-		v, err := fromStringToFloat32(any(val).(string))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case int, int8, int16, int32, int64:
-		val_int, err_a := ToInt(val)
-		if err_a == nil {
-			v, err_b := fromIntToFloat32(val_int)
-			if err_b == nil {
-				return v, nil
-			}
-		}
-	case uint, uint8, uint16, uint32, uint64:
-		v, err := fromUint64ToFloat32(any(val).(uint64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case float32, float64:
-		v, err := fromFloat64ToFloat32(any(val).(float64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case bool:
-		v, err := fromBoolToFloat32(any(val).(bool))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	}
-
-	return 0, nil
+	var result float32
+	convertable, def, _ := getConvertable[T, float32](val)
+	result, _ = convertable.convert(val, def)
+	return result, nil
 }
 
 //ToFloat64 returns float64(0) with an error if the parameter is unsupported type.
 //Just works with all primitive types.
 func ToFloat64[T any](val T) (float64, error) {
-	switch any(val).(type) {
-	case string:
-		v, err := fromStringToFloat64(any(val).(string))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case int, int8, int16, int32, int64:
-		val_int, err_a := ToInt(val)
-		if err_a == nil {
-			v, err_b := fromIntToFloat64(val_int)
-			if err_b == nil {
-				return v, nil
-			}
-		}
-
-	case uint, uint8, uint16, uint32, uint64:
-		v, err := fromUint64ToFloat64(any(val).(uint64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case float32, float64:
-		v, err := fromFloat64ToFloat64(any(val).(float64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case bool:
-		v, err := fromBoolToFloat64(any(val).(bool))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	}
-
-	return 0, nil
+	var result float64
+	convertable, def, _ := getConvertable[T, float64](val)
+	result, _ = convertable.convert(val, def)
+	return result, nil
 }
 
 //ToInt returns int(0) with an error if the parameter is unsupported type.
 //Just works with all primitive types.
 func ToInt[T any](val T) (int, error) {
-	switch any(val).(type) {
-	case string:
-		v, err := fromStringToInt(any(val).(string))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case int:
-		return int(any(val).(int)), nil
-	case int8:
-		return int(any(val).(int8)), nil
-	case int16:
-		return int(any(val).(int16)), nil
-	case int32:
-		return int(any(val).(int32)), nil
-	case int64:
-		return int(any(val).(int64)), nil
-	case uint, uint8, uint16, uint32, uint64:
-		v, err := fromUint64ToInt(any(val).(uint64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case float32, float64:
-		v, err := fromFloat64ToInt(any(val).(float64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case bool:
-		v, err := fromBoolToInt(any(val).(bool))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	}
-
-	return 0, nil
+	var result int
+	convertable, def, _ := getConvertable[T, int](val)
+	result, _ = convertable.convert(val, def)
+	return result, nil
 }
 
 //ToInt8 returns int8(0) with an error if the parameter is unsupported type.
@@ -148,1050 +47,76 @@ func ToInt8[T any](val T) (int8, error) {
 //ToInt16 returns int16(0) with an error if the parameter is unsupported type.
 //Just works with all primitive types.
 func ToInt16[T any](val T) (int16, error) {
-	switch any(val).(type) {
-	case string:
-		v, err := fromStringToInt16(any(val).(string))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case int, int8, int16, int32, int64:
-		v, err := fromInt64ToInt16(any(val).(int64))
-		if err == nil {
-			return v, nil
-		}
-	case uint, uint8, uint16, uint32, uint64:
-		v, err := fromUint64ToInt16(any(val).(uint64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case float32, float64:
-		v, err := fromFloat64ToInt16(any(val).(float64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case bool:
-		v, err := fromBoolToInt16(any(val).(bool))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	}
-
-	return 0, nil
+	var result int16
+	convertable, def, _ := getConvertable[T, int16](val)
+	result, _ = convertable.convert(val, def)
+	return result, nil
 }
 
 //ToInt32 returns int32(0) with an error if the parameter is unsupported type.
 //Just works with all primitive types.
 func ToInt32[T any](val T) (int32, error) {
-	switch any(val).(type) {
-	case string:
-		v, err := fromStringToInt32(any(val).(string))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case int, int8, int16, int32, int64:
-		v, err := fromInt64ToInt32(any(val).(int64))
-		if err == nil {
-			return v, nil
-		}
-	case uint, uint8, uint16, uint32, uint64:
-		v, err := fromUint64ToInt32(any(val).(uint64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case float32, float64:
-		v, err := fromFloat64ToInt32(any(val).(float64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case bool:
-		v, err := fromBoolToInt32(any(val).(bool))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	}
-
-	return 0, nil
+	var result int32
+	convertable, def, _ := getConvertable[T, int32](val)
+	result, _ = convertable.convert(val, def)
+	return result, nil
 }
 
 //ToInt64 returns int64(0) with an error if the parameter is unsupported type.
 //Just works with all primitive types.
 func ToInt64[T any](val T) (int64, error) {
-	switch any(val).(type) {
-	case string:
-		v, err := fromStringToInt64(any(val).(string))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case int, int8, int16, int32, int64:
-		return int64(any(val).(int)), nil
-	case uint, uint8, uint16, uint32, uint64:
-		v, err := fromUint64ToInt64(any(val).(uint64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case float32, float64:
-		v, err := fromFloat64ToInt64(any(val).(float64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case bool:
-		v, err := fromBoolToInt64(any(val).(bool))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	}
-
-	return 0, nil
-}
-
-//ToString returns empty string if the parameter is unsupported type.
-//Just works with all primitive types, arrays and slices.
-//alternative for slice and array gotil.Join(a, separator)
-//
-//Example1:
-// 		ToString([]int{10,20,30}) returns "10,20,30"
-//Example2:
-// 	data := []user{
-// 		{
-// 			name: "Micheal",
-// 			age:  27,
-// 		},
-// 		{
-// 			name: "Joe",
-// 			age:  30,
-// 	 	},
-// 	}
-// 	ToString(data)
-// 	// Output: "{Micheal 27},{Joe 30}"
-func ToString[T any](s ...T) (string, error) {
-	var buffer bytes.Buffer
-	for _, val := range s {
-		switch any(val).(type) {
-		case string:
-			buffer.WriteString(any(val).(string))
-		case int, int8, int16, int32, int64:
-			v, err := fromIntToStr(any(val).(int))
-			if err == nil {
-				buffer.WriteString(v)
-			}
-		case uint, uint8, uint16, uint32, uint64:
-			v, err := fromUint64ToStr(any(val).(uint64))
-			if err == nil {
-				buffer.WriteString(v)
-			}
-		case float32, float64:
-			v, err := fromFloat64ToStr(any(val).(float64))
-			if err == nil {
-				buffer.WriteString(v)
-			}
-		case bool:
-			buffer.WriteString(fromBoolToStr(any(val).(bool)))
-		default:
-			if reflect.TypeOf(val).Kind() == reflect.Array ||
-				reflect.TypeOf(val).Kind() == reflect.Slice ||
-				reflect.TypeOf(val).Kind() == reflect.Map ||
-				reflect.TypeOf(val).Kind() == reflect.Struct {
-				for _, v := range s {
-					buffer.WriteString(fmt.Sprint(v))
-				}
-			}
-		}
-		return buffer.String(), nil
-
-	}
-	return "", nil
-
-}
-
-//Join just works with array and slice
-//
-//Example1:
-//	Join([]int{10,20,30},"-") returns "10-20-30"
-func Join[T any](val []T, seperator string) (string, error) {
-	if val == nil {
-		return "", errs.NilReferenceTypeError()
-	}
-	if len(val) == 0 {
-		return "", nil
-	}
-	switch any(val).(type) {
-	case []string:
-		v, err := arrayToStringWithSeparator(any(val).([]string), seperator)
-		if err != nil {
-			return v, nil
-		}
-		return "", err
-	case []int, []int8, []int16, []int32, []int64:
-		v, err := arrayToStringWithSeparator(any(val).([]int64), seperator)
-		if err != nil {
-			return v, nil
-		}
-		return "", err
-	case []uint, []uint8, []uint16, []uint32, []uint64:
-		v, err := arrayToStringWithSeparator(any(val).([]uint64), seperator)
-		if err != nil {
-			return v, nil
-		}
-		return "", err
-	case []float32, []float64:
-		v, err := arrayToStringWithSeparator(any(val).([]float64), seperator)
-		if err != nil {
-			return v, nil
-		}
-		return "", err
-	case []bool:
-		v, err := arrayToStringWithSeparator(any(val).([]bool), seperator)
-		if err != nil {
-			return v, nil
-		}
-		return "", err
-	}
-	return "", nil
+	var result int64
+	convertable, def, _ := getConvertable[T, int64](val)
+	result, _ = convertable.convert(val, def)
+	return result, nil
 }
 
 //ToUint returns uint(0) with an error if the parameter is unsupported type.
 //Just works with all primitive types.
 func ToUint[T any](val T) (uint, error) {
-	switch any(val).(type) {
-	case string:
-		v, err := fromStringToUint(any(val).(string))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case int, int8, int16, int32, int64:
-		v, err := fromInt64ToUint(any(val).(int64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case uint, uint8, uint16, uint32, uint64:
-		v, err := fromUint64ToUint(any(val).(uint64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case float32, float64:
-		v, err := fromFloat64ToUint(any(val).(float64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case bool:
-		v, err := fromBoolToUint(any(val).(bool))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	}
-
-	return 0, nil
+	var result uint
+	convertable, def, _ := getConvertable[T, uint](val)
+	result, _ = convertable.convert(val, def)
+	return result, nil
 }
 
 //ToUint8 returns uint8(0) with an error if the parameter is unsupported type.
 //Just works with all primitive types.
 func ToUint8[T any](val T) (uint8, error) {
-	switch any(val).(type) {
-	case string:
-		v, err := fromStringToUint8(any(val).(string))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case int, int8, int16, int32, int64:
-		v, err := fromInt64ToUint8(any(val).(int64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case uint, uint8, uint16, uint32, uint64:
-		v, err := fromUint64ToUint8(any(val).(uint64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case float32, float64:
-		v, err := fromFloat64ToUint8(any(val).(float64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case bool:
-		v, err := fromBoolToUint8(any(val).(bool))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	}
-
-	return 0, nil
+	var result uint8
+	convertable, def, _ := getConvertable[T, uint8](val)
+	result, _ = convertable.convert(val, def)
+	return result, nil
 }
 
 //ToUint16 returns uint16(0) with an error if the parameter is unsupported type.
 //Just works with all primitive types.
 func ToUint16[T any](val T) (uint16, error) {
-	switch any(val).(type) {
-	case string:
-		v, err := fromStringToUint16(any(val).(string))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case int, int8, int16, int32, int64:
-		v, err := fromInt64ToUint16(any(val).(int64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case uint, uint8, uint16, uint32, uint64:
-		v, err := fromUint64ToUint16(any(val).(uint64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case float32, float64:
-		v, err := fromFloat64ToUint16(any(val).(float64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case bool:
-		v, err := fromBoolToUint16(any(val).(bool))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	}
-
-	return 0, nil
+	var result uint16
+	convertable, def, _ := getConvertable[T, uint16](val)
+	result, _ = convertable.convert(val, def)
+	return result, nil
 }
 
 //ToUint32 returns uint32(0) with an error if the parameter is unsupported type.
 //Just works with all primitive types.
 func ToUint32[T any](val T) (uint32, error) {
-	switch any(val).(type) {
-	case string:
-		v, err := fromStringToUint32(any(val).(string))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case int, int8, int16, int32, int64:
-		v, err := fromInt64ToUint32(any(val).(int64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case uint, uint8, uint16, uint32, uint64:
-		v, err := fromUint64ToUint32(any(val).(uint64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case float32, float64:
-		v, err := fromFloat64ToUint32(any(val).(float64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case bool:
-		v, err := fromBoolToUint32(any(val).(bool))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	}
-
-	return 0, nil
+	var result uint32
+	convertable, def, _ := getConvertable[T, uint32](val)
+	result, _ = convertable.convert(val, def)
+	return result, nil
 }
 
 //ToUint64 returns uint64(0) with an error if the parameter is unsupported type.
 //Just works with all primitive types.
 func ToUint64[T any](val T) (uint64, error) {
-	switch any(val).(type) {
-	case string:
-		v, err := fromStringToUint64(any(val).(string))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case int, int8, int16, int32, int64:
-		return uint64(any(val).(int)), nil
-	case uint, uint8, uint16, uint32, uint64:
-		v, err := fromUint64ToUint64(any(val).(uint64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case float32, float64:
-		v, err := fromFloat64ToUint64(any(val).(float64))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	case bool:
-		v, err := fromBoolToUint64(any(val).(bool))
-		if err == nil {
-			return v, nil
-		}
-		return 0, err
-	}
-
-	return 0, nil
+	var result uint64
+	convertable, def, _ := getConvertable[T, uint64](val)
+	result, _ = convertable.convert(val, def)
+	return result, nil
 }
 
 // PRIVATE
-
-func fromIntToFloat32(s int) (float32, error) {
-	var maxInt32 float64 = math.MaxInt32
-	if s > int(maxInt32) {
-		return 0, errs.CustomError("The entered number cannot be greater than max float32.")
-	}
-	return float32(s), nil
-}
-
-func fromFloat64ToFloat32(s float64) (float32, error) {
-	var maxInt float64 = math.MaxFloat32
-	if s > float64(maxInt) {
-		return 0, errs.CustomError("the entered number cannot be greater than max float32.")
-	}
-	return float32(s), nil
-}
-
-func fromStringToFloat32(s string) (float32, error) {
-	if s == "" {
-		return 0, nil
-	}
-	d, err := strconv.ParseFloat(s, 32)
-	if err == nil {
-		return float32(d), nil
-	}
-	return 0, err
-}
-
-func fromUint64ToFloat32(s uint64) (float32, error) {
-	var maxFloat32 float64 = math.MaxFloat32
-	if s > uint64(maxFloat32) {
-		return 0, errs.CustomError("The entered number cannot be greater than max float32.")
-	}
-	return float32(s), nil
-}
-func fromBoolToFloat32(s bool) (float32, error) {
-	if s {
-		return 1, nil
-	} else {
-		return 0, nil
-	}
-}
-
-func fromFloat64ToFloat64(s float64) (float64, error) {
-	var maxFloat float64 = math.MaxFloat64
-	if s > float64(maxFloat) {
-		return 0, errs.CustomError("the entered number cannot be greater than max float64.")
-	}
-	return float64(s), nil
-}
-
-func fromStringToFloat64(s string) (float64, error) {
-	if s == "" {
-		return 0, nil
-	}
-	d, err := strconv.ParseFloat(s, 64)
-	if err == nil {
-		return float64(d), nil
-	}
-	return 0, err
-}
-
-func fromUint64ToFloat64(s uint64) (float64, error) {
-	var maxFloat float64 = math.MaxFloat64
-	if s > uint64(maxFloat) {
-		return 0, errs.CustomError("The entered number cannot be greater than max float64.")
-	}
-	return float64(s), nil
-}
-func fromBoolToFloat64(s bool) (float64, error) {
-	if s {
-		return 1, nil
-	} else {
-		return 0, nil
-	}
-}
-
-func fromInt64ToInt(s int64) (int, error) {
-	var maxInt int64 = math.MaxInt
-	if s > maxInt {
-		return 0, errs.CustomError("The entered number cannot be greater than max int.")
-	}
-	return int(s), nil
-}
-
-func fromFloat64ToInt(s float64) (int, error) {
-	var maxInt int64 = math.MaxInt
-	if s > float64(maxInt) {
-		return 0, errs.CustomError("The entered number cannot be greater than max int.")
-	}
-	return int(s), nil
-}
-
-func fromStringToInt(s string) (int, error) {
-	if s == "" {
-		return 0, nil
-	}
-	d, err := strconv.ParseInt(s, 10, 64)
-	if err == nil {
-		return fromInt64ToInt(d)
-	}
-	return 0, err
-}
-
-func fromUint64ToInt(s uint64) (int, error) {
-	var maxInt int64 = math.MaxInt
-	if s > uint64(maxInt) {
-		return 0, errs.CustomError("The entered number cannot be greater than max int.")
-	}
-	return int(s), nil
-}
-
-func fromBoolToInt(s bool) (int, error) {
-	if s {
-		return 1, nil
-	} else {
-		return 0, nil
-	}
-}
-
-// FROM INT
-
-func fromIntToInt8(s int) (int8, error) {
-	var maxInt int = math.MaxInt8
-	if s > maxInt {
-		return 0, errs.CustomError("The entered number cannot be greater than max than max int8.")
-	}
-	return int8(s), nil
-}
-
-func fromIntToInt16(s int) (int16, error) {
-	var maxInt int = math.MaxInt16
-	if s > maxInt {
-		return 0, errs.CustomError("The entered number cannot be greater than max than max int16.")
-	}
-	return int16(s), nil
-}
-
-func fromIntToInt32(s int) (int32, error) {
-	var maxInt int = math.MaxInt32
-	if s > maxInt {
-		return 0, errs.CustomError("The entered number cannot be greater than max int32.")
-	}
-	return int32(s), nil
-}
-
-func fromIntToInt64(s int) (int64, error) {
-	var maxInt int = math.MaxInt64
-	if s > maxInt {
-		return 0, errs.CustomError("The entered number cannot be greater than max int64.")
-	}
-	return int64(s), nil
-}
-
-func fromIntToUint8(s int) (uint8, error) {
-	var maxUint int = math.MaxUint8
-	if s > maxUint || s < 0 {
-		return 0, errs.CustomError("The entered number cannot be greater than max uint8 or smaller than 0.")
-	}
-	return uint8(s), nil
-}
-
-func fromIntToUint16(s int) (uint16, error) {
-	var maxInt int = math.MaxUint16
-	if s > maxInt || s < 0 {
-		return 0, errs.CustomError("The entered number cannot be greater than max uint16 or smaller than 0.")
-	}
-	return uint16(s), nil
-}
-
-func fromIntToUint32(s int) (uint32, error) {
-	var maxInt int = math.MaxUint32
-	if s > maxInt || s < 0 {
-		return 0, errs.CustomError("The entered number cannot be greater than max uint32 or smaller than 0.")
-	}
-	return uint32(s), nil
-}
-
-func fromIntToUint64(s int) (uint64, error) {
-	var maxUint uint = math.MaxUint64
-	if s > int(maxUint) || s < 0 {
-		return 0, errs.CustomError("The entered number cannot be greater than max uint or smaller than 0.")
-	}
-	return uint64(s), nil
-}
-
-func fromIntToUint(s int) (uint, error) {
-	var maxUint uint = math.MaxUint
-	if s > int(maxUint) || s < 0 {
-		return 0, errs.CustomError("The entered number cannot smaller than 0.")
-	}
-	return uint(s), nil
-}
-
-func fromIntToBool(s int) (bool, error) {
-	if s == 0 {
-		return false, nil
-	} else if s == 1 {
-		return true, nil
-	}
-	return false, errs.CustomError("The entered number should be 0 or 1.")
-}
-
-func fromInt64ToInt8(s int64) (int8, error) {
-	var maxInt int64 = math.MaxInt8
-	if s > maxInt {
-		return 0, errs.CustomError("The entered number cannot be greater than max int8.")
-	}
-	return int8(s), nil
-}
-
-func fromIntToFloat64(s int) (float64, error) {
-	var maxInt64 int = math.MaxInt64
-	if s > maxInt64 {
-		return 0, errs.CustomError("The entered number cannot be greater than max float64.")
-	}
-	return float64(s), nil
-}
-
-func fromFloat64ToInt8(s float64) (int8, error) {
-	var maxInt int64 = math.MaxInt8
-	if s > float64(maxInt) {
-		return 0, errs.CustomError("The entered number cannot be greater than max int8.")
-	}
-	return int8(s), nil
-}
-
-func fromStringToInt8(s string) (int8, error) {
-	if s == "" {
-		return 0, nil
-	}
-	d, err := strconv.ParseInt(s, 10, 8)
-	if err == nil {
-		return fromInt64ToInt8(d)
-	}
-	return 0, err
-}
-
-func fromUint64ToInt8(s uint64) (int8, error) {
-	var maxInt int64 = math.MaxInt8
-	if s > uint64(maxInt) {
-		return 0, errs.CustomError("The entered number cannot be greater than max int8.")
-	}
-	return int8(s), nil
-}
-
-func fromBoolToInt8(s bool) (int8, error) {
-	if s {
-		return 1, nil
-	} else {
-		return 0, nil
-	}
-}
-
-func fromInt64ToInt16(s int64) (int16, error) {
-	var maxInt int64 = math.MaxInt16
-	// maxInt == 2147483648
-	if s > maxInt {
-		return 0, errs.CustomError("The entered number cannot be greater than max int16.")
-	}
-	return int16(s), nil
-}
-
-func fromFloat64ToInt16(s float64) (int16, error) {
-	var maxInt int64 = math.MaxInt16
-	if s > float64(maxInt) {
-		return 0, errs.CustomError("The entered number cannot be greater than max int16.")
-	}
-	return int16(s), nil
-}
-
-func fromStringToInt16(s string) (int16, error) {
-	if s == "" {
-		return 0, nil
-	}
-	d, err := strconv.ParseInt(s, 10, 16)
-	if err == nil {
-		return fromInt64ToInt16(d)
-	}
-	return 0, err
-}
-
-func fromUint64ToInt16(s uint64) (int16, error) {
-	var maxInt int64 = math.MaxInt16
-	if s > uint64(maxInt) {
-		return 0, errs.CustomError("The entered number cannot be greater than max int16.")
-	}
-	return int16(s), nil
-}
-
-func fromBoolToInt16(s bool) (int16, error) {
-	if s {
-		return 1, nil
-	} else {
-		return 0, nil
-	}
-}
-
-func fromInt64ToInt32(s int64) (int32, error) {
-	var maxInt int64 = math.MaxInt32
-	// maxInt == 2147483648
-	if s > maxInt {
-		return 0, errs.CustomError("The entered number cannot be greater than max int32.")
-	}
-	return int32(s), nil
-}
-
-func fromFloat64ToInt32(s float64) (int32, error) {
-	var maxInt int64 = math.MaxInt32
-	if s > float64(maxInt) {
-		return 0, errs.CustomError("The entered number cannot be greater than max int32.")
-	}
-	return int32(s), nil
-}
-
-func fromStringToInt32(s string) (int32, error) {
-	if s == "" {
-		return 0, nil
-	}
-	d, err := strconv.ParseInt(s, 10, 32)
-	if err == nil {
-		return fromInt64ToInt32(d)
-	}
-	return 0, err
-}
-
-func fromUint64ToInt32(s uint64) (int32, error) {
-	var maxInt int64 = math.MaxInt32
-	if s > uint64(maxInt) {
-		return 0, errs.CustomError("The entered number cannot be greater than max int32.")
-	}
-	return int32(s), nil
-}
-
-func fromBoolToInt32(s bool) (int32, error) {
-	if s {
-		return 1, nil
-	} else {
-		return 0, nil
-	}
-}
-
-func fromFloat64ToInt64(s float64) (int64, error) {
-	var maxInt int64 = math.MaxInt64
-	if s > float64(maxInt) {
-		return 0, errs.CustomError("the entered number cannot be greater than max int64.")
-	}
-	return int64(s), nil
-}
-
-func fromStringToInt64(s string) (int64, error) {
-	if s == "" {
-		return 0, nil
-	}
-	d, err := strconv.ParseInt(s, 10, 64)
-	if err == nil {
-		return int64(d), nil
-	}
-	return 0, err
-}
-
-func fromUint64ToInt64(s uint64) (int64, error) {
-	var maxInt int64 = math.MaxInt32
-	if s > uint64(maxInt) {
-		return 0, errs.CustomError("The entered number cannot be greater than max int64.")
-	}
-	return int64(s), nil
-}
-func fromBoolToInt64(s bool) (int64, error) {
-	if s {
-		return 1, nil
-	} else {
-		return 0, nil
-	}
-}
-
-func fromIntToStr(s int) (string, error) {
-	var maxInt int = math.MaxInt
-	if s > maxInt {
-		return "", errs.CustomError("the entered number cannot be greater than max int.")
-	}
-	return strconv.Itoa(int(s)), nil
-}
-
-func fromFloat64ToStr(s float64) (string, error) {
-	var maxFloat float64 = math.MaxFloat64
-	if s > maxFloat {
-		return "", errs.CustomError("the entered number cannot be greater than max uint.")
-	}
-	return strconv.FormatFloat(s, 'f', -1, 64), nil
-}
-
-func fromUint64ToStr(s uint64) (string, error) {
-	var maxUint uint64 = math.MaxUint
-	if s > maxUint {
-		return "", errs.CustomError("the entered number cannot be greater than max uint.")
-	}
-	return strconv.FormatUint(uint64(s), 10), nil
-}
-func fromBoolToStr(s bool) string {
-	if s == true {
-		return "true"
-	} else {
-		return "false"
-	}
-}
-
-func arrayToStringWithSeparator[T any](val []T, separator string) (string, error) {
-	buffer := ""
-	length := len(val)
-	for i := 0; i < length; i++ {
-		val := val[i]
-		if b, err := ToString(val); err == nil {
-			if i == length-1 {
-				buffer += b
-			} else {
-				buffer += b + separator
-			}
-		} else {
-			return "", err
-		}
-	}
-	return buffer, nil
-}
-
-func fromInt64ToUint(s int64) (uint, error) {
-	var maxInt int64 = math.MaxInt
-	if s > maxInt {
-		return 0, errs.CustomError("The entered number cannot be greater than max int.")
-	}
-	return uint(s), nil
-}
-
-func fromFloat64ToUint(s float64) (uint, error) {
-	var maxUint uint64 = math.MaxUint
-	if s > float64(maxUint) {
-		return 0, errs.CustomError("the entered number cannot be greater than max uint.")
-	}
-	return uint(s), nil
-}
-
-func fromStringToUint(s string) (uint, error) {
-	if s == "" {
-		return 0, nil
-	}
-	d, err := strconv.ParseUint(s, 10, 8)
-	if err == nil {
-		return uint(d), nil
-	}
-	return 0, err
-}
-
-func fromUint64ToUint(s uint64) (uint, error) {
-	var maxInt uint64 = math.MaxUint
-	if s > uint64(maxInt) {
-		return 0, errs.CustomError("The entered number cannot be greater than max uint.")
-	}
-	return uint(s), nil
-}
-
-func fromBoolToUint(s bool) (uint, error) {
-	if s {
-		return 1, nil
-	} else {
-		return 0, nil
-	}
-}
-
-func fromInt64ToUint8(s int64) (uint8, error) {
-	var maxInt int64 = math.MaxInt8
-	if s > maxInt {
-		return 0, errs.CustomError("The entered number cannot be greater than max uint8.")
-	}
-	return uint8(s), nil
-}
-
-func fromFloat64ToUint8(s float64) (uint8, error) {
-	var maxUint uint64 = math.MaxUint8
-	if s > float64(maxUint) {
-		return 0, errs.CustomError("the entered number cannot be greater than max uint8.")
-	}
-	return uint8(s), nil
-}
-
-func fromStringToUint8(s string) (uint8, error) {
-	if s == "" {
-		return 0, nil
-	}
-	d, err := strconv.ParseUint(s, 10, 8)
-	if err == nil {
-		return uint8(d), nil
-	}
-	return 0, err
-}
-
-func fromUint64ToUint8(s uint64) (uint8, error) {
-	var maxInt uint64 = math.MaxUint16
-	if s > uint64(maxInt) {
-		return 0, errs.CustomError("The entered number cannot be greater than max uint8.")
-	}
-	return uint8(s), nil
-}
-
-func fromBoolToUint8(s bool) (uint8, error) {
-	if s {
-		return 1, nil
-	} else {
-		return 0, nil
-	}
-}
-
-func fromInt64ToUint16(s int64) (uint16, error) {
-	var maxInt int64 = math.MaxUint16
-	if s > maxInt {
-		return 0, errs.CustomError("The entered number cannot be greater than max uint16.")
-	}
-	return uint16(s), nil
-}
-
-func fromFloat64ToUint16(s float64) (uint16, error) {
-	var maxUint uint64 = math.MaxUint16
-	if s > float64(maxUint) {
-		return 0, errs.CustomError("the entered number cannot be greater than max uint16.")
-	}
-	return uint16(s), nil
-}
-
-func fromStringToUint16(s string) (uint16, error) {
-	if s == "" {
-		return 0, nil
-	}
-	d, err := strconv.ParseUint(s, 10, 16)
-	if err == nil {
-		return uint16(d), nil
-	}
-	return 0, err
-}
-
-func fromUint64ToUint16(s uint64) (uint16, error) {
-	var maxInt uint64 = math.MaxUint16
-	if s > uint64(maxInt) {
-		return 0, errs.CustomError("The entered number cannot be greater than max uint16.")
-	}
-	return uint16(s), nil
-}
-
-func fromBoolToUint16(s bool) (uint16, error) {
-	if s {
-		return 1, nil
-	} else {
-		return 0, nil
-	}
-}
-
-func fromStringToUint32(s string) (uint32, error) {
-	if s == "" {
-		return 0, nil
-	}
-	d, err := strconv.ParseUint(s, 10, 32)
-	if err == nil {
-		return uint32(d), nil
-	}
-	return 0, err
-}
-
-func fromUint64ToUint32(s uint64) (uint32, error) {
-	var maxInt uint64 = math.MaxUint32
-	if s > uint64(maxInt) {
-		return 0, errs.CustomError("The entered number cannot be greater than max uint32.")
-	}
-	return uint32(s), nil
-}
-
-func fromBoolToUint32(s bool) (uint32, error) {
-	if s {
-		return 1, nil
-	} else {
-		return 0, nil
-	}
-}
-
-func fromFloat64ToUint32(s float64) (uint32, error) {
-	var maxUint uint64 = math.MaxUint32
-	if s > float64(maxUint) {
-		return 0, errs.CustomError("the entered number cannot be greater than max uint32.")
-	}
-	return uint32(s), nil
-}
-
-func fromInt64ToUint32(s int64) (uint32, error) {
-	var maxInt int64 = math.MaxUint32
-	if s > maxInt {
-		return 0, errs.CustomError("The entered number cannot be greater than max uint32.")
-	}
-	return uint32(s), nil
-}
-
-func fromStringToUint64(s string) (uint64, error) {
-	if s == "" {
-		return 0, nil
-	}
-	d, err := strconv.ParseUint(s, 10, 64)
-	if err == nil {
-		return uint64(d), nil
-	}
-	return 0, err
-}
-
-func fromFloat64ToUint64(s float64) (uint64, error) {
-	var maxUint uint64 = math.MaxUint64
-	if s > float64(maxUint) {
-		return 0, errs.CustomError("the entered number cannot be greater than max uint64.")
-	}
-	return uint64(s), nil
-}
-
-func fromUint64ToUint64(s uint64) (uint64, error) {
-	var maxInt uint64 = math.MaxUint64
-	if s > uint64(maxInt) {
-		return 0, errs.CustomError("The entered number cannot be greater than max uint64.")
-	}
-	return uint64(s), nil
-}
-
-func fromBoolToUint64(s bool) (uint64, error) {
-	if s {
-		return 1, nil
-	} else {
-		return 0, nil
-	}
-}
-
-func fromStringToBool(s string) (bool, error) {
-	if s == "1" || s == "true" {
-		return true, nil
-	} else {
-		return false, nil
-	}
-}
 
 type iconverter[T any, D any] interface {
 	convert(a T, d D) (D, error)
@@ -1210,88 +135,171 @@ type int8Converter[D any] struct {
 }
 
 type int16Converter[D any] struct {
-	iconverter[int8, D]
+	iconverter[int16, D]
+}
+type int32Converter[D any] struct {
+	iconverter[int32, D]
+}
+
+type int64Converter[D any] struct {
+	iconverter[int64, D]
+}
+
+type uintConverter[D any] struct {
+	iconverter[uint, D]
+}
+
+type uint8Converter[D any] struct {
+	iconverter[uint8, D]
+}
+
+type uint16Converter[D any] struct {
+	iconverter[uint16, D]
+}
+type uint32Converter[D any] struct {
+	iconverter[uint32, D]
+}
+
+type uint64Converter[D any] struct {
+	iconverter[uint64, D]
+}
+
+type float32Converter[D any] struct {
+	iconverter[float32, D]
+}
+
+type float64Converter[D any] struct {
+	iconverter[float64, D]
+}
+
+type boolConverter[D any] struct {
+	iconverter[bool, D]
+}
+
+func sInt(s string) (int, error) {
+	if s == "" {
+		return 0, nil
+	}
+	if d, err := strconv.Atoi(s); err == nil {
+		return d, nil
+	} else {
+		return 0, err
+	}
+}
+
+func sUInt(s string) (uint64, error) {
+	if s == "" {
+		return 0, nil
+	}
+	if d, err := strconv.ParseUint(s, 10, 0); err == nil {
+		return d, nil
+	} else {
+		return 0, err
+	}
+}
+func sFloat(s string) (float64, error) {
+	if s == "" {
+		return 0, nil
+	}
+	if d, err := strconv.ParseFloat(s, 64); err == nil {
+		return float64(d), nil
+	} else {
+		return 0, err
+	}
+}
+
+func sBool(s string) (bool, error) {
+	if s == "" {
+		return false, nil
+	}
+	if d, err := strconv.ParseBool(s); err == nil {
+		return d, nil
+	} else {
+		return false, err
+	}
 }
 
 func (s stringConverter[D]) convert(a string, d D) (D, error) {
 	var res interface{}
 	var err error
+	res = d
 	switch any(d).(type) {
-	case int:
-		res, err = fromStringToInt(a)
-		if err == nil {
-			return res.(D), nil
+	case int, int8, int16, int32, int64:
+		var maxInt64 int64 = math.MaxInt64
+		if r, err := sInt(a); err == nil {
+			if r > int(maxInt64) {
+				return d, errs.CustomError("The entered number cannot be greater than max int64.")
+			} else {
+				switch any(d).(type) {
+				case int:
+					res = r
+				case int8:
+					res = int8(r)
+				case int16:
+					res = int16(r)
+				case int32:
+					res = int32(r)
+				case int64:
+					res = int64(r)
+				}
+				return res.(D), nil
+			}
+		} else {
+			if err == nil {
+				return res.(D), nil
+			}
+			return res.(D), err
 		}
-		return res.(D), err
-	case int8:
-		res, err = fromStringToInt8(a)
-		if err == nil {
-			return res.(D), nil
+	case uint, uint8, uint16, uint32, uint64:
+		var maxUInt64 uint64 = math.MaxUint64
+		if r, err := sUInt(a); err == nil {
+			if r > maxUInt64 {
+				return d, errs.CustomError("The entered number cannot be greater than max float64.")
+			} else {
+				switch any(d).(type) {
+				case uint:
+					res = r
+				case uint8:
+					res = uint8(r)
+				case uint16:
+					res = uint16(r)
+				case uint32:
+					res = uint32(r)
+				case uint64:
+					res = uint64(r)
+				}
+				return res.(D), nil
+			}
+		} else {
+			if err == nil {
+				return res.(D), nil
+			}
+			return res.(D), err
 		}
-		return res.(D), err
-	case int16:
-		res, err = fromStringToInt16(a)
-		if err == nil {
-			return res.(D), nil
+	case float32, float64:
+		var maxFloat64 float64 = math.MaxFloat64
+		if r, err := sFloat(a); err == nil {
+			if r > maxFloat64 {
+				return d, errs.CustomError("The entered number cannot be greater than max float64.")
+			} else {
+				switch any(d).(type) {
+				case float32:
+					res = float32(r)
+				case float64:
+					res = float64(r)
+				}
+				return res.(D), nil
+			}
+		} else {
+			if err == nil {
+				return res.(D), nil
+			}
+			return res.(D), err
 		}
-		return res.(D), err
-	case int32:
-		res, err = fromStringToInt32(a)
-		if err == nil {
-			return res.(D), nil
-		}
-		return res.(D), err
-	case int64:
-		res, err = fromStringToInt64(a)
-		if err == nil {
-			return res.(D), nil
-		}
-		return res.(D), err
-	case uint:
-		res, err = fromStringToUint(a)
-		if err == nil {
-			return res.(D), nil
-		}
-		return res.(D), err
-	case uint8:
-		res, err = fromStringToUint8(a)
-		if err == nil {
-			return res.(D), nil
-		}
-		return res.(D), err
-	case uint16:
-		res, err = fromStringToUint16(a)
-		if err == nil {
-			return res.(D), nil
-		}
-		return res.(D), err
-	case uint32:
-		res, err = fromStringToUint32(a)
-		if err == nil {
-			return res.(D), nil
-		}
-		return res.(D), err
-	case uint64:
-		res, err = fromStringToUint64(a)
-		if err == nil {
-			return res.(D), nil
-		}
-		return res.(D), err
-	case float32:
-		res, err = fromStringToFloat32(a)
-		if err == nil {
-			return res.(D), nil
-		}
-		return res.(D), err
-	case float64:
-		res, err = fromStringToFloat64(a)
-		if err == nil {
-			return res.(D), nil
-		}
-		return res.(D), err
 	case bool:
-		res, err = fromStringToBool(a)
-		if err == nil {
+		if r, err := sBool(a); err == nil {
+			res = r
+		} else {
 			return res.(D), nil
 		}
 		return res.(D), err
@@ -1303,146 +311,712 @@ func (s stringConverter[D]) convert(a string, d D) (D, error) {
 
 func (s intConverter[D]) convert(a int, d D) (D, error) {
 	var res interface{}
-	var err error
+
 	switch any(d).(type) {
 	case int:
-		return d, nil
+		res = a
 	case int8:
-		res, err = fromIntToInt8(a)
-		if err == nil {
-			return res.(D), nil
+		if a > math.MaxInt8 || a < math.MinInt8 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int8(a)
+	case int16:
+		if a > math.MaxInt16 || a < math.MinInt16 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int16(a)
+	case int32:
+		if a > math.MaxInt32 || a < math.MinInt32 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int32(a)
+	case int64:
+		res = int64(a)
+	case uint:
+		res = uint(a)
+	case uint8:
+		if a > math.MaxUint8 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint8(a)
+	case uint16:
+		if a > math.MaxUint16 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint16(a)
+	case uint32:
+		if a > math.MaxUint32 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint32(a)
+	case uint64:
+		res = uint64(a)
+	case float32:
+		if float64(a) > math.MaxFloat32 {
+			return d, errs.ErrOutOfRange
+		}
+		res = float32(a)
+	case float64:
+		res = float64(a)
+	case string:
+		res = fmt.Sprint(a)
+	case bool:
+		res = a == 1
+	default:
+		return d, nil
+	}
+	return res.(D), nil
+
+}
+
+func (s int8Converter[D]) convert(a int8, d D) (D, error) {
+	var res interface{}
+
+	switch any(d).(type) {
+	case int:
+		res = int(a)
+	case int8:
+		res = a
+	case int16:
+		res = int16(a)
+	case int32:
+		res = int32(a)
+	case int64:
+		res = int64(a)
+	case uint:
+		res = uint(a)
+	case uint8:
+		res = uint8(a)
+	case uint16:
+		res = uint16(a)
+	case uint32:
+		res = uint32(a)
+	case uint64:
+		res = uint64(a)
+	case float32:
+		res = float32(a)
+	case float64:
+		res = float64(a)
+	case string:
+		res = fmt.Sprint(a)
+	case bool:
+		res = a == 1
+	default:
+		return d, nil
+	}
+	return res.(D), nil
+
+}
+
+func (s int16Converter[D]) convert(a int16, d D) (D, error) {
+	var res interface{}
+
+	switch any(d).(type) {
+	case int:
+		res = int(a)
+	case int8:
+		if int(a) > math.MaxInt8 || int(a) < math.MinInt8 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int8(a)
+	case int16:
+		res = a
+	case int32:
+		res = int32(a)
+	case int64:
+		res = int64(a)
+	case uint:
+		res = uint(a)
+	case uint8:
+		if int(a) > math.MaxUint8 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint8(a)
+	case uint16:
+		res = uint16(a)
+	case uint32:
+		res = uint32(a)
+	case uint64:
+		res = uint64(a)
+	case float32:
+		res = float32(a)
+	case float64:
+		res = float64(a)
+	case string:
+		res = fmt.Sprint(a)
+	case bool:
+		res = a == 1
+	default:
+		return d, nil
+	}
+	return res.(D), nil
+}
+
+func (s int32Converter[D]) convert(a int32, d D) (D, error) {
+	var res interface{}
+
+	switch any(d).(type) {
+	case int:
+		res = int(a)
+	case int8:
+		if int(a) > math.MaxInt8 || int(a) < math.MinInt8 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int8(a)
+	case int16:
+		if int(a) > math.MaxInt16 || int(a) < math.MinInt16 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int16(a)
+	case int32:
+		res = a
+	case int64:
+		res = int64(a)
+	case uint:
+		res = uint(a)
+	case uint8:
+		if int(a) > math.MaxUint8 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint8(a)
+	case uint16:
+		if int(a) > math.MaxUint16 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint16(a)
+	case uint32:
+		res = uint32(a)
+	case uint64:
+		res = uint64(a)
+	case float32:
+		res = float32(a)
+	case float64:
+		res = float64(a)
+	case string:
+		res = fmt.Sprint(a)
+	case bool:
+		res = a == 1
+	default:
+		return d, nil
+	}
+	return res.(D), nil
+}
+
+func (s int64Converter[D]) convert(a int64, d D) (D, error) {
+	var res interface{}
+
+	switch any(d).(type) {
+	case int:
+		res = int(a)
+	case int8:
+		if int(a) > math.MaxInt8 || int(a) < math.MinInt8 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int8(a)
+	case int16:
+		if int(a) > math.MaxInt16 || int(a) < math.MinInt16 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int16(a)
+	case int32:
+		if int(a) > math.MaxInt32 || int(a) < math.MinInt32 {
+			return d, errs.ErrOutOfRange
+		}
+		res = a
+	case int64:
+		res = int64(a)
+	case uint:
+		res = uint(a)
+	case uint8:
+		if int(a) > math.MaxUint8 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint8(a)
+	case uint16:
+		if int(a) > math.MaxUint16 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint16(a)
+	case uint32:
+		if int(a) > math.MaxUint32 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint32(a)
+	case uint64:
+		res = uint64(a)
+	case float32:
+		res = float32(a)
+	case float64:
+		res = float64(a)
+	case string:
+		res = fmt.Sprint(a)
+	case bool:
+		res = a == 1
+	default:
+		return d, nil
+	}
+	return res.(D), nil
+}
+
+func (s uintConverter[D]) convert(a uint, d D) (D, error) {
+	var res interface{}
+	switch any(d).(type) {
+	case int:
+		res = a
+	case int8:
+		if a > math.MaxInt8 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int8(a)
+	case int16:
+		if a > math.MaxInt16 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int16(a)
+	case int32:
+		if a > math.MaxInt32 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int32(a)
+	case int64:
+		res = int64(a)
+	case uint:
+		res = uint(a)
+	case uint8:
+		if a > math.MaxUint8 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint8(a)
+	case uint16:
+		if a > math.MaxUint16 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint16(a)
+	case uint32:
+		if a > math.MaxUint32 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint32(a)
+	case uint64:
+		res = uint64(a)
+	case float32:
+		if float64(a) > math.MaxFloat32 {
+			return d, errs.ErrOutOfRange
+		}
+		res = float32(a)
+	case float64:
+		res = float64(a)
+	case string:
+		res = fmt.Sprint(a)
+	case bool:
+		res = a == 1
+	default:
+		return d, nil
+	}
+	return res.(D), nil
+
+}
+
+func (s uint8Converter[D]) convert(a uint8, d D) (D, error) {
+	var res interface{}
+
+	switch any(d).(type) {
+	case int:
+		res = int(a)
+	case int8:
+		res = int8(a)
+	case int16:
+		res = int16(a)
+	case int32:
+		res = int32(a)
+	case int64:
+		res = int64(a)
+	case uint:
+		res = uint(a)
+	case uint8:
+		res = a
+	case uint16:
+		res = uint16(a)
+	case uint32:
+		res = uint32(a)
+	case uint64:
+		res = uint64(a)
+	case float32:
+		res = float32(a)
+	case float64:
+		res = float64(a)
+	case string:
+		res = fmt.Sprint(a)
+	case bool:
+		res = a == 1
+	default:
+		return d, nil
+	}
+	return res.(D), nil
+
+}
+
+func (s uint16Converter[D]) convert(a uint16, d D) (D, error) {
+	var res interface{}
+
+	switch any(d).(type) {
+	case int:
+		res = int(a)
+	case int8:
+		if a > math.MaxInt8 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int8(a)
+	case int16:
+		res = int16(a)
+	case int32:
+		res = int32(a)
+	case int64:
+		res = int64(a)
+	case uint:
+		res = uint(a)
+	case uint8:
+		if a > math.MaxUint8 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint8(a)
+	case uint16:
+		res = uint16(a)
+	case uint32:
+		res = uint32(a)
+	case uint64:
+		res = uint64(a)
+	case float32:
+		res = float32(a)
+	case float64:
+		res = float64(a)
+	case string:
+		res = fmt.Sprint(a)
+	case bool:
+		res = a == 1
+	default:
+		return d, nil
+	}
+	return res.(D), nil
+}
+
+func (s uint32Converter[D]) convert(a uint32, d D) (D, error) {
+	var res interface{}
+
+	switch any(d).(type) {
+	case int:
+		res = int(a)
+	case int8:
+		if a > math.MaxInt8 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int8(a)
+	case int16:
+		if a > math.MaxInt16 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int16(a)
+	case int32:
+		res = uint32(a)
+	case int64:
+		res = int64(a)
+	case uint:
+		res = uint(a)
+	case uint8:
+		if a > math.MaxUint8 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint8(a)
+	case uint16:
+		if a > math.MaxUint16 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint16(a)
+	case uint32:
+		res = a
+	case uint64:
+		res = uint64(a)
+	case float32:
+		res = float32(a)
+	case float64:
+		res = float64(a)
+	case string:
+		res = fmt.Sprint(a)
+	case bool:
+		res = a == 1
+	default:
+		return d, nil
+	}
+	return res.(D), nil
+}
+
+func (s uint64Converter[D]) convert(a uint64, d D) (D, error) {
+	var res interface{}
+
+	switch any(d).(type) {
+	case int:
+		res = int(a)
+	case int8:
+		if a > math.MaxInt8 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int8(a)
+	case int16:
+		if a > math.MaxInt16 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int16(a)
+	case int32:
+		if a > math.MaxInt32 {
+			return d, errs.ErrOutOfRange
+		}
+		res = a
+	case int64:
+		res = int64(a)
+	case uint:
+		res = uint(a)
+	case uint8:
+		if a > math.MaxUint8 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint8(a)
+	case uint16:
+		if a > math.MaxUint16 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint16(a)
+	case uint32:
+		if a > math.MaxUint32 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint32(a)
+	case uint64:
+		res = uint64(a)
+	case float32:
+		res = float32(a)
+	case float64:
+		res = float64(a)
+	case string:
+		res = fmt.Sprint(a)
+	case bool:
+		res = a == 1
+	default:
+		return d, nil
+	}
+	return res.(D), nil
+}
+
+func (s float32Converter[D]) convert(a float32, d D) (D, error) {
+	var res interface{}
+	switch any(d).(type) {
+	case int:
+		res = int(a)
+	case int8:
+		if a > math.MaxInt8 || a < math.MinInt8 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int8(a)
+	case int16:
+		if a > math.MaxInt16 || a < math.MinInt16 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int16(a)
+	case int32:
+		if a > math.MaxInt32 || a < math.MinInt32 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int32(a)
+	case int64:
+		if a > math.MaxInt64 || a < math.MinInt64 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int64(a)
+	case uint:
+		res = uint(a)
+	case uint8:
+		if a > math.MaxUint8 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint8(a)
+	case uint16:
+		if a > math.MaxUint16 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint16(a)
+	case uint32:
+		if a > math.MaxUint32 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint32(a)
+	case uint64:
+		if a > math.MaxUint64 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint64(a)
+	case float32:
+		res = a
+	case float64:
+		res = float64(a)
+	case string:
+		res = fmt.Sprint(a)
+	case bool:
+		res = a == 1
+	default:
+		return d, nil
+	}
+	return res.(D), nil
+
+}
+
+func (s float64Converter[D]) convert(a float64, d D) (D, error) {
+	var res interface{}
+	switch any(d).(type) {
+	case int:
+		res = int(a)
+	case int8:
+		if a > math.MaxInt8 || a < math.MinInt8 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int8(a)
+	case int16:
+		if a > math.MaxInt16 || a < math.MinInt16 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int16(a)
+	case int32:
+		if a > math.MaxInt32 || a < math.MinInt32 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int32(a)
+	case int64:
+		if a > math.MaxInt64 || a < math.MinInt64 {
+			return d, errs.ErrOutOfRange
+		}
+		res = int64(a)
+	case uint:
+		res = uint(a)
+	case uint8:
+		if a > math.MaxUint8 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint8(a)
+	case uint16:
+		if a > math.MaxUint16 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint16(a)
+	case uint32:
+		if a > math.MaxUint32 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint32(a)
+	case uint64:
+		if a > math.MaxUint64 {
+			return d, errs.ErrOutOfRange
+		}
+		res = uint64(a)
+	case float32:
+		if a > math.MaxFloat32 {
+			return d, errs.ErrOutOfRange
+		}
+		res = a
+	case float64:
+		res = float64(a)
+	case string:
+		res = fmt.Sprint(a)
+	case bool:
+		res = a == 1
+	default:
+		return d, nil
+	}
+	return res.(D), nil
+
+}
+
+func (s boolConverter[D]) convert(a bool, d D) (D, error) {
+	var res interface{}
+	switch any(d).(type) {
+	case int:
+		if a {
+			res = 1
+		} else {
+			res = 0
+		}
+	case int8:
+		if a {
+			res = int8(1)
+		} else {
+			res = int8(0)
 		}
 	case int16:
-		res, err = fromIntToInt16(a)
-		if err == nil {
-			return res.(D), nil
+		if a {
+			res = int16(1)
+		} else {
+			res = int16(0)
 		}
 	case int32:
-		res, err = fromIntToInt32(a)
-		if err == nil {
-			return res.(D), nil
+		if a {
+			res = int32(1)
+		} else {
+			res = int32(0)
 		}
 	case int64:
-		res, err = fromIntToInt64(a)
-		if err == nil {
-			return res.(D), nil
+		if a {
+			res = int64(1)
+		} else {
+			res = int64(0)
 		}
 	case uint:
-		res, err = fromIntToUint(a)
-		if err == nil {
-			return res.(D), nil
+		if a {
+			res = uint(1)
+		} else {
+			res = uint(0)
 		}
 	case uint8:
-		res, err = fromIntToUint8(a)
-		if err == nil {
-			return res.(D), nil
+		if a {
+			res = uint8(1)
+		} else {
+			res = uint8(0)
 		}
 	case uint16:
-		res, err = fromIntToUint16(a)
-		if err == nil {
-			return res.(D), nil
+		if a {
+			res = uint16(1)
+		} else {
+			res = uint16(0)
 		}
 	case uint32:
-		res, err = fromIntToUint32(a)
-		if err == nil {
-			return res.(D), nil
+		if a {
+			res = uint32(1)
+		} else {
+			res = uint32(0)
 		}
 	case uint64:
-		res, err = fromIntToUint64(a)
-		if err == nil {
-			return res.(D), nil
+		if a {
+			res = uint64(1)
+		} else {
+			res = uint64(0)
 		}
 	case float32:
-		res, err = fromIntToFloat32(a)
-		if err == nil {
-			return res.(D), nil
+		if a {
+			res = float32(1)
+		} else {
+			res = float32(0)
 		}
 	case float64:
-		res, err = fromIntToFloat64(a)
-		if err == nil {
-			return res.(D), nil
+		if a {
+			res = float64(1)
+		} else {
+			res = float64(0)
 		}
+	case string:
+		res = fmt.Sprint(a)
 	case bool:
-		res, err = fromIntToBool(a)
-		if err == nil {
-			return res.(D), nil
-		}
-	}
-	return d, nil
-}
-
-func (s int8Converter[D]) convert(a int8, d D) (D, error) {
-	var res interface{}
-	switch any(d).(type) {
-	case int, int8, int16, int32, int64:
-		return d, nil
-	case uint, uint8, uint16, uint32, uint64:
-		if a < 0 {
-			return res.(D), errs.CustomError("Given number should be greater or than zero.")
-		}
 		res = a
-		return res.(D), nil
-	case float32:
-		if a < 0 {
-			return res.(D), errs.CustomError("Given number should be greater or than zero.")
-		}
-		res = float32(a)
-		return res.(D), nil
-	case float64:
-		if a < 0 {
-			return res.(D), errs.CustomError("Given number should be greater or than zero.")
-		}
-		res = float64(a)
-		return res.(D), nil
-	case bool:
-		if a == 0 {
-			res = false
-			return res.(D), nil
-		} else if a == 1 {
-			res = true
-			return res.(D), nil
-		}
-		res = false
-		return res.(D), errs.CustomError("Given number should be equal zero or one.")
-	}
-	return d, nil
-}
-
-func (s int8Converter[D]) convert(a int8, d D) (D, error) {
-	var res interface{}
-	switch any(d).(type) {
-	case int, int8, int16, int32, int64:
+	default:
 		return d, nil
-	case uint, uint8, uint16, uint32, uint64:
-		if a < 0 {
-			return res.(D), errs.CustomError("Given number should be greater or than zero.")
-		}
-		res = a
-		return res.(D), nil
-	case float32:
-		if a < 0 {
-			return res.(D), errs.CustomError("Given number should be greater or than zero.")
-		}
-		res = float32(a)
-		return res.(D), nil
-	case float64:
-		if a < 0 {
-			return res.(D), errs.CustomError("Given number should be greater or than zero.")
-		}
-		res = float64(a)
-		return res.(D), nil
-	case bool:
-		if a == 0 {
-			res = false
-			return res.(D), nil
-		} else if a == 1 {
-			res = true
-			return res.(D), nil
-		}
-		res = false
-		return res.(D), errs.CustomError("Given number should be equal zero or one.")
 	}
-	return d, nil
+	return res.(D), nil
+
 }
 
 func getConvertable[T, D any](t T) (iconverter[T, D], D, error) {
@@ -1451,6 +1025,45 @@ func getConvertable[T, D any](t T) (iconverter[T, D], D, error) {
 	switch any(t).(type) {
 	case string:
 		convertable = stringConverter[D]{}
+		return convertable.(iconverter[T, D]), def, nil
+	case float32:
+		convertable = float32Converter[D]{}
+		return convertable.(iconverter[T, D]), def, nil
+	case float64:
+		convertable = float64Converter[D]{}
+		return convertable.(iconverter[T, D]), def, nil
+	case int:
+		convertable = intConverter[D]{}
+		return convertable.(iconverter[T, D]), def, nil
+	case int8:
+		convertable = int8Converter[D]{}
+		return convertable.(iconverter[T, D]), def, nil
+	case int16:
+		convertable = int16Converter[D]{}
+		return convertable.(iconverter[T, D]), def, nil
+	case int32:
+		convertable = int32Converter[D]{}
+		return convertable.(iconverter[T, D]), def, nil
+	case int64:
+		convertable = int64Converter[D]{}
+		return convertable.(iconverter[T, D]), def, nil
+	case uint:
+		convertable = uint8Converter[D]{}
+		return convertable.(iconverter[T, D]), def, nil
+	case uint8:
+		convertable = uint8Converter[D]{}
+		return convertable.(iconverter[T, D]), def, nil
+	case uint16:
+		convertable = uint16Converter[D]{}
+		return convertable.(iconverter[T, D]), def, nil
+	case uint32:
+		convertable = uint32Converter[D]{}
+		return convertable.(iconverter[T, D]), def, nil
+	case uint64:
+		convertable = uint64Converter[D]{}
+		return convertable.(iconverter[T, D]), def, nil
+	case bool:
+		convertable = boolConverter[D]{}
 		return convertable.(iconverter[T, D]), def, nil
 	default:
 		return nil, def, errs.ErrUnsupportedType
