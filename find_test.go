@@ -2,20 +2,21 @@ package gotil_test
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 
 	"github.com/gotilty/gotil"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestFindBy(t *testing.T) {
-	a := assert.New(t)
 	input := []int64{-100, -5, 30, 100}
 	expected := int64(30)
 	result := gotil.FindBy(input, func(val int64) bool {
 		return val == 30
 	})
-	a.Equal(expected, result)
+	if !reflect.DeepEqual(expected, result) {
+		t.Errorf("F does not works expected\ncase: %d\nexpected: %d taken: %d", input, expected, result)
+	}
 	input2 := []user{
 		{
 			name: "Micheal",
@@ -37,7 +38,9 @@ func TestFindBy(t *testing.T) {
 		name: "Olivia",
 		age:  42,
 	}
-	a.Equal(expected2, result2)
+	if !reflect.DeepEqual(expected2, result2) {
+		t.Errorf("FindBy does not works expected\ncase: %v\nexpected: %v taken: %v", input2, expected2, result2)
+	}
 }
 
 func BenchmarkFindByIntegerSlice(b *testing.B) {
@@ -82,13 +85,14 @@ func ExampleFindBy() {
 }
 
 func TestFindLastBy(t *testing.T) {
-	a := assert.New(t)
 	input := []int64{10, 15, 90, 100, 30, 50}
 	expected := int64(100)
 	result := gotil.FindLastBy(input, func(val int64) bool {
 		return val > 80
 	})
-	a.Equal(expected, result)
+	if !reflect.DeepEqual(expected, result) {
+		t.Errorf("FindLastBy does not works expected\ncase: %d\nexpected: %d taken: %d", input, expected, result)
+	}
 	input2 := []user{
 		{
 			name: "Micheal",
@@ -114,7 +118,9 @@ func TestFindLastBy(t *testing.T) {
 		name: "Olivia",
 		age:  42,
 	}
-	a.Equal(expected2, result2)
+	if !reflect.DeepEqual(expected, result) {
+		t.Errorf("FindLastBy does not works expected\ncase: %v\nexpected: %v taken: %v", input2, expected2, result2)
+	}
 }
 
 func BenchmarkFindLastByIntegerSlice(b *testing.B) {

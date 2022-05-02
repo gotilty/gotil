@@ -2,20 +2,21 @@ package gotil_test
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 
 	"github.com/gotilty/gotil"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestReduce(t *testing.T) {
-	a := assert.New(t)
 	input := []int{15, 50}
 	expected := 65
 	result := gotil.Reduce(input, func(accumulator, v, i int) int {
 		return accumulator + v
 	}, 0)
-	a.Equal(expected, result)
+	if !reflect.DeepEqual(expected, result) {
+		t.Errorf("FindLastBy does not works expected\ncase: %d\nexpected: %d taken: %d", input, expected, result)
+	}
 }
 
 func BenchmarkReduce(b *testing.B) {
