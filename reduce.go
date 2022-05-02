@@ -2,7 +2,7 @@ package gotil
 
 // Reduce iterates given collection and returns the accumulated result of running each element
 // the last param is initial value of accumulator.
-//	result := Reduce([]int{5, 10}, func(accumulator, v, i int) int {
+//	result := gotil.Reduce([]int{5, 10}, func(accumulator, v, i int) int {
 //	return accumulator + v
 //	}, 0)
 //	fmt.Println(result)
