@@ -2,10 +2,10 @@ package gotil_test
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 
 	"github.com/gotilty/gotil"
-	"github.com/stretchr/testify/assert"
 )
 
 type user struct {
@@ -23,11 +23,12 @@ func TestSort(t *testing.T) {
 	a := "10"
 	r, _ := gotil.ToInt8(a)
 	fmt.Println(r)
-	// a := assert.New(t)
 	// input := []int64{-100, -5, 30, 100, 5, 11, 1000, 33, 55}
 	// expected := []int64{-100, -5, 5, 11, 30, 33, 55, 100, 1000}
 	// result := gotil.Sort(input)
-	// a.Equal(expected, result)
+	// if !reflect.DeepEqual(expected, result) {
+	// 	t.Errorf("FindLastBy does not works expected\ncase: %d\nexpected: %d taken: %d", input, expected, result)
+	// }
 }
 
 func ExampleSort() {
@@ -40,7 +41,6 @@ func ExampleSort() {
 
 func TestSortBy(t *testing.T) {
 	// Input: [{Micheal 27 {New York}} {Joe 30 {Detroit}} {Olivia 42 {New York}} {Kevin 10 {Boston}}]
-	a := assert.New(t)
 	input := []user{
 		{
 			name: "Micheal",
@@ -103,15 +103,18 @@ func TestSortBy(t *testing.T) {
 		},
 	}
 	result := gotil.SortBy(input, "location.city")
-	a.Equal(expected, result)
+	if !reflect.DeepEqual(expected, result) {
+		t.Errorf("FindLastBy does not works expected\ncase: %v\nexpected: %v taken: %v", input, expected, result)
+	}
 }
 
 func TestSortDesc(t *testing.T) {
-	a := assert.New(t)
 	input := []int64{-100, -5, 30, 100, 5, 11, 1000, 33, 55}
 	expected := []int64{1000, 100, 55, 33, 30, 11, 5, -5, -100}
 	result := gotil.SortDesc(input)
-	a.Equal(expected, result)
+	if !reflect.DeepEqual(expected, result) {
+		t.Errorf("FindLastBy does not works expected\ncase: %d\nexpected: %d taken: %d", input, expected, result)
+	}
 }
 
 func ExampleSortDesc() {
@@ -124,7 +127,6 @@ func ExampleSortDesc() {
 }
 
 func TestSortDescBy(t *testing.T) {
-	a := assert.New(t)
 	input := []user{
 		{
 			name: "Micheal",
@@ -186,5 +188,7 @@ func TestSortDescBy(t *testing.T) {
 		},
 	}
 	result := gotil.SortDescBy(input, "age")
-	a.Equal(expected, result)
+	if !reflect.DeepEqual(expected, result) {
+		t.Errorf("FindLastBy does not works expected\ncase: %v\nexpected: %v taken: %v", input, expected, result)
+	}
 }

@@ -2,18 +2,19 @@ package gotil_test
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 
 	"github.com/gotilty/gotil"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestShuffle(t *testing.T) {
-	a := assert.New(t)
 	input := []int64{-100, -5, 30, 100, 5, 11, 1000, 33, 55}
 	expected := []int64{100, 33, 1000, 30, 55, -5, -100, 5, 11}
 	result := gotil.ShuffleSeed(input, int64(343434))
-	a.Equal(expected, result)
+	if !reflect.DeepEqual(expected, result) {
+		t.Errorf("FindLastBy does not works expected\ncase: %d\nexpected: %d taken: %d", input, expected, result)
+	}
 }
 
 func BenchmarkShuffleIntegerSlice(b *testing.B) {
