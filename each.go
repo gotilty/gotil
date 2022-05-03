@@ -1,9 +1,5 @@
 package gotil
 
-import (
-	"github.com/gotilty/gotil/internal"
-)
-
 // Creates an array of values by running each element in the given array thru iteratee.
 // The value to be iterated should be given as the first parameter.
 // The second parameter will be a function that will take the parameter and return value type interface{}.
@@ -11,6 +7,12 @@ import (
 //		fmt.Printf("%d apples", val)
 //	})
 // 	// Output: 10 apples20 apples30 apples
-func Each(a interface{}, f func(k, v interface{})) error {
-	return internal.Each(a, f)
+// func Each(a interface{}, f func(k, v interface{})) error {
+// 	return internal.Each(a, f)
+// }
+
+func Each[T any](s []T, f func(v T)) {
+	for _, v := range s {
+		f(v)
+	}
 }
