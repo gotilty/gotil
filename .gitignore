@@ -16,3 +16,6 @@
 
 __debug*
 .DS_Store*
+
+.idea
+

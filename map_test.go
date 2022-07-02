@@ -32,5 +32,5 @@ func ExampleMap() {
 		return v * v
 	})
 	fmt.Println(result)
-	// Output: 100, 400
+	// Output: [100 400]
 }
