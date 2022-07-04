@@ -1,29 +1,47 @@
 ## Every
 
-Checks if the predicate returns true for all of the collection's elements. When the predicate returns false, the iteration comes to an end.
+Checks if the predicate returns true for all of the collection's elements. When the predicate returns false, the
+iteration comes to an end.
 
 > ***array, slice, map & struct are supported***
 
 ```go
-gotil.Every(val, f)
+gotil.EveryBy(val, f)
 ```
 
 ### examples
 
->💻 [Try on Playground](https://go.dev/play/p/Vzh-hJoVpBe)
+> 💻 [Try on Playground](https://go.dev/play/p/4ALoPEWqMug)
 
 ```go
-m1 := []int{123, 6787}
-
-gotil.Each(m1, func(v interface{}, k interface{}) {
-    fmt.Println(k, v)
+input := []user{
+	{
+		name: "Micheal",
+		age:  27,
+	},
+	{
+		name: "Joe",
+		age:  30,
+	},
+	{
+		name: "Olivia",
+		age:  42,
+	},
+	{
+		name: "Mike",
+		age:  43,
+	},
+}
+result := gotil.EveryBy(input, func(v user) bool {
+	return v.age < 30
 })
+fmt.Println(result)
+
 ```
 
 ```go
 //output:
-0 123
-1 6787
+false
 ```
 
 ## Each
@@ -38,20 +56,17 @@ gotil.Each(val, f)
 
 ### examples
 
->💻 [Try on Playground](https://go.dev/play/p/WifLSEZaMSS)
+> 💻 [Try on Playground](https://go.dev/play/p/5JsdmpiqQIi)
 
 ```go
-m1 := []int{123, 6787}
-
-gotil.Each(m1, func(v interface{}, k interface{}) {
-    fmt.Println(k, v)
+gotil.Each([]string{"gotilty", "gotil"}, func(v string) {
+	fmt.Fprint(os.Stdout, v)
 })
 ```
 
 ```go
 //output:
-0 123
-1 6787
+gotiltygotil
 ```
 
 ## Filter
@@ -66,16 +81,11 @@ gotil.Filter(val, f)
 
 ### examples
 
-> 💻 [Try on Playground](https://go.dev/play/p/9CHhvvipA8w)
+> 💻 [Try on Playground](https://go.dev/play/p/aLVfuwExKGO)
 
 ```go
-data := []int64{-100, -5, 30, 100}
-result, _ := gotil.FilterBy(data, func(val interface{}, i int) bool {
-    if val.(int64) > 0 {
-        return true
-    } else {
-        return false
-    }
+result := gotil.FilterBy([]int64{-100, -5, 30, 100}, func(v int64, i int) bool {
+	return v > 0
 })
 fmt.Println(result)
 ```
@@ -92,7 +102,7 @@ Checks if predicate returns true for all elements of collection. Iteration is st
 > **_array & slice are supported_**
 
 ```go
-gotil.Filter(val, f)
+gotil.FindBy(val, f()bool)
 ```
 
 ### examples
@@ -100,17 +110,30 @@ gotil.Filter(val, f)
 > 💻 [Try on Playground](https://go.dev/play/p/9CHhvvipA8w)
 
 ```go
-data := []int64{-100, -5, 30, 100}
-// Input: [-100 -5 30 100]
-result := gotil.FindBy(data, func(val int64) bool {
-    return val > 0
+input2 := []user{
+	{
+		name: "Micheal",
+		age:  27,
+	},
+	{
+		name: "Joe",
+		age:  30,
+	},
+	{
+		name: "Olivia",
+		age:  42,
+	},
+}
+
+result := gotil.FindBy(input2, func(val user) bool {
+	return val.name == "Olivia"
 })
 fmt.Println(result)
 ```
 
 ```go
 //output:
-30
+{Olivia 42}
 ```
 
 ## FindByFromIndex
@@ -124,14 +147,13 @@ gotil.FindByFromIndex(val, f, i)
 ```
 
 ### examples
-
-> 💻 [Try on Playground](https://go.dev/play/p/A98eBoD6Nxi)
+> 💻 [Try on Playground](https://go.dev/play/p/vnnIiD_Luce)
 
 ```go
 data := []int64{-100, -5, 30, 100}
 // Input: [-100 -5 30 100]
 result := gotil.FindByFromIndex(data, func(val int64) bool {
-    return val > 0
+return val > 0
 }, 3)
 fmt.Println(result)
 ```
@@ -143,7 +165,8 @@ fmt.Println(result)
 
 ## FindLastBy
 
-Inversely checks whether the predicate is true for all elements of the collection. Iteration is stopped once predicate returns false.
+Inversely checks whether the predicate is true for all elements of the collection. Iteration is stopped once predicate
+returns false.
 
 > **_array & slice are supported_**
 
@@ -153,24 +176,26 @@ gotil.FindLastBy(val, f)
 
 ### examples
 
-> 💻 [Try on Playground](https://go.dev/play/p/ay1huuG2ipx)
+> 💻 [Try on Playground](https://go.dev/play/p/_Td7R7uEyyP)
 
 ```go
 data := []int64{-100, -5, 30, 100}
-result, _ := gotil.FindLastBy(data, func(val int64) bool {
-    return val > 29
+// Input: [-100 -5 30 100]
+newData := gotil.FindLastBy(data, func(val int64) bool {
+	return val == 30
 })
-fmt.Println(result)
+	fmt.Println(newData)
 ```
 
 ```go
 //output:
-100
+30
 ```
 
 ## GroupBy
 
-Creates a map composed of keys generated from the results of running each element of collection through the iteratee function.
+Creates a map composed of keys generated from the results of running each element of collection through the iteratee
+function.
 
 > **_array & slice are supported_**
 
@@ -180,69 +205,44 @@ gotil.GroupBy(val, f)
 
 ### examples
 
-> 💻 [Try on Playground](https://go.dev/play/p/ay1huuG2ipx)
+> 💻 [Try on Playground](https://go.dev/play/p/8qQclTSuIf8)
 
 ```go
-m1 := []string{"eight", "nine", "four", "seven"}
-
-if result, err := gotil.GroupBy(m1, func(a interface{}, i interface{}) interface{} {
-    return len(strings.Split(a.(string), ""))
-}); err == nil {
-    for k, v := range result.(map[int][]string) {
-        fmt.Println(k, v)
-    }
-}
-```
-
-```go
-//output:
-5 [eight seven]
-4 [nine four]
-```
-
-## Includes
-
-It checks whether the given value exists in the given parameter. Returns boolean.
-
-> **_array & slice are supported_**
-
-```go
-gotil.Includes(array, val)
-```
-
-### examples
-
-> 💻 [Try on Playground](https://go.dev/play/p/IeA4GbdIqjd)
-
-```go
-m1 := []float64{5, 10.5, 10, 20, 10.75, 100, 4.23, 5.15, 5.99, 100.0001}
-result, _ := gotil.Includes(m1, "gotil")
+input := []int{10, 20, 30}
+result := gotil.GroupBy(input, func(v int, i int) int {
+	return v / 10
+})
 fmt.Println(result)
 ```
 
 ```go
 //output:
-false
+map[1:[10] 2:[20] 3:[30]]
 ```
 
 ## Reduce
 
-// Reduce iterates given collection and returns the accumulated result of running each element the last param is initial value of accumulator.
+// Reduce iterates given collection and returns the accumulated result of running each element the last param is initial
+value of accumulator.
 
 > **_array & slice are supported_**
 
 ### examples
 
-> 💻 [Try on Playground](https://go.dev/play/p/r5EICJ1v90W)
+> 💻 [Try on Playground](https://go.dev/play/p/8Nl5N9y9_kF)
 
 ```go
-data := []int{5, 10}
-result, _ := gotil.Reduce(data, func(accumulator, val interface{}, i int) interface{} {
-    return accumulator.(int) + val.(int)
+result := gotil.Reduce([]int{5, 10}, func(accumulator, v, i int) int {
+	return accumulator + v
 }, 0)
 fmt.Println(result)
-// Output: 15
 ```
+
+```go
+//output:
+15
+```
+
 
 ## Shuffle
 
@@ -256,17 +256,17 @@ gotil.Shuffle(data)
 
 ### examples
 
-> 💻 [Try on Playground](https://go.dev/play/p/jxNSYukWBZR)
+> 💻 [Try on Playground](https://go.dev/play/p/XWtS7si2i3i)
 
 ```go
-data := []int64{-100, -5, 30, 100, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+data := []int64{-100, -5, 30, 100}
 newData := gotil.Shuffle(data)
 fmt.Println(newData)
 ```
 
 ```go
 //output:
-[8 6 4 -100 7 2 9 -5 100 30 3 1 5]
+[100 30 -5 -100]
 ```
 
 ## ShuffleSeed
@@ -281,7 +281,7 @@ gotil.ShuffleSeed(data, seed)
 
 ### examples
 
-> 💻 [Try on Playground](https://go.dev/play/p/IeA4GbdIqjd)
+> 💻 [Try on Playground](https://go.dev/play/p/jnVTdRE9Dsc)
 
 ```go
 // Use "seed := time.Now().UnixNano()" for random result
@@ -299,30 +299,6 @@ fmt.Println(newData)
 [-5 100 -100 30]
 ```
 
-## Size
-
-Returns size of given array or slice.
-
-> **_array & slice are supported_**
-
-```go
-gotil.Size(data)
-```
-
-### examples
-
-> 💻 [Try on Playground](https://go.dev/play/p/EY4ca2fMJhR)
-
-```go
-data := []int64{-100, -5, 30, 100}
-newData, _ := gotil.Size(data)
-fmt.Println(newData)
-```
-
-```go
-//output:
-4
-```
 
 ## Sort
 
@@ -336,17 +312,17 @@ gotil.Sort(data)
 
 ### examples
 
-> 💻 [Try on Playground](https://go.dev/play/p/jmZZjaS6gqC)
+> 💻 [Try on Playground](https://go.dev/play/p/LuSbBJFiG8F)
 
 ```go
-data := []int64{100, 30, -100, -5}
-newData := gotil.Sort(data)
+data := []int64{-100, -5, 30, 100}
+newData := gotil.SortDesc(data)
 fmt.Println(newData)
 ```
 
 ```go
 //output:
-[-100 -5 30 100]
+[100 30 -5 -100]
 ```
 
 ## SortBy
@@ -356,49 +332,49 @@ Returns sorted version of given array or slice.
 > **_array, slice, map & struct are supported_**
 
 ```go
-gotil.SortBy(data)
+gotil.SortBy(data, path)
 ```
 
 ### examples
 
-> 💻 [Try on Playground](https://go.dev/play/p/8BrQFoMJAVm)
+> 💻 [Try on Playground](https://go.dev/play/p/6CthKZcvLk7)
 
 ```go
-var data = []user{
-    {
-        name: "Micheal",
-        age:  27,
-        location: location{
-            city: "New York",
-        },
-    },
-    {
-        name: "Joe",
-        age:  30,
-        location: location{
-            city: "Detroit",
-        },
-    },
-    {
-        name: "Olivia",
-        age:  42,
-        location: location{
-            city: "New York",
-        },
-    },
-    {
-        name: "Kevin",
-        age:  10,
-        location: location{
-            city: "Boston",
-        },
-    },
+input := []user{
+	{
+		name: "Micheal",
+		age:  27,
+		location: location{
+			city: "New York",
+		},
+	},
+	{
+		name: "Joe",
+		age:  30,
+		location: location{
+			city: "Detroit",
+		},
+	},
+	{
+		name: "Olivia",
+		age:  42,
+		location: location{
+			city: "New York",
+		},
+	},
+	{
+		name: "Kevin",
+		age:  10,
+		location: location{
+			city: "Boston",
+		},
+	},
 }
-newData := gotil.SortBy(data, "location.city")
-fmt.Println(newData)
+result := gotil.SortBy(input, "age")
+fmt.Println(result)
 ```
 
 ```go
 //output:
-[{Kevin 10 {Boston}} {Joe 30 {Detroit}} {Olivia 42 {New York}} {Micheal 27 {New York}}]
+[{Kevin 10 {Boston}} {Micheal 27 {New York}} {Joe 30 {Detroit}} {Olivia 42 {New York}}]
 ```

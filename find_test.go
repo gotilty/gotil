@@ -85,42 +85,50 @@ func ExampleFindBy() {
 }
 
 func TestFindLastBy(t *testing.T) {
-	input := []int64{10, 15, 90, 100, 30, 50}
-	expected := int64(100)
-	result := gotil.FindLastBy(input, func(val int64) bool {
-		return val > 80
-	})
-	if !reflect.DeepEqual(expected, result) {
-		t.Errorf("FindLastBy does not works expected\ncase: %d\nexpected: %d taken: %d", input, expected, result)
-	}
-	input2 := []user{
-		{
-			name: "Micheal",
-			age:  27,
-		},
-		{
-			name: "Joe",
-			age:  30,
-		},
-		{
-			name: "Olivia",
-			age:  42,
-		},
-		{
-			name: "Mike",
-			age:  43,
-		},
-	}
-	result2 := gotil.FindBy(input2, func(val user) bool {
-		return val.age == 42
-	})
-	expected2 := user{
-		name: "Olivia",
-		age:  42,
-	}
-	if !reflect.DeepEqual(expected, result) {
-		t.Errorf("FindLastBy does not works expected\ncase: %v\nexpected: %v taken: %v", input2, expected2, result2)
-	}
+
+	data := []int64{-100, -5, 30, 100}
+	// Input: [-100 -5 30 100]
+	result := gotil.FindByFromIndex(data, func(val int64) bool {
+		return val > 0
+	}, 3)
+	fmt.Println(result)
+
+	//input := []int64{10, 15, 90, 100, 30, 50}
+	//expected := int64(100)
+	//result := gotil.FindLastBy(input, func(val int64) bool {
+	//	return val > 80
+	//})
+	//if !reflect.DeepEqual(expected, result) {
+	//	t.Errorf("FindLastBy does not works expected\ncase: %d\nexpected: %d taken: %d", input, expected, result)
+	//}
+	//input2 := []user{
+	//	{
+	//		name: "Micheal",
+	//		age:  27,
+	//	},
+	//	{
+	//		name: "Joe",
+	//		age:  30,
+	//	},
+	//	{
+	//		name: "Olivia",
+	//		age:  42,
+	//	},
+	//	{
+	//		name: "Mike",
+	//		age:  43,
+	//	},
+	//}
+	//result2 := gotil.FindBy(input2, func(val user) bool {
+	//	return val.age == 42
+	//})
+	//expected2 := user{
+	//	name: "Olivia",
+	//	age:  42,
+	//}
+	//if !reflect.DeepEqual(expected, result) {
+	//	t.Errorf("FindLastBy does not works expected\ncase: %v\nexpected: %v taken: %v", input2, expected2, result2)
+	// }
 }
 
 func BenchmarkFindLastByIntegerSlice(b *testing.B) {
@@ -159,6 +167,7 @@ func BenchmarkFindLastByStructSlice(b *testing.B) {
 }
 
 func ExampleFindLastBy() {
+
 	data := []int64{-100, -5, 30, 100}
 	// Input: [-100 -5 30 100]
 	newData := gotil.FindLastBy(data, func(val int64) bool {

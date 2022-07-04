@@ -8,7 +8,6 @@
   - [Crypto](crypto.md)
   - [Encoding](encoding.md)
   - [Converter](converter.md)
-  - [Operator](operator.md)
 
 - Contributors
   - [ertugrulkutluer](https://github.com/ertugrulkutluer)
