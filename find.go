@@ -18,7 +18,7 @@ func FindBy[T any](s []T, f func(val T) bool) T {
 // It works same as FindBy just from parameter provides to set start index of given slice or array.
 func FindByFromIndex[T any](s []T, f func(val T) bool, from int) T {
 	var result T
-	index := findIndex(s, f, 0)
+	index := findIndex(s, f, from)
 	if index > -1 {
 		return s[index]
 	}

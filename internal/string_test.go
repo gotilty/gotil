@@ -42,6 +42,10 @@ func BenchmarkConvertToStringUInt(b *testing.B) {
 	}
 }
 
+type testStruct struct {
+	a int
+}
+
 func getConvertToStringTestData() map[string]struct {
 	inputValue interface{}
 	output     string
