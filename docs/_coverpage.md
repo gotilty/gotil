@@ -1,4 +1,4 @@
-# <b>GO</b>tilty <small>v0.1.0</small>
+# <b>GO</b>tilty <small>v0.1.1</small>
 
 ## <i>Next Generation Golang Utility Tool</i>
 
