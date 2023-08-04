@@ -15,7 +15,6 @@ lodash inspired utility library for go
 
 
 [![Build Status](https://scrutinizer-ci.com/g/gotilty/gotil/badges/build.png?b=master)](https://scrutinizer-ci.com/g/gotilty/gotil/build-status/master)
-[![CodeFactor](https://www.codefactor.io/repository/github/gotilty/gotil/badge)](https://www.codefactor.io/repository/github/gotilty/gotil)
 [![Go Report Card](https://goreportcard.com/badge/github.com/gotilty/gotil)](https://goreportcard.com/report/github.com/gotilty/gotil)
 ![Scrutinizer code quality (GitHub/Bitbucket)](https://img.shields.io/scrutinizer/quality/g/gotilty/gotil/master)
 ![GitHub](https://img.shields.io/github/license/gotilty/gotil)
